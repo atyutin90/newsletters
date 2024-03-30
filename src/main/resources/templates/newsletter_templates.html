@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+  <title>Spring Boot Thymeleaf example</title>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+  <div th:replace="~{fragments/header :: header}"></div>
+
+  <div class="container-fluid" style="max-width: 900px; margin: 0 auto;">
+    <h2 class="text-center" th:text="#{newsletter-templates}"></h2>
+
+    <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+         role="alert">
+      [[${message}]]
+      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="my-3">
+      <form th:action="@{/template/newsletter/all}" >
+        <div class="row d-flex">
+          <div class="col-md-6 mt-3">
+            <div class="search">
+              <i class="fa fa-search"></i>
+              <input id="keyword" type="search" name="keyword" th:value="${keyword}" required class="form-control" th:placeholder="#{inter-keyword}">
+              <button type="submit" class="btn btn-secondary" th:text="#{search}"/>
+            </div>
+          </div>
+          <div class="col-md-2 mt-3">
+            <button id="btnClear" class="btn btn-info" th:text="#{clear}"/>
+          </div>
+          <div class="col-md-2 mt-3">
+            <button id="btnAdd" class="btn btn-primary" th:text="#{add}"/>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div th:if="${newsletters.size() > 0}">
+      <table class="table table-hover table-responsive-xl">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col" th:text="#{id}"></th>
+          <th scope="col" th:text="#{name}"></th>
+          <th scope="col" th:text="#{action}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="newsletter : ${newsletters}">
+          <th scope="row">[[${newsletter.id}]]</th>
+          <td>[[${newsletter.name}]]</td>
+          <td>
+            <a th:href="@{'/template/newsletter/delete/' + ${newsletter.id}}" th:deleteMessage="#{do-you-want-delete-record(${newsletter.name})}" id="btnDelete" th:title="#{delete-newsletter}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+            <a th:href="@{'/template/newsletter/download/' + ${newsletter.id}}" id="btnDownload" th:title="#{download-newsletter}" class="fa-solid fa-file-arrow-down icon-dark"></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="" th:unless="${newsletters.size() > 0}">
+      <span th:text="#{not-found-records}"/>
+    </div>
+  </div>
+
+  <div class="modal fade text-center" id="confirmModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" th:text="#{notice-of-removal}"/>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <span id="confirmText"></span>
+        </div>
+
+        <div class="modal-footer">
+          <a type="button" id="yesBtn" th:text="#{yes}" class="btn btn-danger"/>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{no}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".btn-delete").on("click", function (e) {
+        e.preventDefault();
+        link = $(this);
+
+        deleteMessage = link.attr("deleteMessage")
+        $("#yesBtn").attr("href", link.attr("href"));
+        $("#confirmText").html(deleteMessage);
+        $("#confirmModal").modal();
+      });
+
+      $("#btnClear").on("click", function (e) {
+        e.preventDefault();
+        $("#keyword").text("");
+        window.location = "[[@{/template/newsletter/all}]]";
+      });
+      $("#btnAdd").on("click", function (e) {
+        e.preventDefault();
+        $("#keyword").text("");
+        window.location = "[[@{/template/newsletter/new}]]";
+      });
+    });
+  </script>
+</body>
+
+</html>
