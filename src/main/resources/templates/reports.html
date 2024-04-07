@@ -74,6 +74,9 @@
     <div class="" th:unless="${files.size() > 0}">
       <span th:text="#{not-found-records}"/>
     </div>
+
+    <div th:replace="~{fragments/paging :: paggination('/file/newsletters')}"></div>
+
   </div>
 
   <div class="modal fade text-center" id="confirmModal">
@@ -124,6 +127,7 @@
       });
     });
   </script>
+
 </body>
 
 </html>

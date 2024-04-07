@@ -75,6 +75,9 @@
     <div class="" th:unless="${debtors.size() > 0}">
         <span th:text="#{not-found-records}"/>
     </div>
+
+    <div th:replace="~{fragments/paging :: paggination('/debtor/all')}"></div>
+
 </div>
 
 <div class="modal fade text-center" id="confirmModal">

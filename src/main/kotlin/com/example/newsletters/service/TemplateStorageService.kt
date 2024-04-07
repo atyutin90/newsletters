@@ -5,6 +5,7 @@ import com.example.newsletters.dto.TemplateType
 import com.example.newsletters.entity.Template
 import com.example.newsletters.repository.TemplateRepository
 import com.example.newsletters.utils.FileUtils.getExtensionFileByName
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
@@ -22,11 +23,15 @@ class TemplateStorageService(val templateRepository: TemplateRepository) {
 
     fun getByNameAndType(type: TemplateType, name: String) = templateRepository.findByTypeAndNameContainingIgnoreCase(type, name).map { it.templateDto }
 
-    fun getByIds(ids: List<Int>): List<TemplateDto> = templateRepository.findAllById(ids).map { it.templateDto }
+    fun getByNameAndType(type: TemplateType, name: String, paging: Pageable) = templateRepository.findByTypeAndNameContainingIgnoreCase(type, name, paging).map { it.templateDto }
 
-    fun getAll(): List<TemplateDto> = templateRepository.findAll().map { it.templateDto }
+    fun getByIds(ids: List<Int>) = templateRepository.findAllById(ids).map { it.templateDto }
 
-    fun getByType(type: TemplateType): List<TemplateDto> = templateRepository.findByType(type).map { it.templateDto }
+    fun getAll() = templateRepository.findAll().map { it.templateDto }
+
+    fun getByType(type: TemplateType) = templateRepository.findByType(type).map { it.templateDto }
+
+    fun getByType(type: TemplateType, paging: Pageable) = templateRepository.findByType(type, paging).map { it.templateDto }
 
     fun delete(id: Int) = templateRepository.deleteById(id)
 }

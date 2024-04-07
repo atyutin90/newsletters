@@ -14,4 +14,11 @@ const val REPORTS = "reports"
 const val LOCATIONS = "locations"
 const val LOCATION = "location"
 const val NEWSLETTER = "newsletter"
+const val CURRENT_PAGE = "currentPage"
+const val TOTAL_ITEMS = "totalItems"
+const val TOTAL_PAGES = "totalPages"
+const val PAGE_SIZE = "pageSize"
+
+const val DEFAULT_PAGE = "1"
+const val DEFAULT_PAGE_SIZE = "3"
 sealed interface AbstractController

@@ -75,6 +75,7 @@
     <div class="" th:unless="${newsletters.size() > 0}">
       <span th:text="#{not-found-records}"/>
     </div>
+    <div th:replace="~{fragments/paging :: paggination('/template/newsletter/all')}"></div>
   </div>
 
   <div class="modal fade text-center" id="confirmModal">

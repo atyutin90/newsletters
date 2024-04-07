@@ -75,6 +75,9 @@
     <div class="" th:unless="${locations.size() > 0}">
         <span th:text="#{not-found-records}"/>
     </div>
+
+    <div th:replace="~{fragments/paging :: paggination('/location/all')}"></div>
+
 </div>
 
 <div class="modal fade text-center" id="confirmModal">

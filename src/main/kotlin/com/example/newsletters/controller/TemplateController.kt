@@ -5,6 +5,8 @@ import com.example.newsletters.dto.TemplateDto
 import com.example.newsletters.dto.TemplateType.NEWSTELLER
 import com.example.newsletters.service.TemplateStorageService
 import org.springframework.context.MessageSource
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -27,16 +29,22 @@ private const val NEWSLETTERS = "newsletters"
 class TemplateController(val messageSource: MessageSource, val templateStorageService: TemplateStorageService) {
 
     @GetMapping("/newsletter/all")
-    fun getAll(@Param(KEYWORD) keyword: String?, model: Model): String = run {
+    fun getAll(
+        @RequestParam(KEYWORD) keyword: String?,
+        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) size: Int,
+        model: Model): String = run {
         try {
-            val newsletters: MutableList<TemplateDto> = mutableListOf()
-            if (keyword?.isEmpty() != false ) {
-                templateStorageService.getByType(NEWSTELLER).map {newsletters.add(it)}
-            } else {
-                model.addAttribute(KEYWORD, keyword)
-                templateStorageService.getByNameAndType(NEWSTELLER, keyword).map {newsletters.add(it)}
-            }
-            model.addAttribute(NEWSLETTERS, newsletters)
+            val paging: Pageable = PageRequest.of(page - 1, size)
+            val newsletters =
+                if (keyword?.isEmpty() != false) templateStorageService.getByType(NEWSTELLER, paging)
+                else templateStorageService.getByNameAndType(NEWSTELLER, keyword, paging)
+            model.addAttribute(NEWSLETTERS, newsletters.content)
+            model.addAttribute(CURRENT_PAGE, newsletters.number + 1)
+            model.addAttribute(TOTAL_ITEMS, newsletters.totalElements)
+            model.addAttribute(TOTAL_PAGES, newsletters.totalPages)
+            model.addAttribute(PAGE_SIZE, size)
+            model.addAttribute(KEYWORD, keyword)
         } catch (e: Exception) {
             model.addAttribute(MESSAGE, e.message)
         }

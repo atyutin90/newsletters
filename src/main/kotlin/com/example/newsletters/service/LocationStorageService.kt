@@ -6,13 +6,17 @@ import com.example.newsletters.entity.Debtor
 import com.example.newsletters.entity.Location
 import com.example.newsletters.repository.DebtorRepository
 import com.example.newsletters.repository.LocationRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
 class LocationStorageService(private val locationRepository: LocationRepository) {
     fun getAll(): List<LocationDto> = locationRepository.findAll().map { it.locationDTO }
+    fun getAll(paging: Pageable): Page<LocationDto> = locationRepository.findAll(paging).map { it.locationDTO }
     fun getByName(name: String) = locationRepository.findByNameContainingIgnoreCase(name).map { it.locationDTO }
-    fun getById(id: Int) = locationRepository.findById(id).map { it.locationDTO }.orElse(null)
+    fun getByName(name: String, paging: Pageable) = locationRepository.findByNameContainingIgnoreCase(name, paging).map { it.locationDTO }
+    fun getById(id: Int): LocationDto? = locationRepository.findById(id).map { it.locationDTO }.orElse(null)
     fun getByIds(ids: List<Int>) = locationRepository.findAllById(ids).map { it.locationDTO }
     fun delete(id: Int) = locationRepository.deleteById(id)
     fun create(location: LocationDto) = locationRepository.save(location.location)

@@ -39,3 +39,12 @@
   width: 80px;
   background: grey;
 }
+
+.size-select {
+  width: 60px;
+  color: #495057;
+  vertical-align: middle;
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
