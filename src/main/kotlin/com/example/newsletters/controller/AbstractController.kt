@@ -20,5 +20,5 @@ const val TOTAL_PAGES = "totalPages"
 const val PAGE_SIZE = "pageSize"
 
 const val DEFAULT_PAGE = "1"
-const val DEFAULT_PAGE_SIZE = "3"
+const val DEFAULT_PAGE_SIZE = "10"
 sealed interface AbstractController

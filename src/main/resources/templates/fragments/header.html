@@ -33,6 +33,11 @@
           </div>
         </li>
       </ul>
+      <ul class="nav navbar-nav ml-auto">
+        <form th:action="@{/logout}" method="post">
+          <input type="submit" class="btn btn-primary" th:value="#{sign-out}"/>
+        </form>
+      </ul>
     </div>
   </nav>
 </header>
