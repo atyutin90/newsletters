@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/debtor/{debtorId}/creditor/{creditorId}/queue/save(debtorId=${debtor.id},creditorId=${creditor.id})}"
+              method="post" enctype="multipart/form-data" th:object="${queue}">
+            <div class="p-3">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
+                <input type="hidden" name="creditorId" th:value="${creditor.id}" id="creditorId"/>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}"
+                           th:title="#{creditor}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
+                           id="debtorName">
+                        </a>
+                    </div>
+                </div>
+                <div th:replace="~{queue/field/field :: field}"></div>
+                <div class="text-center">
+                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
+                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+   /* window.onload = reloadForm*/
+
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}]]";
+        });
+    });
+
+   function toggleDepositFields() {
+       const type = document.getElementById("type").value;
+       document.getElementById("depositLocationInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       document.getElementById("depositAmountInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       document.getElementById("depositDocumentDetailsInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       if (type !== "THIRD_DEPOSIT") {
+           document.getElementById("depositLocation").value = null;
+           document.getElementById("depositAmount").value = null;
+           document.getElementById("depositDocumentDetails").value = null;
+       }
+   }
+
+   function toggleExclusionFromRegisterFields() {
+       const exclusionFromRegister = document.getElementById("exclusionFromRegister");
+       document.getElementById("repaymentDateInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("repaymentDocumentDetailsInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("repaymentDocumentDetailsInfoForm").value = !exclusionFromRegister.checked ? null : "none";
+       document.getElementById("repaymentAmountInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("outstandingAmountInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("exclusionFromRegisterDateInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("exclusionDocumentInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       if (!exclusionFromRegister.checked) {
+           document.getElementById("repaymentDocumentDetails").value = null;
+           document.getElementById("repaymentDate").value = null;
+           document.getElementById("repaymentAmount").value = null;
+           document.getElementById("outstandingAmount").value = null;
+           document.getElementById("exclusionFromRegisterDate").value = null;
+           document.getElementById("exclusionDocument").value = null;
+       }
+   }
+
+   document.addEventListener("DOMContentLoaded", function() { toggleDepositFields(); });
+   document.addEventListener("DOMContentLoaded", function() { toggleExclusionFromRegisterFields(); });
+
+</script>
+
+</body>
+
+</html>

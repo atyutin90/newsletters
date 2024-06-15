@@ -17,8 +17,8 @@ import java.util.*
 
 @Controller
 @RequestMapping("/location")
-class LocationController(val locationStorageService: LocationStorageService, val messageSource: MessageSource) :
-    AbstractController {
+class LocationController(val locationStorageService: LocationStorageService, override val messageSource: MessageSource) :
+    AbstractController(messageSource) {
 
     @GetMapping("/all")
     fun getAll(

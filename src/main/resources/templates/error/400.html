@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="text-center">
+        <h1 class="text-center display-4 text-danger mb-4">Ошибка 400</h1>
+        <a class="text-center btn btn-primary" th:href="@{/}">Вернуться на главную</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

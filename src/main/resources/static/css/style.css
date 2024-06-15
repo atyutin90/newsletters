@@ -32,11 +32,19 @@
   left: 10px;
 }
 
-.search button {
+.search .button-search {
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 80px;
+  width: 90px;
+  background: grey;
+}
+
+.search .button-clear {
+  position: absolute;
+  top: 0px;
+  right: 90px;
+  width: 50px;
   background: grey;
 }
 
@@ -47,4 +55,9 @@
   padding: 6px 12px;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
+}
+
+.without-border {
+  border: none;
+  background: none;
 }

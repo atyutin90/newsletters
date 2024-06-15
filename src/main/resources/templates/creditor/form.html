@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/debtor/{debtorId}/creditor/save(debtorId=${debtor.id})}" method="post"
+              enctype="multipart/form-data" th:object="${creditor}">
+            <div class="p-3">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a th:href="@{/debtor/{debtorId}(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
+                           id="debtorName">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="clientType" th:text="#{debtor.creditor.clientType}"/>
+                        <select class="form-control" id="clientType" th:field="*{clientType}" onchange="toggleFields()">
+                            <option th:if="${creditor?.clientType == null}" selected th:value="${null}"
+                                    th:text="#{choose}"></option>
+                            <option th:each="clientType : ${clientTypes}"
+                                    th:value="${clientType.getCode()}"
+                                    th:text="${clientType.getValue()}"
+                            />
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="name" th:text="#{debtor.creditor.name}"/>
+                        <input type="text" name="name" th:value="${creditor.name}" class="form-control" id="name"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="taxpayerIdentificationNumber"
+                               th:text="#{debtor.creditor.taxpayerIdentificationNumber}"/>
+                        <input type="text" name="taxpayerIdentificationNumber"
+                               th:value="${creditor.taxpayerIdentificationNumber}" class="form-control"
+                               id="taxpayerIdentificationNumber"/>
+                    </div>
+                    <div class="form-group col-md-6" id="primaryStateRegistrationNumberInfo" style="display: none;">
+                        <label class="col-form-label" for="primaryStateRegistrationNumber"
+                               th:text="#{debtor.creditor.primaryStateRegistrationNumber}"/>
+                        <input type="text" name="primaryStateRegistrationNumber"
+                               th:value="${creditor.primaryStateRegistrationNumber}" class="form-control"
+                               id="primaryStateRegistrationNumber"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6" id="passportSerialInfo" style="display: none;">
+                        <label class="col-form-label" for="passportSerial"
+                               th:text="#{debtor.creditor.passport-serial}"/>
+                        <input type="text" name="passportSerial"
+                               th:value="${creditor.passportSerial}" class="form-control"
+                               id="passportSerial"/>
+                    </div>
+                    <div class="form-group col-md-6" id="passportNumberInfo" style="display: none;">
+                        <label class="col-form-label" for="passportNumber"
+                               th:text="#{debtor.creditor.passport-number}"/>
+                        <input type="text" name="passportNumber"
+                               th:value="${creditor.passportNumber}" class="form-control"
+                               id="passportNumber"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="address"
+                               th:text="#{debtor.creditor.address}"/>
+                        <input type="text" name="address"
+                               th:value="${creditor.address}" class="form-control"
+                               id="address"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="executionWrit"
+                               th:text="#{debtor.creditor.executionWrit}"/>
+                        <input type="text" name="executionWrit"
+                               th:value="${creditor.executionWrit}" class="form-control"
+                               id="executionWrit"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="executionDate"
+                               th:text="#{debtor.creditor.executionDate}"/>
+                        <input type="date" name="executionDate"
+                               th:value="${creditor.executionDate}" class="form-control"
+                               id="executionDate"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
+                <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
+            </div>
+        </form>
+    </div>
+    <div th:if="${creditor?.getId() != null}">
+        <div class="text-left">
+            <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/new(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}"
+               th:title="#{debtor.creditor.queue.creation}"
+               class="fa-regular fa-plus fa-2xl icon-dark"></a>
+        </div>
+        <fieldset class="border p-2">
+            <legend class="float-none w-auto p-2" th:text="#{creditor.queues}"/>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" th:text="#{id}"></th>
+                    <th scope="col" th:text="#{debtor.creditor.queue.queueType}"></th>
+                    <th scope="col" th:text="#{action}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="queue : ${queues}">
+                    <td th:text="${queue.id}"/>
+                    <td
+                            th:each="queueType : ${queueTypes}"
+                            th:if="${queueType.getCode() == queue.type}"
+                            th:text="${queueType.getValue()}"/>
+                    <td>
+                        <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/{queueId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
+                           th:title="#{edit-queue}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                        <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/{queueId}/delete(debtorId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
+                           th:deleteMessage="#{do-you-want-delete-record(${queue.id})}" id="btnDelete"
+                           th:title="#{delete-queue}"
+                           class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/debtor/{debtorId}(debtorId=${debtor.id})}]]";
+        });
+    });
+    function toggleFields() {
+        const type = document.getElementById("clientType").value;
+        document.getElementById("passportNumberInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("passportSerialInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("primaryStateRegistrationNumberInfo").style.display = type === "LEGAL" ? "block" : "none";
+    }
+    document.addEventListener("DOMContentLoaded", function() { toggleFields(); });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/court/save}" method="post" enctype="multipart/form-data" th:object="${data}">
+            <div class="p-3">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-sm-3 col-form-label" for="name" th:text="#{court.name}"/>
+                        <input type="text" th:field="*{name}" class="form-control" id="name"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="address" th:text="#{court.address}"/>
+                        <textarea rows="10" cols="120" th:field="*{address}" class="form-control" id="address"></textarea>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
+                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/court/all}]]";
+        });
+    });
+</script>
+
+</body>
+
+</html>

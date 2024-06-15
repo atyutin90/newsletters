@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+  <title>Newsletters</title>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
+  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+  <div th:replace="~{fragments/header :: header}"></div>
+
+  <div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+      <form th:action="@{/arbitration-manager/save}" method="post" enctype="multipart/form-data" th:object="${data}">
+        <div class="p-3">
+          <input type="hidden" th:field="*{id}"/>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="col-form-label" for="fullName" th:text="#{arbitration-manager.full-name}"/>
+              <input type="text" name="fullName" th:field="${data.fullName}" class="form-control" id="fullName"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="taxpayerIdentificationNumber" th:text="#{arbitration-manager.taxpayer-identification-number}"/>
+              <input type="text" name="taxpayerIdentificationNumber" th:value="${data.taxpayerIdentificationNumber}" class="form-control" id="taxpayerIdentificationNumber"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="personalInsurancePolicyNumber" th:text="#{arbitration-manager.personal-insurance-policy-number}"/>
+              <input type="text" name="personalInsurancePolicyNumber" th:value="${data.personalInsurancePolicyNumber}" class="form-control" id="personalInsurancePolicyNumber"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="col-form-label" for="postalAddress" th:text="#{arbitration-manager.mailing-address}"/>
+              <input type="text" name="postalAddress" th:field="${data.postalAddress}" class="form-control" id="postalAddress"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="col-form-label" for="actualPostalAddress" th:text="#{arbitration-manager.actual-postal-address}"/>
+              <input type="text" name="actualPostalAddress" th:field="${data.actualPostalAddress}" class="form-control" id="actualPostalAddress"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="email" th:text="#{arbitration-manager.email}"/>
+              <input type="text" name="email" th:value="${data.email}" class="form-control" id="email"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="phone" th:text="#{arbitration-manager.phone}"/>
+              <input type="text" name="phone" th:value="${data.phone}" class="form-control" id="phone"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="sroData" th:text="#{arbitration-manager.sro-data}"/>
+              <input type="text" name="sroData" th:value="${data.sroData}" class="form-control" id="sroData"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="sroRegistrationNumber" th:text="#{arbitration-manager.sro-registration-number}"/>
+              <input type="text" name="sroRegistrationNumber" th:value="${data.sroRegistrationNumber}" class="form-control" id="sroRegistrationNumber"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="insuranceCompanyName" th:text="#{arbitration-manager.insurance-company-name}"/>
+              <input type="text" name="insuranceCompanyName" th:value="${data.insuranceCompanyName}" class="form-control" id="insuranceCompanyName"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="insuranceContractNumber" th:text="#{arbitration-manager.insurance-contract-number}"/>
+              <input type="text" name="insuranceContractNumber" th:value="${data.insuranceContractNumber}" class="form-control" id="insuranceContractNumber"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="insuranceContractTerm" th:text="#{arbitration-manager.insurance-contract-term}"/>
+              <input type="text" name="insuranceContractTerm" th:value="${data.insuranceContractTerm}" class="form-control" id="insuranceContractTerm"/>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
+            <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div th:if="${debtors.size() > 0}">
+      <fieldset class="border p-2">
+        <legend class="float-none w-auto p-2" th:text="#{debtors}"/>
+        <table class="table">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col" th:text="#{id}"></th>
+            <th scope="col" th:text="#{debtor.full-name}"></th>
+            <th scope="col" th:text="#{action}"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="debtor : ${debtors}">
+            <td th:text="${debtor.id}"/>
+            <td th:text="${debtor.fullName}"/>
+            <td>
+              <a th:href="@{/debtor/{debtorId}(debtorId=${debtor.id})}"
+                 th:title="#{edit-debtor}" class="fa-regular fa-pen-to-square icon-dark"></a>
+              <a th:href="@{/debtor/{debtorId}/delete(debtorId=${debtor.id})}"
+                 th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                 th:title="#{delete-debtor}"
+                 class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#btnCancel").on("click", function () {
+        window.location = "[[@{/arbitration-manager/all}]]";
+      });
+    });
+  </script>
+
+</body>
+
+</html>

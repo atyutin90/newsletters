@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/save(debtorId=${debtorMeeting.getDebtorId()}, debtorMeetingId=${debtorMeeting.getId()})}" method="post" enctype="multipart/form-data" th:object="${debtorMeetingQuestion}">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="p-3">
+                <input type="hidden" name="debtorId" th:value="${debtorMeeting.debtorId}" id="debtorId"/>
+               <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtorMeeting.getDebtorId()},debtorMeetingId=${debtorMeeting.getId()})}"
+                           th:title="#{debtor.debtor-meeting}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
+                           id="debtorName">
+                        </a>
+                    </div>
+                    <div class="form-group col-md-6">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label" for="position" th:text="#{debtor.debtor-meeting.debtor-meeting-question.position}"/>
+                        <input type="number" required name="position" th:value="${debtorMeetingQuestion.position}" class="form-control" id="position"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="question" th:text="#{debtor.debtor-meeting.debtor-meeting-question.question}"/>
+                        <textarea rows="5" cols="100" th:field="*{question}" class="form-control" id="question"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="proposedSolution" th:text="#{debtor.debtor-meeting.debtor-meeting-question.proposedSolution}"/>
+                        <textarea rows="5" cols="100" th:field="*{proposedSolution}" class="form-control" id="proposedSolution"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="acceptedSolution" th:text="#{debtor.debtor-meeting.debtor-meeting-question.acceptedSolution}"/>
+                        <textarea rows="5" cols="100" th:field="*{acceptedSolution}" class="form-control" id="acceptedSolution"></textarea>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
+                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtorMeeting.getDebtorId()},debtorMeetingId=${debtorMeeting.getId()})}]]";
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -21,7 +21,7 @@ import java.util.*
 
 @Controller
 @RequestMapping("/file")
-class FileController(val messageSource: MessageSource, val fileStorageService: FileStorageService) : AbstractController {
+class FileController(override val messageSource: MessageSource, val fileStorageService: FileStorageService) : AbstractController(messageSource) {
 
     @GetMapping("/newsletters")
     fun getAll(

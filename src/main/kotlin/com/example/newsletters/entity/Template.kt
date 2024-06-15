@@ -1,36 +1,29 @@
 package com.example.newsletters.entity
-
-import com.example.newsletters.dto.TemplateType
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Lob
-import jakarta.persistence.Table
+import com.example.newsletters.entity.enum.DocumentTemplateType
+import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "template")
 class Template(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int? = null,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long? = null,
 
-    var name: String? = null,
+    @Column(updatable = false)
+    @CreationTimestamp
+    override var createdAt: ZonedDateTime? = null,
 
-    @Enumerated(EnumType.STRING)
-    var type: TemplateType? = null,
+    @UpdateTimestamp
+    override var updatedAt: ZonedDateTime? = null,
+
+    var type: DocumentTemplateType? = null,
 
     var contentType: String? = null,
 
     @Lob
      var data: ByteArray? = null
-) : BaseEntity() {
-    constructor(
-        name: String? = null,
-        type: TemplateType? = null,
-        contentType: String? = null,
-        data: ByteArray? = null
-    ) : this(null, name, type, contentType, data)
-}
+
+) : BaseEntity

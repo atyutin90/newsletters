@@ -17,6 +17,7 @@ java {
 
 repositories {
 	mavenCentral()
+	maven { url = uri("https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts/") }
 }
 
 dependencies {
@@ -30,10 +31,18 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.webjars:bootstrap:4.6.2")
-	implementation("org.webjars:jquery:3.6.4")
+	implementation("org.webjars:font-awesome:7.0.1")
+	implementation("org.webjars:jquery:3.7.1")
 	implementation("org.webjars:webjars-locator-core")
 	implementation("de.phip1611:docx4j-search-and-replace-util:2.0.0")
+	implementation("org.freemarker:freemarker:2.3.33")
+	implementation("org.reflections:reflections:0.10.2")
+	implementation("no.api.freemarker:freemarker-java8:3.0.0")
+	implementation("net.sf.jasperreports:jasperreports:6.20.6")
+	implementation("io.github.oshai:kotlin-logging:7.0.0")
+	runtimeOnly("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.flywaydb:flyway-core:9.22.3")
 	// runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")

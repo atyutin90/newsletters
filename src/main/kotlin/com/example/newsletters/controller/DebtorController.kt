@@ -1,7 +1,22 @@
 package com.example.newsletters.controller
 
+import com.example.newsletters.dto.CreditorDto
 import com.example.newsletters.dto.DebtorDto
+import com.example.newsletters.dto.DebtorMeetingDto
+import com.example.newsletters.dto.PublicationDto
+import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.dto.RequestDto
+import com.example.newsletters.dto.WorkerMeetingDto
+import com.example.newsletters.service.ArbitrationManagerService
+import com.example.newsletters.service.CreditorStorageService
+import com.example.newsletters.service.DebtorMeetingStorageService
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.DocumentStorageService
+import com.example.newsletters.service.PublicationStorageService
+import com.example.newsletters.service.RequestDestinationService
+import com.example.newsletters.service.RequestStorageService
+import com.example.newsletters.service.ValueListService
+import com.example.newsletters.service.WorkerMeetingStorageService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -17,8 +32,19 @@ import java.util.*
 
 @Controller
 @RequestMapping("/debtor")
-class DebtorController(val debtorStorageService: DebtorStorageService, val messageSource: MessageSource) :
-    AbstractController {
+class DebtorController(
+    val debtorStorageService: DebtorStorageService,
+    val requestStorageService: RequestStorageService,
+    val publicationStorageService: PublicationStorageService,
+    val requestDestinationService: RequestDestinationService,
+    val debtorMeetingService: DebtorMeetingStorageService,
+    val workerMeetingService: WorkerMeetingStorageService,
+    val creditorStorageService: CreditorStorageService,
+    val documentStorageService: DocumentStorageService,
+    val arbitrationManagerService: ArbitrationManagerService,
+    val valueListService: ValueListService,
+    override val messageSource: MessageSource
+) : AbstractController(messageSource) {
 
     @GetMapping("/all")
     fun getAll(
@@ -41,26 +67,25 @@ class DebtorController(val debtorStorageService: DebtorStorageService, val messa
         } catch (e: Exception) {
             model.addAttribute(MESSAGE, e.message)
         }
-        DEBTORS
+        "debtor/list"
     }
 
     @GetMapping("/new")
     fun add(model: Model): String {
-        val debtor = DebtorDto()
-        model.addAttribute(DEBTOR, debtor)
+        val arbitrationManagers = arbitrationManagerService.getAll()
+        model.addAttribute(DEBTOR, DebtorDto())
+        model.addAttribute(ARBITRATION_MANAGERS, arbitrationManagers)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-debtor", arrayOf(), Locale.getDefault()))
-        return "debtor_form"
+        return "debtor/form"
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save", params = ["save"])
     fun save(debtor: DebtorDto, redirectAttributes: RedirectAttributes): String = run {
         try {
-            if (debtor.id != null) debtorStorageService.update(debtor)
+            val isUpdate = debtor.id != null
+            if (isUpdate) debtorStorageService.update(debtor)
             else debtorStorageService.create(debtor)
-            redirectAttributes.addFlashAttribute(
-                MESSAGE,
-                messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault())
-            )
+            infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
         } catch (e: Exception) {
             redirectAttributes.addAttribute(MESSAGE, e.message)
         }
@@ -68,28 +93,47 @@ class DebtorController(val debtorStorageService: DebtorStorageService, val messa
     }
 
     @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String =
+    fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
         try {
             val debtor: DebtorDto = debtorStorageService.getById(id)
+            val requestDtoList = requestStorageService.getByDebtorId(debtor.id!!)
+            val publicationDtoList = publicationStorageService.getByDebtorId(debtor.id)
+            val debtorMeetingList = debtorMeetingService.getByDebtorId(debtor.id)
+            val workerMeetingList = workerMeetingService.getByDebtorId(debtor.id)
+            val creditorDtoList = creditorStorageService.getByDebtorId(debtor.id)
+            val documentDtoList = documentStorageService.getByDebtorId(debtor.id)
+            val clientTypes = valueListService.getValues("clientType")
+            val requestDestinations: List<RequestDestinationDto> = requestDestinationService.getAll()
+            val arbitrationManagers = arbitrationManagerService.getAll()
+            val documentTemplateTypes = valueListService.getValues("documentTemplateType")
             model.addAttribute(DEBTOR, debtor)
-            model.addAttribute(
-                PAGE_TITLE,
-                messageSource.getMessage("update-debtor", arrayOf(id), Locale.getDefault())
-            )
-            "debtor_form"
+            model.addAttribute(REQUEST, RequestDto(debtorId = id))
+            model.addAttribute(REQUESTS, requestDtoList)
+            model.addAttribute(PUBLICATION, PublicationDto(debtorId = id))
+            model.addAttribute(PUBLICATIONS, publicationDtoList)
+            model.addAttribute(CREDITOR, CreditorDto(debtorId = id))
+            model.addAttribute(CREDITORS, creditorDtoList)
+            model.addAttribute(CLIENT_TYPES, clientTypes)
+            model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
+            model.addAttribute(DEBTOR_MEETING, DebtorMeetingDto(debtorId = id))
+            model.addAttribute(DEBTOR_MEETINGS, debtorMeetingList)
+            model.addAttribute(WORKER_MEETING, WorkerMeetingDto(debtorId = id))
+            model.addAttribute(WORKER_MEETINGS, workerMeetingList)
+            model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
+            model.addAttribute(ARBITRATION_MANAGERS, arbitrationManagers)
+            model.addAttribute(DOCUMENTS, documentDtoList)
+            model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-debtor", arrayOf(id), Locale.getDefault()))
+            "debtor/form"
         } catch (e: Exception) {
             redirectAttributes.addFlashAttribute(MESSAGE, e.message)
             "redirect:/debtor/all"
         }
 
     @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String = run {
+    fun delete(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = run {
         try {
             debtorStorageService.delete(id)
-            redirectAttributes.addFlashAttribute(
-                MESSAGE,
-                messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault())
-            )
+            infoMessageDeleteRecord(redirectAttributes, id)
         } catch (e: java.lang.Exception) {
             redirectAttributes.addFlashAttribute(MESSAGE, e.message)
         }
