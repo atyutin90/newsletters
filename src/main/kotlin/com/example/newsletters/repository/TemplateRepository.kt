@@ -1,7 +1,6 @@
 package com.example.newsletters.repository
 
 import com.example.newsletters.dto.TemplateType
-import com.example.newsletters.entity.Location
 
 import com.example.newsletters.entity.Template
 import org.springframework.data.domain.Page
