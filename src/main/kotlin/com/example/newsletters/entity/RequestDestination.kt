@@ -11,17 +11,11 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
 @Entity
-@Table(name = "creditor")
-class Creditor(
+@Table(name = "request_destination")
+class RequestDestination(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
-
-    @Column(name = "name", length = 256)
-    var name: String? = null,
-
-    @Column(name = "voice_numbers")
-    var voiceNumbers: String? = null,
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -30,4 +24,9 @@ class Creditor(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime?,
 
+    @Column(name = "name")
+    var name: String,
+
+    @Column(name = "address",  nullable = false, length = 500)
+    var address: String,
 ) : BaseEntity

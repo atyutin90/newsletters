@@ -6,36 +6,24 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "location")
 class Location(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int? = null,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long? = null,
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    override var createdAt: ZonedDateTime?,
+
+    @UpdateTimestamp
+    override var updatedAt: ZonedDateTime?,
 
     @Column(name = "name", nullable = false, length = 500)
     var name: String? = null
-) : BaseEntity() {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Location
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun toString(): String {
-        return "Location(id=$id, name=$name)"
-    }
-}
+) : BaseEntity

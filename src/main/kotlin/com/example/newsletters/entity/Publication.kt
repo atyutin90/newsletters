@@ -13,10 +13,9 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
-
 @Entity
-@Table(name = "request")
-class Request(
+@Table(name = "publication")
+class Publication(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
@@ -28,28 +27,27 @@ class Request(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime?,
 
-    @Column(
-        name = "debtor_id",
-        nullable = true,
-    )
-    var debtorId: Long,
+    @Column(name = "publication_date")
+    var publicationDate: ZonedDateTime? = null,
+
+    @Column(name = "appointment_time")
+    var appointmentTime: String? = null,
 
     @ManyToOne
-    @JoinColumn(name = "destination_id", nullable = false)
-    val requestDestination: RequestDestination? = null,
+    @JoinColumn(name = "court_id", nullable = false)
+    var court: Court? = null,
 
-    @Column(
-        name = "date_from",
-        nullable = true,
-        length = 1000
-    )
-    var dateFrom: ZonedDateTime? = null,
+    @Column(name = "hall_number", length = 10)
+    var hallNumber: String? = null,
 
-    @Column(
-        name = "date_to",
-        nullable = true,
-    )
-    var dateTo: ZonedDateTime? = null,
+    @Column(name = "kommersant_message_number", length = 256)
+    var kommersantMessageNumber: String? = null,
+
+    @Column(name = "efrsb_message_number", length = 256)
+    var efrsbMessageNumber: String? = null,
+
+    @Column(name = "kommersant_issue_number", length = 256)
+    var kommersantIssueNumber: String? = null,
 
 ) : BaseEntity
 

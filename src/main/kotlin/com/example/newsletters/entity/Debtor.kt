@@ -5,38 +5,64 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "debtor")
 class Debtor(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int? = null,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long? = null,
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    override var createdAt: ZonedDateTime?,
+
+    @UpdateTimestamp
+    override var updatedAt: ZonedDateTime?,
 
     @Column(name = "name", nullable = false, length = 256)
-    var name: String? = null
-) : BaseEntity() {
+    var name: String? = null,
 
-    override fun toString(): String {
-        return "Debtor(id=$id, name=$name)"
-    }
+    @Column(name = "full_name", length = 256)
+    var fullName: String? = null,
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    @Column(name = "case_number", length = 256)
+    var caseNumber: String? = null,
 
-        other as Debtor
+    @Column(name = "address", length = 256)
+    var address: String? = null,
 
-        if (id != other.id) return false
-        if (name != other.name) return false
+    @Column(name = "court_act", length = 256)
+    var courtAct: String? = null,
 
-        return true
-    }
+    @Column(name = "act_date")
+    var actDate: ZonedDateTime? = null,
 
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        return result
-    }
-}
+    @Column(name = "resolution_date")
+    var resolutionDate: ZonedDateTime? = null,
+
+    @Column(name = "tax_registration_reason_code", length = 50)
+    var taxRegistrationReasonCode: String? = null,
+
+    @Column(name = "taxpayer_identification_number", length = 50)
+    var taxpayerIdentificationNumber: String? = null,
+
+    @Column(name = "primary_state_registration_number", length = 50)
+    var primaryStateRegistrationNumber: String? = null,
+
+    @Column(name = "registry_date")
+    val registryDate: ZonedDateTime? = null,
+
+    @Column(name = "registry_closing_date")
+    val registryClosingDate: ZonedDateTime? = null,
+
+    @OneToOne
+    @JoinColumn(name = "debtor_id")
+    var debtorMeeting: DebtorMeeting? = null
+) : BaseEntity

@@ -8,20 +8,16 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 @Entity
-@Table(name = "creditor")
-class Creditor(
+@Table(name = "worker_meeting")
+class WorkerMeeting(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
-
-    @Column(name = "name", length = 256)
-    var name: String? = null,
-
-    @Column(name = "voice_numbers")
-    var voiceNumbers: String? = null,
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -30,4 +26,21 @@ class Creditor(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime?,
 
+    @Column(name = "debtor_id")
+    var debtorId: Long? = null,
+
+    @Column(name = "date")
+    var date: LocalDate?,
+
+    @Column(name = "time")
+    var time: LocalTime? = null,
+
+    @Column(name = "registration_time_from")
+    var registrationTimeFrom: LocalTime? = null,
+
+    @Column(name = "registration_time_to")
+    var registrationTimeTo: LocalTime? = null,
+
+    @Column(name = "address",  nullable = false, length = 500)
+    var address: String,
 ) : BaseEntity
