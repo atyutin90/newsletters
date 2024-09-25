@@ -19,10 +19,10 @@ class Location(
 
     @Column(updatable = false)
     @CreationTimestamp
-    override var createdAt: ZonedDateTime?,
+    override var createdAt: ZonedDateTime? = null,
 
     @UpdateTimestamp
-    override var updatedAt: ZonedDateTime?,
+    override var updatedAt: ZonedDateTime? = null,
 
     @Column(name = "name", nullable = false, length = 500)
     var name: String? = null

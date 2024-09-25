@@ -20,10 +20,10 @@ class FileDB(
 
     @Column(updatable = false)
     @CreationTimestamp
-    override var createdAt: ZonedDateTime?,
+    override var createdAt: ZonedDateTime? = null,
 
     @UpdateTimestamp
-    override var updatedAt: ZonedDateTime?,
+    override var updatedAt: ZonedDateTime? = null,
 
     var name: String? = null,
     var type: String? = null,

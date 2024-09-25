@@ -20,17 +20,87 @@
     <h2 class="text-center">[[${pageTitle}]]</h2>
 
     <div class="my-3">
-        <form th:action="@{/debtor/save}" method="post" enctype="multipart/form-data" th:object="${debtor}"
-              style="max-width: 550px; margin: 0 auto">
+        <form th:action="@{/debtor/save}" method="post" enctype="multipart/form-data" th:object="${debtor}">
 
             <input type="hidden" th:field="*{id}" />
 
             <div class="p-3">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label" for="name" th:text="#{name}"/>
-                    <div class="col-sm-9">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="name" th:text="#{debtor.name}"/>
                         <input type="text" th:field="*{name}" required minlength="2" maxlength="128" class="form-control" id="name" />
                     </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="name" th:text="#{debtor.full-name}"/>
+                        <input type="text" th:field="*{fullName}" required minlength="2" maxlength="128" class="form-control" id="fullName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 col-form-label" for="address" th:text="#{debtor.address}"/>
+                    <input type="text" th:field="*{address}" required minlength="2" maxlength="128" class="form-control" id="address" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="caseNumber" th:text="#{debtor.case-number}"/>
+                        <input type="text" th:field="*{caseNumber}" required minlength="2" maxlength="128" class="form-control" id="caseNumber" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="courtAct" th:text="#{debtor.court-act}"/>
+                        <input type="text" th:field="*{courtAct}" required minlength="2" maxlength="128" class="form-control" id="courtAct" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="actDate" th:text="#{debtor.act-date}"/>
+                        <input type="date" th:field="*{actDate}" required minlength="2" maxlength="128" class="form-control" id="actDate" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="resolutionDate" th:text="#{debtor.resolution-date}"/>
+                        <input type="date" th:field="*{resolutionDate}" required minlength="2" maxlength="128" class="form-control" id="resolutionDate" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="taxRegistrationReasonCode" th:text="#{debtor.tax-registration-reason-code}"/>
+                        <input type="text" th:field="*{taxRegistrationReasonCode}" required minlength="2" maxlength="128" class="form-control" id="taxRegistrationReasonCode" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="taxpayerIdentificationNumber" th:text="#{debtor.taxpayer-identification-number}"/>
+                        <input type="text" th:field="*{taxpayerIdentificationNumber}" required minlength="2" maxlength="128" class="form-control" id="taxpayerIdentificationNumber" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="primaryStateRegistrationNumber" th:text="#{debtor.primary-state-registration-number}"/>
+                        <input type="text" th:field="*{primaryStateRegistrationNumber}" required minlength="2" maxlength="128" class="form-control" id="primaryStateRegistrationNumber" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="taxRegistrationReasonCode" th:text="#{debtor.registry-date}"/>
+                        <input type="date" th:field="*{registryDate}" required minlength="2" maxlength="128" class="form-control" id="registryDate" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="taxpayerIdentificationNumber" th:text="#{debtor.registry-closing-date}"/>
+                        <input type="date" th:field="*{registryClosingDate}" required minlength="2" maxlength="128" class="form-control" id="registryClosingDate" />
+                    </div>
+                </div>
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="requests-tab" data-toggle="tab" type="button" role="tab" aria-controls="requests" aria-selected="true"  th:text="#{requests}"/>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="publication-tab" data-toggle="tab" type="button" role="tab" aria-controls="publication" aria-selected="false" th:text="#{publication}"/>
+                    </li>
+                </ul>
+                <div class="tab-content" id="debtorTabContent">
+                    <div class="tab-pane fade show active" id="requests" role="tabpanel" aria-labelledby="requests-tab">
+
+                    </div>
+                    <div class="tab-pane fade" id="publication" role="tabpanel" aria-labelledby="publications-tab">...</div>
                 </div>
 
                 <div class="text-center">

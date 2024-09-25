@@ -3,7 +3,7 @@ package com.example.newsletters.dto
 import java.time.ZonedDateTime
 
 data class FileDto(
-    val id: Int? = null,
+    val id: Long? = null,
     val name: String? = null,
     val createdAt: ZonedDateTime? = null,
     val fileName: String? = null,

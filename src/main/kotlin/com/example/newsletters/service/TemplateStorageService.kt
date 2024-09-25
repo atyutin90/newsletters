@@ -15,7 +15,12 @@ class TemplateStorageService(val templateRepository: TemplateRepository) {
 
     fun store(name: String, type: TemplateType, file: MultipartFile): Template {
         val fileName: String = StringUtils.cleanPath(file.originalFilename!!)
-        val template = Template("$name.${getExtensionFileByName(fileName)}", type, file.contentType, file.bytes)
+        val template = Template(
+            name = "$name.${getExtensionFileByName(fileName)}",
+            type = type,
+            contentType = file.contentType,
+            data = file.bytes
+        )
         return templateRepository.save(template)
     }
 

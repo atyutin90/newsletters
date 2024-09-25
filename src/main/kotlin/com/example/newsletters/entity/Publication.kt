@@ -22,10 +22,10 @@ class Publication(
 
     @Column(updatable = false)
     @CreationTimestamp
-    override var createdAt: ZonedDateTime?,
+    override var createdAt: ZonedDateTime? = null,
 
     @UpdateTimestamp
-    override var updatedAt: ZonedDateTime?,
+    override var updatedAt: ZonedDateTime? = null,
 
     @Column(name = "publication_date")
     var publicationDate: ZonedDateTime? = null,

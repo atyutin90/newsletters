@@ -1,6 +1,5 @@
 package com.example.newsletters.dto
 
-data class LocationDto(
+data class DebtorMeetingDto(
     val id: Long? = null,
-    val name: String? = null,
 )

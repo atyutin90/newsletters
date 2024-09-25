@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class RequestStorageService(private val requestRepository: RequestRepository) {
     fun getAll(): List<RequestDto> = requestRepository.findAll().map { it.requestDTO }
     fun getAll(paging: Pageable) = requestRepository.findAll(paging).map { it.requestDTO }
-    fun getByCompanyName(name: String, paging: Pageable) = requestRepository.findByCompanyNameContainingIgnoreCase(name, paging).map { it.requestDTO }
+    fun getByCompanyName(name: String, paging: Pageable) = listOf<RequestDto>()/*requestRepository.findByCompanyNameContainingIgnoreCase(name, paging).map { it.requestDTO }*/
     fun getById(id: Long) = requestRepository.findById(id).map { it.requestDTO }.orElse(null)
     fun getByIds(ids: List<Long>) = requestRepository.findAllById(ids).map { it.requestDTO }
     fun delete(id: Long) = requestRepository.deleteById(id)
@@ -20,18 +20,19 @@ class RequestStorageService(private val requestRepository: RequestRepository) {
 
 val Request.requestDTO get() = RequestDto(
     id = id,
-    companyAddress = companyAddress,
-    companyName = companyName,
+  /*  companyAddress = companyAddress,
+    companyName = companyName,*/
     dateFrom = dateFrom,
     dateTo = dateTo,
-    attachment = attachment
+  /*  attachment = attachment*/
 )
 
 val RequestDto.request get() = Request(
     id = id,
-    companyAddress = companyAddress,
-    companyName = companyName,
+    debtorId = 0L,
+   /* companyAddress = companyAddress,
+    companyName = companyName,*/
     dateFrom = dateFrom,
     dateTo = dateTo,
-    attachment = attachment
+/*    attachment = attachment*/
 )
