@@ -16,5 +16,6 @@ data class DebtorDto(
     var primaryStateRegistrationNumber: String? = null,
     val registryDate: ZonedDateTime? = null,
     val registryClosingDate: ZonedDateTime? = null,
-    val debtorMeeting: DebtorMeetingDto? = null
+    val debtorMeeting: DebtorMeetingDto? = null,
+    val requests: List<RequestDto> = listOf()
 )

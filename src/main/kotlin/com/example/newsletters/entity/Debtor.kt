@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
@@ -63,6 +64,10 @@ class Debtor(
     val registryClosingDate: ZonedDateTime? = null,
 
     @OneToOne
+    @JoinColumn(name = "debtor_meeting_id")
+    var debtorMeeting: DebtorMeeting? = null,
+
+    @OneToMany
     @JoinColumn(name = "debtor_id")
-    var debtorMeeting: DebtorMeeting? = null
+    var requests: List<Request> = mutableListOf(),
 ) : BaseEntity

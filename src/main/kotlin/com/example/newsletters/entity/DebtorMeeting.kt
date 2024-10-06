@@ -26,9 +26,6 @@ class DebtorMeeting(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
-    @Column(name = "debtor_id")
-    var debtorId: Long? = null,
-
     @Column(name = "date")
     var date: LocalDate?,
 

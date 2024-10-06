@@ -1,10 +1,8 @@
 package com.example.newsletters.service
 
 import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.LocationDto
 import com.example.newsletters.entity.Debtor
 import com.example.newsletters.repository.DebtorRepository
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -21,5 +19,22 @@ class DebtorStorageService(private val debtorRepository: DebtorRepository) {
     fun update(debtor: DebtorDto) = debtorRepository.save(debtor.debtor)
 }
 
-val Debtor.debtorDTO get() = DebtorDto(id = id, name = name)
+val Debtor.debtorDTO get() =
+    DebtorDto(
+        id = id,
+        fullName = fullName,
+        name = name,
+        caseNumber = caseNumber,
+        address = address,
+        courtAct = courtAct,
+        actDate = actDate,
+        resolutionDate = resolutionDate,
+        taxRegistrationReasonCode = taxRegistrationReasonCode,
+        taxpayerIdentificationNumber = taxpayerIdentificationNumber,
+        registryDate = registryDate,
+        registryClosingDate = registryClosingDate,
+        requests = requests.map { it.requestDTO },
+        )
 val DebtorDto.debtor get() = Debtor(id = id, name = name)
+
+

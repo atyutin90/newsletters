@@ -39,9 +39,14 @@ class Request(
     val requestDestination: RequestDestination? = null,
 
     @Column(
+        name = "date",
+        nullable = true,
+    )
+    var date: ZonedDateTime? = null,
+
+    @Column(
         name = "date_from",
         nullable = true,
-        length = 1000
     )
     var dateFrom: ZonedDateTime? = null,
 
