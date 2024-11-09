@@ -1,11 +1,12 @@
 package com.example.newsletters.dto
 
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 data class RequestDto(
     val id: Long? = null,
-    val requestDestinationId: Long? = null,
-    val date: ZonedDateTime? = null,
-    val dateFrom: ZonedDateTime? = null,
-    val dateTo: ZonedDateTime? = null,
+    val debtorId: Long? = null,
+    val destinationId: Long? = null,
+    val date: LocalDate? = null,
+    val dateFrom: LocalDate? = null,
+    val dateTo: LocalDate? = null,
 )

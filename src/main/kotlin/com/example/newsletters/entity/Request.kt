@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 
@@ -42,19 +43,19 @@ class Request(
         name = "date",
         nullable = true,
     )
-    var date: ZonedDateTime? = null,
+    var date: LocalDate? = null,
 
     @Column(
         name = "date_from",
         nullable = true,
     )
-    var dateFrom: ZonedDateTime? = null,
+    var dateFrom: LocalDate? = null,
 
     @Column(
         name = "date_to",
         nullable = true,
     )
-    var dateTo: ZonedDateTime? = null,
+    var dateTo: LocalDate? = null,
 
-) : BaseEntity
+    ) : BaseEntity
 

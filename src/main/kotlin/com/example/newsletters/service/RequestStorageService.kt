@@ -2,6 +2,7 @@ package com.example.newsletters.service
 
 import com.example.newsletters.dto.RequestDto
 import com.example.newsletters.entity.Request
+import com.example.newsletters.entity.RequestDestination
 import com.example.newsletters.repository.RequestRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -20,19 +21,18 @@ class RequestStorageService(private val requestRepository: RequestRepository) {
 
 val Request.requestDTO get() = RequestDto(
     id = id,
-  /*  companyAddress = companyAddress,
-    companyName = companyName,*/
+    debtorId = debtorId,
+    destinationId = requestDestination?.id,
+    date = date,
     dateFrom = dateFrom,
     dateTo = dateTo,
-  /*  attachment = attachment*/
 )
 
 val RequestDto.request get() = Request(
     id = id,
-    debtorId = 0L,
-   /* companyAddress = companyAddress,
-    companyName = companyName,*/
+    debtorId = debtorId ?: 0L,
+    date = date,
     dateFrom = dateFrom,
     dateTo = dateTo,
-/*    attachment = attachment*/
+    requestDestination = RequestDestination(destinationId)
 )

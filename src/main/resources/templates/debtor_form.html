@@ -9,6 +9,9 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
@@ -32,59 +35,59 @@
                         <input type="text" th:field="*{name}" required minlength="2" maxlength="128" class="form-control" id="name" />
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-3 col-form-label" for="name" th:text="#{debtor.full-name}"/>
-                        <input type="text" th:field="*{fullName}" required minlength="2" maxlength="128" class="form-control" id="fullName" />
+                        <label class="col-sm-3 col-form-label" for="fullName" th:text="#{debtor.full-name}"/>
+                        <input type="text" th:field="*{fullName}" class="form-control" id="fullName" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 col-form-label" for="address" th:text="#{debtor.address}"/>
-                    <input type="text" th:field="*{address}" required minlength="2" maxlength="128" class="form-control" id="address" />
+                    <input type="text" th:field="*{address}" class="form-control" id="address" />
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="caseNumber" th:text="#{debtor.case-number}"/>
-                        <input type="text" th:field="*{caseNumber}" required minlength="2" maxlength="128" class="form-control" id="caseNumber" />
+                        <input type="text" th:field="*{caseNumber}" class="form-control" id="caseNumber" />
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="courtAct" th:text="#{debtor.court-act}"/>
-                        <input type="text" th:field="*{courtAct}" required minlength="2" maxlength="128" class="form-control" id="courtAct" />
+                        <input type="text" th:field="*{courtAct}" class="form-control" id="courtAct" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="actDate" th:text="#{debtor.act-date}"/>
-                        <input type="date" th:field="*{actDate}" required minlength="2" maxlength="128" class="form-control" id="actDate" />
+                        <input type="date" th:value="*{actDate}" class="form-control" id="actDate" />
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="resolutionDate" th:text="#{debtor.resolution-date}"/>
-                        <input type="date" th:field="*{resolutionDate}" required minlength="2" maxlength="128" class="form-control" id="resolutionDate" />
+                        <input type="date" th:value="*{resolutionDate}" class="form-control" id="resolutionDate" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="taxRegistrationReasonCode" th:text="#{debtor.tax-registration-reason-code}"/>
-                        <input type="text" th:field="*{taxRegistrationReasonCode}" required minlength="2" maxlength="128" class="form-control" id="taxRegistrationReasonCode" />
+                        <input type="text" th:field="*{taxRegistrationReasonCode}" class="form-control" id="taxRegistrationReasonCode" />
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="taxpayerIdentificationNumber" th:text="#{debtor.taxpayer-identification-number}"/>
-                        <input type="text" th:field="*{taxpayerIdentificationNumber}" required minlength="2" maxlength="128" class="form-control" id="taxpayerIdentificationNumber" />
+                        <input type="text" th:field="*{taxpayerIdentificationNumber}" class="form-control" id="taxpayerIdentificationNumber" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="primaryStateRegistrationNumber" th:text="#{debtor.primary-state-registration-number}"/>
-                        <input type="text" th:field="*{primaryStateRegistrationNumber}" required minlength="2" maxlength="128" class="form-control" id="primaryStateRegistrationNumber" />
+                        <input type="text" th:field="*{primaryStateRegistrationNumber}" class="form-control" id="primaryStateRegistrationNumber" />
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="taxRegistrationReasonCode" th:text="#{debtor.registry-date}"/>
-                        <input type="date" th:field="*{registryDate}" required minlength="2" maxlength="128" class="form-control" id="registryDate" />
+                        <input type="date" th:value="*{registryDate}" class="form-control" id="registryDate" />
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-sm-3 col-form-label" for="taxpayerIdentificationNumber" th:text="#{debtor.registry-closing-date}"/>
-                        <input type="date" th:field="*{registryClosingDate}" required minlength="2" maxlength="128" class="form-control" id="registryClosingDate" />
+                        <input type="date" th:value="*{registryClosingDate}" class="form-control" id="registryClosingDate" />
                     </div>
                 </div>
 
@@ -98,20 +101,37 @@
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-requests" role="tabpanel" aria-labelledby="pills-requests-tab">
-                        <div th:if="${debtor.requests.size() > 0}">
+                        <div th:if="${true}">
+
                             <table class="table table-hover table-responsive-xl">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col" th:text="#{id}"></th>
+                                    <th scope="col" th:text="#{debtor.request.rownum}"></th>
+                                    <th scope="col" th:text="#{debtor.request.destinationId}"></th>
+                                    <th scope="col" th:text="#{debtor.request.date}"></th>
+                                    <th scope="col" th:text="#{debtor.request.dateFrom}"></th>
+                                    <th scope="col" th:text="#{debtor.request.dateTo}"></th>
+                                    <th scope="col" th:text="#{action}"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="request : ${debtor.requests}">
-                                    <th scope="row">[[${request.id}]]</th>
+                                <tr th:each="request, rowStat : ${requests}">
+                                    <td th:text="${rowStat.count}"/>
+                                    <th scope="row"
+                                        th:each="requestDestination : ${requestDestinations}"
+                                        th:if="${requestDestination.id == request.destinationId}"
+                                        th:text="${requestDestination.name}"/>
+                                    <td th:text="${#temporals.format(requests[__${rowStat.index}__].date, 'dd.MM.yyyy')}"/>
+                                    <td th:text="${#temporals.format(requests[__${rowStat.index}__].dateFrom, 'dd.MM.yyyy')}"/>
+                                    <td th:text="${#temporals.format(requests[__${rowStat.index}__].dateTo, 'dd.MM.yyyy')}"/>
+                                    <td>
+                                        <a th:href="@{'/request/delete/' + ${request.id}}" id="btnDelete" th:title="#{delete-debtor}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                     <div class="tab-pane fade" id="pills-publications" role="tabpanel" aria-labelledby="pills-publications-tab">
                         2
@@ -119,10 +139,39 @@
                 </div>
 
                 <div class="text-center">
-                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
+                    <input type="submit" name="save" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
                     <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
                 </div>
             </div>
+        </form>
+        <form th:action="@{/debtor/request}" th:object="${request}" method="post">
+            <input type="hidden"  name="debtorId" th:value="${debtor.id}" id="debtorId"/>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="col-sm-5 col-form-label" for="destinationId" th:text="#{debtor.request.destinationId}"/>
+                    <select  class="form-control" id="destinationId" th:field="*{destinationId}">
+                        <option th:each="requestDestination : ${requestDestinations}"
+                                th:value="${requestDestination.id}"
+                                th:text="${requestDestination.name}"
+                        />
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="col-sm-3 col-form-label" for="date" th:text="#{debtor.request.date}"/>
+                    <input type="date" th:field="*{date}" class="form-control" id="date" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="col-sm-3 col-form-label" for="dateFrom" th:text="#{debtor.request.dateFrom}"/>
+                    <input type="date" th:field="*{dateFrom}" class="form-control" id="dateFrom" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="col-sm-3 col-form-label" for="dateTo" th:text="#{debtor.request.dateTo}"/>
+                    <input type="date" th:field="*{dateTo}" class="form-control" id="dateTo" />
+                </div>
+            </div>
+            <button type="submit" th:text="#{debtor.request.creation}" class="btn btn-primary btn-sm mr-2" />
         </form>
     </div>
 </div>

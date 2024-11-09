@@ -1,12 +1,19 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.DebtorDto
+import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.dto.RequestDto
+import com.example.newsletters.entity.RequestDestination
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.RequestDestinationService
+import com.example.newsletters.service.RequestStorageService
+import com.example.newsletters.service.debtor
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +24,11 @@ import java.util.*
 
 @Controller
 @RequestMapping("/debtor")
-class DebtorController(val debtorStorageService: DebtorStorageService, val messageSource: MessageSource) :
+class DebtorController(
+    val debtorStorageService: DebtorStorageService,
+    val requestStorageService: RequestStorageService,
+    val requestDestinationService: RequestDestinationService,
+    val messageSource: MessageSource) :
     AbstractController {
 
     @GetMapping("/all")
@@ -52,7 +63,7 @@ class DebtorController(val debtorStorageService: DebtorStorageService, val messa
         return "debtor_form"
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save", params = ["save"])
     fun save(debtor: DebtorDto, redirectAttributes: RedirectAttributes): String = run {
         try {
             if (debtor.id != null) debtorStorageService.update(debtor)
@@ -67,11 +78,37 @@ class DebtorController(val debtorStorageService: DebtorStorageService, val messa
         "redirect:/debtor/all"
     }
 
+    @PostMapping("/save", params = ["addRequest"])
+    fun addRequest(request: RequestDto, model: Model, redirectAttributes: RedirectAttributes): String = run {
+        try {
+            requestStorageService.create(request)
+            redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault()))
+        } catch (e: Exception) {
+            redirectAttributes.addAttribute(MESSAGE, e.message)
+        }
+        "redirect:debtor/${request.debtorId}"
+    }
+
+    @PostMapping("/request")
+    fun addRequest1(request: RequestDto, model: Model, redirectAttributes: RedirectAttributes): String = run {
+        try {
+            requestStorageService.create(request)
+            redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault()))
+        } catch (e: Exception) {
+            redirectAttributes.addAttribute(MESSAGE, e.message)
+        }
+        "redirect:debtor/${request.debtorId}"
+    }
+
     @GetMapping("/{id}")
     fun edit(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String =
         try {
             val debtor: DebtorDto = debtorStorageService.getById(id)
+            val requestDestinations: List<RequestDestinationDto> = requestDestinationService.getAll()
             model.addAttribute(DEBTOR, debtor)
+            model.addAttribute(REQUESTS, debtor.requests)
+            model.addAttribute(REQUEST, RequestDto())
+            model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
             model.addAttribute(
                 PAGE_TITLE,
                 messageSource.getMessage("update-debtor", arrayOf(id), Locale.getDefault())
