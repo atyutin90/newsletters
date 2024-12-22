@@ -2,15 +2,14 @@ package com.example.newsletters.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 @Entity
@@ -28,14 +27,13 @@ class Publication(
     override var updatedAt: ZonedDateTime? = null,
 
     @Column(name = "publication_date")
-    var publicationDate: ZonedDateTime? = null,
+    var publicationDate: LocalDate? = null,
+
+    @Column(name = "appointment_date")
+    var appointmentDate: LocalDate? = null,
 
     @Column(name = "appointment_time")
-    var appointmentTime: String? = null,
-
-    @ManyToOne
-    @JoinColumn(name = "court_id", nullable = false)
-    var court: Court? = null,
+    var appointmentTime: LocalTime? = null,
 
     @Column(name = "hall_number", length = 10)
     var hallNumber: String? = null,
@@ -49,5 +47,10 @@ class Publication(
     @Column(name = "kommersant_issue_number", length = 256)
     var kommersantIssueNumber: String? = null,
 
-) : BaseEntity
+    @Column(
+        name = "debtor_id",
+        nullable = true,
+    )
+    var debtorId: Long,
 
+    ) : BaseEntity

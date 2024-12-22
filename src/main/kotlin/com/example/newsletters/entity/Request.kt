@@ -14,7 +14,9 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
-
+/**
+ * Запрос.
+ */
 @Entity
 @Table(name = "request")
 class Request(

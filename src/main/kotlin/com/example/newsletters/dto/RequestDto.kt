@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class RequestDto(
     val id: Long? = null,
-    val debtorId: Long? = null,
+    val debtorId: Long,
     val destinationId: Long? = null,
     val date: LocalDate? = null,
     val dateFrom: LocalDate? = null,

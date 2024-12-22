@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 
 @Transactional
 @Repository
-interface RequestDestinationRepository : JpaRepository<RequestDestination, Int> {
+interface RequestDestinationRepository : JpaRepository<RequestDestination, Long> {
 
     fun findByNameContainingIgnoreCase(keyword: String): List<RequestDestination>
 

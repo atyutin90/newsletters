@@ -17,7 +17,10 @@ import java.util.Locale
 
 @Controller
 @RequestMapping("/request-destination")
-class RequestDestinationController(val requestDestinationService: RequestDestinationService, val messageSource: MessageSource) : AbstractController {
+class RequestDestinationController(
+    val requestDestinationService: RequestDestinationService,
+    override val messageSource: MessageSource
+) : AbstractController(messageSource) {
 
     @GetMapping("/all")
     fun getAll(
@@ -40,22 +43,23 @@ class RequestDestinationController(val requestDestinationService: RequestDestina
         } catch (e: Exception) {
             model.addAttribute(MESSAGE, e.message)
         }
-        return "request_destinations"
+        return "request-destination/list"
     }
 
     @GetMapping("/new")
     fun add(model: Model): String = run {
         model.addAttribute(DATA,  RequestDestinationDto())
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-request-destination", arrayOf(), Locale.getDefault()))
-        "request_destination_form"
+        model.addAttribute(PAGE_TITLE, messageSource.getMessage("request-destination.create", arrayOf(), Locale.getDefault()))
+        "request-destination/form"
     }
 
     @PostMapping("/save")
     fun save(data: RequestDestinationDto, redirectAttributes: RedirectAttributes): String = run {
         try {
-            if (data.id != null) requestDestinationService.update(data)
+            val isUpdate = data.id != null
+            if (isUpdate) requestDestinationService.update(data)
             else requestDestinationService.create(data)
-            redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault()))
+           infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
         } catch (e: Exception) {
             redirectAttributes.addAttribute(MESSAGE, e.message)
         }
@@ -63,22 +67,22 @@ class RequestDestinationController(val requestDestinationService: RequestDestina
     }
 
     @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String =
+    fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
         try {
             val data: RequestDestinationDto = requestDestinationService.getById(id)
             model.addAttribute(DATA, data)
             model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-request-destination", arrayOf(id), Locale.getDefault()))
-            "request_destination_form"
+            "request-destination/form"
         } catch (e: Exception) {
             redirectAttributes.addFlashAttribute(MESSAGE, e.message)
             "redirect:/request-destination/all"
         }
 
     @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String = run {
+    fun delete(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = run {
         try {
             requestDestinationService.delete(id)
-            redirectAttributes.addFlashAttribute(MESSAGE,  messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault()))
+            infoMessageDeleteRecord(redirectAttributes, id)
         } catch (e: Exception) {
             redirectAttributes.addFlashAttribute(MESSAGE, e.message)
         }

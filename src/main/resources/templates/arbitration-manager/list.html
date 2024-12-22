@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
-  <title>Spring Boot Thymeleaf example</title>
+  <title>Newsletters</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
@@ -20,7 +20,7 @@
   <div th:replace="~{fragments/header :: header}"></div>
 
   <div class="container-fluid" style="max-width: 80%; margin: 0 auto;">
-    <h2 class="text-center" th:text="#{requests}"></h2>
+    <h2 class="text-center" th:text="#{arbitration-managers}"></h2>
 
     <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
       role="alert">
@@ -30,8 +30,16 @@
       </button>
     </div>
 
+    <div th:if="${errorMessage != null}" class="alert alert-danger alert-dismissible fade show text-center message"
+         role="alert">
+      [[${errorMessage}]]
+      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
     <div class="my-3">
-      <form th:action="@{/request/all}" >
+      <form th:action="@{/arbitration-manager/all}" >
         <div class="row d-flex">
           <div class="col-md-6 mt-3">
             <div class="search">
@@ -50,37 +58,34 @@
       </form>
     </div>
 
-    <div th:if="${requests.size() > 0}">
+    <div th:if="${data.size() > 0}">
       <table class="table table-hover table-responsive-xl">
         <thead class="thead-light">
           <tr>
-            <th scope="col" th:text="#{debtor.request.id}"></th>
-            <th scope="col" th:text="#{debtor.request.destinationId}"></th>
-            <th scope="col" th:text="#{debtor.request.date}"></th>
-            <th scope="col" th:text="#{debtor.request.dateFrom}"></th>
-            <th scope="col" th:text="#{debtor.request.dateTo}"></th>
+            <th scope="col" th:text="#{id}"></th>
+            <th scope="col" th:text="#{arbitration-manager.full-name}"></th>
             <th scope="col" th:text="#{action}"></th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="request : ${requests}">
-            <th scope="row">[[${request.id}]]</th>
-            <td>[[${request.name}]]</td>
-            <td>[[${request.voiceNumbers}]]</td>
+          <tr th:each="value : ${data}">
+            <th scope="row">[[${value.id}]]</th>
+            <td>[[${value.name}]]</td>
+            <td>[[${value.address}]]</td>
             <td>
-              <a th:href="@{'/request/' + ${request.id}}" th:title="#{edit-request}" class="fa-regular fa-pen-to-square icon-dark"></a>
-              <a th:href="@{'/request/delete/' + ${request.id}}" th:deleteMessage="#{do-you-want-delete-record(${request.name})}" id="btnDelete" th:title="#{delete-request}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+              <a th:href="@{'/arbitration-manager/' + ${value.id}}" th:title="#{arbitration-manager.edit}" class="fa-regular fa-pen-to-square icon-dark"></a>
+              <a th:href="@{'/arbitration-manager/delete/' + ${value.id}}" th:deleteMessage="#{do-you-want-delete-record(${value.fullName})}" id="btnDelete" th:title="#{arbitration-manager.delete}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="" th:unless="${requests.size() > 0}">
+    <div class="" th:unless="${data.size() > 0}">
       <span th:text="#{not-found-records}"/>
     </div>
 
-    <div th:replace="~{fragments/paging :: paggination('/request/all')}"></div>
+    <div th:replace="~{fragments/paging :: paggination('/arbitration-manager/all')}"></div>
 
   </div>
 
@@ -123,12 +128,12 @@
       $("#btnClear").on("click", function (e) {
         e.preventDefault();
         $("#keyword").text("");
-        window.location = "[[@{/request/all}]]";
+        window.location = "[[@{/arbitration-manager/all}]]";
       });
       $("#btnAdd").on("click", function (e) {
         e.preventDefault();
         $("#keyword").text("");
-        window.location = "[[@{/request/new}]]";
+        window.location = "[[@{/arbitration-manager/new}]]";
       });
     });
   </script>

@@ -25,8 +25,8 @@ class Court(
     override var updatedAt: ZonedDateTime? = null,
 
     @Column(name = "name")
-    var name: String,
+    var name: String? = null,
 
     @Column(name = "address",  nullable = false, length = 500)
-    var address: String,
+    var address: String? = null,
 ) : BaseEntity

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/debtor/{debtorId}/debtor-meeting/save(debtorId=${debtor.id})}" method="post" enctype="multipart/form-data" th:object="${debtorMeeting}">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="p-3">
+                <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a th:href="@{/debtor/{debtorId}(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor}"
+                           th:text="${debtor.name}"
+                           id="debtorName">
+                        </a>
+                    </div>
+                    <div class="form-group col-md-6">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="date" th:text="#{debtor.debtor-meeting.date}"/>
+                        <input type="date" name="date" th:value="${debtorMeeting.date}" class="form-control" id="date"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="time" th:text="#{debtor.debtor-meeting.time}"/>
+                        <input type="time" name="time" th:value="${debtorMeeting.time}" class="form-control" id="time"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="registrationTimeFrom" th:text="#{debtor.debtor-meeting.registrationTimeFrom}"/>
+                        <input type="time" name="registrationTimeFrom" th:value="${debtorMeeting.registrationTimeFrom}" class="form-control" id="registrationTimeFrom"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="registrationTimeTo" th:text="#{debtor.debtor-meeting.registrationTimeTo}"/>
+                        <input type="time" name="registrationTimeTo" th:value="${debtorMeeting.registrationTimeTo}" class="form-control" id="registrationTimeTo"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-sm-3 col-form-label" for="address" th:text="#{debtor.debtor-meeting.address}"/>
+                        <textarea rows= "3" name="address" th:field="*{address}" class="form-control" id="address"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="familiarizationDateFrom" th:text="#{debtor.debtor-meeting.familiarizationDateFrom}"/>
+                        <input type="date" name="familiarizationDateFrom" th:value="${debtorMeeting.familiarizationDateFrom}" class="form-control" id="familiarizationDateFrom"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label" for="familiarizationDateTo" th:text="#{debtor.debtor-meeting.familiarizationDateTo}"/>
+                        <input type="date" name="familiarizationDateTo" th:value="${debtorMeeting.familiarizationDateTo}" class="form-control" id="familiarizationDateTo"/>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
+                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/debtor/{debtorId}(debtorId=${debtor.id})}]]";
+        });
+    });
+</script>
+
+</body>
+</html>

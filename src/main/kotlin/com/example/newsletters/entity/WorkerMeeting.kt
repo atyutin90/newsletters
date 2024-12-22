@@ -26,11 +26,11 @@ class WorkerMeeting(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
-    @Column(name = "debtor_id")
-    var debtorId: Long? = null,
+    @Column(name = "debtor_id", nullable = true,)
+    var debtorId: Long,
 
     @Column(name = "date")
-    var date: LocalDate?,
+    var date: LocalDate? = null,
 
     @Column(name = "time")
     var time: LocalTime? = null,
@@ -42,5 +42,6 @@ class WorkerMeeting(
     var registrationTimeTo: LocalTime? = null,
 
     @Column(name = "address",  nullable = false, length = 500)
-    var address: String,
+    var address: String? = null,
+
 ) : BaseEntity

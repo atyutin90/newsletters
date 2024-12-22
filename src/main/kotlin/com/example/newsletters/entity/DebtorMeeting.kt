@@ -38,13 +38,19 @@ class DebtorMeeting(
     @Column(name = "registration_time_to")
     var registrationTimeTo: LocalTime? = null,
 
-    @Column(name = "address",  nullable = false, length = 500)
-    var address: String,
+    @Column(name = "address", length = 500)
+    var address: String? = null,
 
-    @Column(name = "familiarization_time_from",  nullable = false, length = 500)
-    var familiarizationTimeFrom: ZonedDateTime? = null,
+    @Column(name = "familiarization_date_from",  nullable = false, length = 500)
+    var familiarizationDateFrom: LocalDate? = null,
 
-    @Column(name = "familiarization_time_to",  nullable = false, length = 500)
-    var familiarizationTimeTo: ZonedDateTime? = null,
+    @Column(name = "familiarization_date_to",  nullable = false, length = 500)
+    var familiarizationDateTo: LocalDate? = null,
+
+    @Column(
+        name = "debtor_id",
+        nullable = true,
+    )
+    var debtorId: Long,
 
 ) : BaseEntity

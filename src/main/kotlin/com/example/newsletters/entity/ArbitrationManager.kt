@@ -20,7 +20,7 @@ class ArbitrationManager(
     override var updatedAt: ZonedDateTime? = null,
 
     @Column(name = "full_name", length = 300)
-    val fullName: String,
+    val fullName: String? = null,
 
     @Column(name = "taxpayer_identification_number", length = 50)
     var taxpayerIdentificationNumber: String? = null,

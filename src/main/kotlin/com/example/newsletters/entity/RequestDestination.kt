@@ -10,6 +10,9 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
+/**
+ * Место назначения запроса.
+ */
 @Entity
 @Table(name = "request_destination")
 class RequestDestination(

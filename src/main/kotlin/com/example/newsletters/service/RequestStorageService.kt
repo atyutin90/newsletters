@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class RequestStorageService(private val requestRepository: RequestRepository) {
     fun getAll(): List<RequestDto> = requestRepository.findAll().map { it.requestDTO }
+    fun getByDebtorId(debtorId: Long): List<RequestDto> = requestRepository.findByDebtorId(debtorId).map { it.requestDTO }
     fun getAll(paging: Pageable) = requestRepository.findAll(paging).map { it.requestDTO }
     fun getByCompanyName(name: String, paging: Pageable) = listOf<RequestDto>()/*requestRepository.findByCompanyNameContainingIgnoreCase(name, paging).map { it.requestDTO }*/
     fun getById(id: Long) = requestRepository.findById(id).map { it.requestDTO }.orElse(null)
@@ -19,7 +20,7 @@ class RequestStorageService(private val requestRepository: RequestRepository) {
     fun update(request: RequestDto) = requestRepository.save(request.request)
 }
 
-val Request.requestDTO get() = RequestDto(
+private val Request.requestDTO: RequestDto get() = RequestDto(
     id = id,
     debtorId = debtorId,
     destinationId = requestDestination?.id,
@@ -28,7 +29,7 @@ val Request.requestDTO get() = RequestDto(
     dateTo = dateTo,
 )
 
-val RequestDto.request get() = Request(
+private val RequestDto.request: Request get() = Request(
     id = id,
     debtorId = debtorId ?: 0L,
     date = date,

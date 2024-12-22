@@ -19,7 +19,7 @@ import java.util.Locale
 
 @Controller
 @RequestMapping("/creditor")
-class CreditorController(val creditorStorageService: CreditorStorageService, val messageSource: MessageSource) : AbstractController {
+class CreditorController(val creditorStorageService: CreditorStorageService, override val messageSource: MessageSource) : AbstractController(messageSource) {
 
     @GetMapping("/all")
     fun getAll(

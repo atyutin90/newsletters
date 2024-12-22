@@ -2,6 +2,7 @@ package com.example.newsletters.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -11,6 +12,7 @@ import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 @Entity
@@ -43,10 +45,10 @@ class Debtor(
     var courtAct: String? = null,
 
     @Column(name = "act_date")
-    var actDate: ZonedDateTime? = null,
+    var actDate: LocalDate? = null,
 
     @Column(name = "resolution_date")
-    var resolutionDate: ZonedDateTime? = null,
+    var resolutionDate: LocalDate? = null,
 
     @Column(name = "tax_registration_reason_code", length = 50)
     var taxRegistrationReasonCode: String? = null,
@@ -58,16 +60,8 @@ class Debtor(
     var primaryStateRegistrationNumber: String? = null,
 
     @Column(name = "registry_date")
-    val registryDate: ZonedDateTime? = null,
+    var registryDate: LocalDate? = null,
 
     @Column(name = "registry_closing_date")
-    val registryClosingDate: ZonedDateTime? = null,
-
-    @OneToOne
-    @JoinColumn(name = "debtor_meeting_id")
-    var debtorMeeting: DebtorMeeting? = null,
-
-    @OneToMany
-    @JoinColumn(name = "debtor_id")
-    var requests: List<Request> = mutableListOf(),
+    var registryClosingDate: LocalDate? = null,
 ) : BaseEntity

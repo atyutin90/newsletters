@@ -1,15 +1,30 @@
 package com.example.newsletters.controller
 
+import org.springframework.context.MessageSource
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.util.*
+
 
 const val KEYWORD = "keyword"
 const val CREDITOR = "creditor"
 const val CREDITORS = "creditors"
 const val REQUEST = "request"
+const val REQUEST_ID = "requestId"
 const val REQUESTS = "requests"
+const val PUBLICATION = "publication"
+const val PUBLICATION_ID = "publicationId"
+const val PUBLICATIONS = "publications"
+const val DEBTOR_MEETING = "debtorMeeting"
+const val DEBTOR_MEETINGS = "debtorMeetings"
+const val DEBTOR_MEETING_ID = "debtorMeetingId"
+const val WORKER_MEETING = "workerMeeting"
+const val WORKER_MEETINGS = "workerMeetings"
+const val WORKER_MEETING_ID = "workerMeetingId"
 const val DATA = "data"
 const val REQUEST_DESTINATION = "requestDestination"
 const val REQUEST_DESTINATIONS = "requestDestinations"
 const val MESSAGE = "message"
+const val ERROR_MESSAGE = "errorMessage"
 const val PAGE_TITLE = "pageTitle"
 const val ID = "id"
 const val DEBTOR = "debtor"
@@ -26,4 +41,18 @@ const val PAGE_SIZE = "pageSize"
 
 const val DEFAULT_PAGE = "1"
 const val DEFAULT_PAGE_SIZE = "10"
-sealed interface AbstractController
+abstract class AbstractController(open val messageSource: MessageSource) {
+
+    fun infoMessageCreateOrUpdateRecord(redirectAttributes: RedirectAttributes, isUpdate: Boolean) =
+        redirectAttributes.addFlashAttribute(
+            MESSAGE, messageSource.getMessage(
+                if (isUpdate) "record-successfully-updated" else "record-successfully-created",
+                arrayOf(),
+                Locale.getDefault()
+            )
+        )
+
+    fun infoMessageDeleteRecord(redirectAttributes: RedirectAttributes, id: Long) =
+        redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault()))
+
+}

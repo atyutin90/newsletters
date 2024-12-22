@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <title>Newsletters</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+         role="alert">
+        [[${message}]]
+        <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div th:if="${errorMessage != null}" class="alert alert-danger alert-dismissible fade show text-center message"
+         role="alert">
+        [[${errorMessage}]]
+        <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="my-3">
+        <form th:action="@{/debtor/save}" method="post" enctype="multipart/form-data" th:object="${debtor}">
+
+            <div class="p-3">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="name" th:text="#{debtor.name}"/>
+                        <input type="text" th:field="*{name}" required minlength="2" maxlength="128"
+                               class="form-control" id="name"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="fullName" th:text="#{debtor.full-name}"/>
+                        <input type="text" th:field="*{fullName}" class="form-control" id="fullName"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 col-form-label" for="address" th:text="#{debtor.address}"/>
+                    <input type="text" th:field="*{address}" class="form-control" id="address"/>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="caseNumber" th:text="#{debtor.case-number}"/>
+                        <input type="text" th:field="*{caseNumber}" class="form-control" id="caseNumber"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="courtAct" th:text="#{debtor.court-act}"/>
+                        <input type="text" th:field="*{courtAct}" class="form-control" id="courtAct"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="actDate" th:text="#{debtor.act-date}"/>
+                        <input type="date" name="actDate" th:value="${debtor.actDate}" class="form-control"
+                               id="actDate"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="resolutionDate"
+                               th:text="#{debtor.resolution-date}"/>
+                        <input type="date" name="resolutionDate" th:value="${debtor.resolutionDate}"
+                               class="form-control" id="resolutionDate"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="taxRegistrationReasonCode"
+                               th:text="#{debtor.tax-registration-reason-code}"/>
+                        <input type="text" th:field="*{taxRegistrationReasonCode}" class="form-control"
+                               id="taxRegistrationReasonCode"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="taxpayerIdentificationNumber"
+                               th:text="#{debtor.taxpayer-identification-number}"/>
+                        <input type="text" th:field="*{taxpayerIdentificationNumber}" class="form-control"
+                               id="taxpayerIdentificationNumber"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="primaryStateRegistrationNumber"
+                               th:text="#{debtor.primary-state-registration-number}"/>
+                        <input type="text" th:field="*{primaryStateRegistrationNumber}" class="form-control"
+                               id="primaryStateRegistrationNumber"/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="registryDate"
+                               th:text="#{debtor.registry-date}"/>
+                        <input type="date" name="registryDate" th:value="${debtor.registryDate}" class="form-control"
+                               id="registryDate"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-sm-6 col-form-label" for="registryClosingDate"
+                               th:text="#{debtor.registry-closing-date}"/>
+                        <input type="date" name="registryClosingDate" th:value="${debtor.registryClosingDate}"
+                               class="form-control"
+                               id="registryClosingDate"/>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" name="save" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
+                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
+                </div>
+            </div>
+        </form>
+
+        <div th:if="${debtor?.id != null}">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-requests-tab" data-toggle="pill"
+                            data-target="#pills-requests"
+                            type="button" role="tab" aria-controls="pills-requests" aria-selected="true"
+                            th:text="#{debtor.requests}"></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-publications-tab" data-toggle="pill"
+                            data-target="#pills-publications" type="button" role="tab"
+                            aria-controls="pills-publications"
+                            aria-selected="false" th:text="#{debtor.publications}"></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-debtor-meeting-tab" data-toggle="pill"
+                            data-target="#pills-debtor-meeting" type="button" role="tab"
+                            aria-controls="pills-debtor-meeting"
+                            aria-selected="false" th:text="#{debtor.debtor-meeting}"></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-worker-meetings-tab" data-toggle="pill"
+                            data-target="#pills-worker-meetings" type="button" role="tab"
+                            aria-controls="pills-worker-meetings"
+                            aria-selected="false" th:text="#{debtor.worker-meeting}"></button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-requests" role="tabpanel"
+                     aria-labelledby="pills-requests-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/request/new(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor.request.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{requests}"/>
+
+                        <table class="table table-hover table-responsive-xl">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.request.id}"></th>
+                                <th scope="col" th:text="#{debtor.request.destinationId}"></th>
+                                <th scope="col" th:text="#{debtor.request.date}"></th>
+                                <th scope="col" th:text="#{debtor.request.dateFrom}"></th>
+                                <th scope="col" th:text="#{debtor.request.dateTo}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="request : ${requests}">
+                                <td th:text="${request.id}"/>
+                                <th scope="row"
+                                    th:each="requestDestination : ${requestDestinations}"
+                                    th:if="${requestDestination.id == request.destinationId}"
+                                    th:text="${requestDestination.name}"/>
+                                <td th:text="${#temporals.format(request.date, 'dd.MM.yyyy')}"/>
+                                <td th:text="${#temporals.format(request.dateFrom, 'dd.MM.yyyy')}"/>
+                                <td th:text="${#temporals.format(request.dateTo, 'dd.MM.yyyy')}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/request/{reqiestId}(debtorId=${debtor.id},reqiestId=${request.id})}"
+                                       th:title="#{edit-request}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/request/{reqiestId}/delete(debtorId=${debtor.id},reqiestId=${request.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{delete-request}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+                <div class="tab-pane fade" id="pills-publications" role="tabpanel"
+                     aria-labelledby="pills-publications-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/publication/new(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor.publication.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.publications}"/>
+
+                        <table class="table table-hover table-responsive-xl">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.publication.id}"></th>
+                                <th scope="col" th:text="#{debtor.publication.publicationDate}"></th>
+                                <th scope="col" th:text="#{debtor.publication.appointmentDate}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="publication : ${publications}">
+                                <td th:text="${publication.id}"/>
+                                <td th:text="${#temporals.format(publication.publicationDate, 'dd.MM.yyyy')}"/>
+                                <td th:text="${#temporals.format(publication.appointmentDate, 'dd.MM.yyyy')}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/publication/{publicationId}(debtorId=${debtor.id},publicationId=${publication.id})}"
+                                       th:title="#{edit-publication}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/publication/{publicationId}/delete(debtorId=${debtor.id},publicationId=${publication.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{delete-publication}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+                <div class="tab-pane fade" id="pills-debtor-meeting" role="tabpanel"
+                     aria-labelledby="pills-debtor-meeting-tab">
+                    <div th:if="${debtorMeetings?.size() <= 0}">
+                        <div class="text-left">
+                            <a th:href="@{/debtor/{debtorId}/debtor-meeting/new(debtorId=${debtor.getId()})}"
+                               th:title="#{debtor.debtor-meeting.creation}"
+                               class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                        </div>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.debtor-meeting}"/>
+
+                        <table class="table table-hover table-responsive-xl">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.id}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.date}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.time}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="debtorMeeting : ${debtorMeetings}">
+                                <td th:text="${debtorMeeting.id}"/>
+                                <td th:text="${#temporals.format(debtorMeeting.date, 'dd.MM.yyyy')}"/>
+                                <td th:text="${#temporals.format(debtorMeeting.time, 'hh:mm ')}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id})}"
+                                       th:title="#{debtor.edit-debtor-meeting}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting  .id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{debtor.delete-debtor-meeting}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+                <div class="tab-pane fade" id="pills-worker-meetings" role="tabpanel"
+                     aria-labelledby="pills-worker-meetings-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/worker-meeting/new(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor.worker-meeting.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting}"/>
+
+                        <table class="table table-hover table-responsive-xl">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.worker-meeting.id}"></th>
+                                <th scope="col" th:text="#{debtor.worker-meeting.date}"></th>
+                                <th scope="col" th:text="#{debtor.worker-meeting.time}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="workerMeeting : ${workerMeetings}">
+                                <td th:text="${workerMeeting.id}"/>
+                                <td th:text="${#temporals.format(workerMeeting.date, 'dd.MM.yyyy')}"/>
+                                <td th:text="${#temporals.format(workerMeeting.time, 'hh:mm ')}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id})}"
+                                       th:title="#{debtor.edit-worker-meeting}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${workerMeeting.id})}" id="btnDelete"
+                                       th:title="#{debtor.delete-worker-meeting}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancel").on("click", function () {
+            window.location = "[[@{/debtor/all}]]";
+        });
+
+        $(".btnDelete").on("click", function (e) {
+            e.preventDefault();
+            link = $(this);
+            deleteMessage = link.attr("deleteMessage")
+            $("#yesBtn").attr("href", link.attr("href"));
+            $("#confirmText").html(deleteMessage);
+            $("#confirmModal").modal();
+        });
+
+    });
+</script>
+
+</body>
+</html>

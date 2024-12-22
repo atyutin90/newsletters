@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
-  <title>Spring Boot Thymeleaf example</title>
+  <title>Newsletters</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
@@ -20,7 +20,7 @@
   <div th:replace="~{fragments/header :: header}"></div>
 
   <div class="container-fluid" style="max-width: 80%; margin: 0 auto;">
-    <h2 class="text-center" th:text="#{request-destinations}"></h2>
+    <h2 class="text-center" th:text="#{courts}"></h2>
 
     <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
       role="alert">
@@ -30,8 +30,16 @@
       </button>
     </div>
 
+    <div th:if="${errorMessage != null}" class="alert alert-danger alert-dismissible fade show text-center message"
+         role="alert">
+      [[${errorMessage}]]
+      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
     <div class="my-3">
-      <form th:action="@{/request-destination/all}" >
+      <form th:action="@{/court/all}" >
         <div class="row d-flex">
           <div class="col-md-6 mt-3">
             <div class="search">
@@ -55,8 +63,8 @@
         <thead class="thead-light">
           <tr>
             <th scope="col" th:text="#{id}"></th>
-            <th scope="col" th:text="#{request-destination.name}"></th>
-            <th scope="col" th:text="#{request-destination.address}"></th>
+            <th scope="col" th:text="#{court.name}"></th>
+            <th scope="col" th:text="#{court.address}"></th>
             <th scope="col" th:text="#{action}"></th>
           </tr>
         </thead>
@@ -66,8 +74,8 @@
             <td>[[${value.name}]]</td>
             <td>[[${value.address}]]</td>
             <td>
-              <a th:href="@{'/request-destination/' + ${value.id}}" th:title="#{request-destination.edit}" class="fa-regular fa-pen-to-square icon-dark"></a>
-              <a th:href="@{'/request-destination/delete/' + ${value.id}}" th:deleteMessage="#{do-you-want-delete-record(${value.name})}" id="btnDelete" th:title="#{request-destination.delete}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+              <a th:href="@{'/court/' + ${value.id}}" th:title="#{court.edit}" class="fa-regular fa-pen-to-square icon-dark"></a>
+              <a th:href="@{'/court/delete/' + ${value.id}}" th:deleteMessage="#{do-you-want-delete-record(${value.name})}" id="btnDelete" th:title="#{court.delete}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
             </td>
           </tr>
         </tbody>
@@ -78,7 +86,7 @@
       <span th:text="#{not-found-records}"/>
     </div>
 
-    <div th:replace="~{fragments/paging :: paggination('/request-destination/all')}"></div>
+    <div th:replace="~{fragments/paging :: paggination('/court/all')}"></div>
 
   </div>
 
@@ -121,12 +129,12 @@
       $("#btnClear").on("click", function (e) {
         e.preventDefault();
         $("#keyword").text("");
-        window.location = "[[@{/request-destination/all}]]";
+        window.location = "[[@{/court/all}]]";
       });
       $("#btnAdd").on("click", function (e) {
         e.preventDefault();
         $("#keyword").text("");
-        window.location = "[[@{/request-destination/new}]]";
+        window.location = "[[@{/court/new}]]";
       });
     });
   </script>
