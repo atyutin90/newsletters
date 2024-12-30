@@ -39,6 +39,7 @@
             <div class="form-group col-md-6">
               <label class="col-sm-5 col-form-label" for="destinationId" th:text="#{debtor.request.destinationId}"/>
               <select class="form-control" id="destinationId" th:field="*{destinationId}">
+                <option th:if="${request.destinationId == null}" selected th:value="${null}" th:text="#{choose}"></option>
                 <option th:each="requestDestination : ${requestDestinations}"
                         th:value="${requestDestination.id}"
                         th:text="${requestDestination.name}"

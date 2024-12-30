@@ -29,6 +29,12 @@ class Debtor(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
+    @Column(
+        name = "arbitration_manager_id",
+        nullable = true,
+    )
+    var arbitrationManagerId: Long? = null,
+
     @Column(name = "name", nullable = false, length = 256)
     var name: String? = null,
 

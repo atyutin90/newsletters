@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 data class DebtorDto(
     val id: Long? = null,
+    val arbitrationManagerId: Long? = null,
     val fullName: String? = null,
     val name: String? = null,
     val caseNumber: String? = null,

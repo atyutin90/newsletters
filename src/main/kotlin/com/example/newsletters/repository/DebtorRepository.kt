@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository
 @Transactional
 interface DebtorRepository : JpaRepository<Debtor, Long> {
     fun findByNameContainingIgnoreCase(keyword: String): List<Debtor>
+    fun findByArbitrationManagerId(arbitrationManagerId: Long): List<Debtor>
     fun findByNameContainingIgnoreCase(name: String, paging: Pageable): Page<Debtor>
 }

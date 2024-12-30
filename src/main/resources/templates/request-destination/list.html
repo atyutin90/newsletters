@@ -19,7 +19,7 @@
 <body>
   <div th:replace="~{fragments/header :: header}"></div>
 
-  <div class="container-fluid" style="max-width: 80%; margin: 0 auto;">
+  <div class="container-fluid">
     <h2 class="text-center" th:text="#{request-destinations}"></h2>
 
     <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
@@ -31,20 +31,22 @@
     </div>
 
     <div class="my-3">
+      <div class="col-md-12 mt-2">
+        <a id="btnAdd" th:title="#{add}" class="fa fa-user-plus fa-2xl icon-dark"></a>
+      </div>
+    </div>
+    <div class="my-3">
       <form th:action="@{/request-destination/all}" >
         <div class="row d-flex">
           <div class="col-md-6 mt-3">
             <div class="search">
               <i class="fa fa-search"></i>
               <input id="keyword" type="search" name="keyword" th:value="${keyword}" required class="form-control" th:placeholder="#{inter-keyword}">
-              <button type="submit" class="btn btn-secondary" th:text="#{search}"/>
+              <button id="btnClear" th:title="#{clear}" class="button-clear btn btn-secondary">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <button type="submit" class="button-search btn btn-secondary" th:text="#{search}"/>
             </div>
-          </div>
-          <div class="col-md-2 mt-3">
-            <button id="btnClear" class="btn btn-info" th:text="#{clear}"/>
-          </div>
-          <div class="col-md-2 mt-3">
-            <button id="btnAdd" class="btn btn-primary" th:text="#{add}"/>
           </div>
         </div>
       </form>

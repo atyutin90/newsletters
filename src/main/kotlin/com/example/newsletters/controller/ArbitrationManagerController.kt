@@ -5,6 +5,7 @@ import com.example.newsletters.dto.CourtDto
 import com.example.newsletters.dto.RequestDestinationDto
 import com.example.newsletters.service.ArbitrationManagerService
 import com.example.newsletters.service.CourtService
+import com.example.newsletters.service.DebtorStorageService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -22,6 +23,7 @@ import java.util.Locale
 @RequestMapping("/arbitration-manager")
 class ArbitrationManagerController(
     val arbitrationManagerService: ArbitrationManagerService,
+    val debtorStorageService: DebtorStorageService,
     override val messageSource: MessageSource
 ): AbstractController(messageSource) {
 
@@ -52,6 +54,7 @@ class ArbitrationManagerController(
     @GetMapping("/new")
     fun add(model: Model): String = run {
         model.addAttribute(DATA,  ArbitrationManagerDto())
+        model.addAttribute(DEBTORS, listOf<ArbitrationManagerDto>())
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-arbitration-manager", arrayOf(), Locale.getDefault()))
         "arbitration-manager/form"
     }
@@ -73,7 +76,9 @@ class ArbitrationManagerController(
     fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
         try {
             val data: ArbitrationManagerDto = arbitrationManagerService.getById(id)
+            val debtors = debtorStorageService.getByArbitrationManagerId(id)
             model.addAttribute(DATA, data)
+            model.addAttribute(DEBTORS, debtors)
             model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-arbitration-manager", arrayOf(id), Locale.getDefault()))
             "arbitration-manager/form"
         } catch (e: Exception) {

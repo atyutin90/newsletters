@@ -23,11 +23,9 @@ class CreditorStorageService(private val creditorRepository: CreditorRepository)
 val Creditor.creditorDTO get() = CreditorDto(
     id = id,
     name = name,
-    voiceNumbers = voiceNumbers
 )
 
 val CreditorDto.creditor get() = Creditor(
     id = id,
-    name = name,
-    voiceNumbers = voiceNumbers
+    name = name
 )
