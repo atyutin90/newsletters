@@ -136,6 +136,12 @@
                             th:text="#{debtor.requests}"></button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-creditors-tab" data-toggle="pill"
+                            data-target="#pills-creditors"
+                            type="button" role="tab" aria-controls="pills-creditors" aria-selected="true"
+                            th:text="#{debtor.creditors}"></button>
+                </li>
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-publications-tab" data-toggle="pill"
                             data-target="#pills-publications" type="button" role="tab"
                             aria-controls="pills-publications"
@@ -179,7 +185,7 @@
                             <tbody>
                             <tr th:each="request : ${requests}">
                                 <td th:text="${request.id}"/>
-                                <th scope="row"
+                                <td
                                     th:each="requestDestination : ${requestDestinations}"
                                     th:if="${requestDestination.id == request.destinationId}"
                                     th:text="${requestDestination.name}"/>
@@ -192,6 +198,47 @@
                                     <a th:href="@{/debtor/{debtorId}/request/{reqiestId}/delete(debtorId=${debtor.id},reqiestId=${request.id})}"
                                        th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
                                        th:title="#{delete-request}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+                <div class="tab-pane fade" id="pills-creditors" role="tabpanel"
+                     aria-labelledby="pills-creditors-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/creditor/new(debtorId=${debtor.getId()})}"
+                           th:title="#{debtor.creditor.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.creditors}"/>
+
+                        <table class="table table-hover table-responsive-xl">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.creditor.id}"></th>
+                                <th scope="col" th:text="#{debtor.creditor.name}"></th>
+                                <th scope="col" th:text="#{debtor.creditor.clientType}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="creditor : ${creditors}">
+                                <td th:text="${creditor.id}"/>
+                                <td th:text="${creditor.name}"/>
+                                <td
+                                    th:each="clientType : ${clientTypes}"
+                                    th:if="${clientType.getCode() == creditor.clientType}"
+                                    th:text="${clientType.getValue()}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.id},creditorId=${creditor.id})}"
+                                       th:title="#{edit-creditor}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/delete(debtorId=${debtor.id},creditorId=${creditor.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{delete-creditor}"
                                        class="fa-regular fa-trash-can icon-dark btn-delete"></a>
                                 </td>
                             </tr>

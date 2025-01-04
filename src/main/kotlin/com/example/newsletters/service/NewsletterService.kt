@@ -24,7 +24,7 @@ class NewsletterService(
 
     fun create(newsletterParams: NewsletterParams) {
         val templates = templateService.getByIds(newsletterParams.templateIds.mapNotNull { it.toIntOrNull() })
-        val creditors = creditorService.getByIds(newsletterParams.creditorIds.mapNotNull { it.toIntOrNull() })
+        val creditors = creditorService.getByIds(newsletterParams.creditorIds.mapNotNull { it.toLongOrNull() })
         val debtors = debtorService.getByIds(newsletterParams.debtorIds.mapNotNull { it.toLongOrNull() })
         val locations = locationService.getByIds(newsletterParams.locationIds.mapNotNull { it.toIntOrNull() })
 

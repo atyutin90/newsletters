@@ -1,89 +1,103 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.CreditorDto
-import com.example.newsletters.entity.Creditor
+import com.example.newsletters.dto.DebtorDto
+import com.example.newsletters.dto.PublicationDto
+import com.example.newsletters.dto.QueueDto
+import com.example.newsletters.entity.enum.ClientType
 import com.example.newsletters.service.CreditorStorageService
+import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.PublicationStorageService
+import com.example.newsletters.service.QueueStorageService
+import com.example.newsletters.service.ValueListService
 import org.springframework.context.MessageSource
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.Locale
+import java.util.*
 
 @Controller
-@RequestMapping("/creditor")
-class CreditorController(val creditorStorageService: CreditorStorageService, override val messageSource: MessageSource) : AbstractController(messageSource) {
+@RequestMapping("/debtor/{id}/creditor")
+class CreditorController(
+    val debtorStorageService: DebtorStorageService,
+    val creditorStorageService: CreditorStorageService,
+    val queueStorageService: QueueStorageService,
+    valueListService: ValueListService,
+    override val messageSource: MessageSource
+) : AbstractController(messageSource) {
 
-    @GetMapping("/all")
-    fun getAll(
-        @RequestParam(KEYWORD) keyword: String?,
-        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) size: Int,
-        model: Model
-    ): String {
+    val clientTypes = valueListService.getValues("clientType")
+    val queueTypes = valueListService.getValues("queueType")
+
+    @GetMapping("/{creditorId}/delete")
+    fun delete(
+        @PathVariable(ID) id: Long,
+        @PathVariable(CREDITOR_ID) creditorId: Long,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = run {
         try {
-            val paging: Pageable = PageRequest.of(page - 1, size)
-            val debtorDto =
-                if (keyword?.isEmpty() != false) creditorStorageService.getAll(paging)
-                else creditorStorageService.getByName(keyword, paging)
-            model.addAttribute(CREDITORS, debtorDto.content)
-            model.addAttribute(CURRENT_PAGE, debtorDto.number + 1)
-            model.addAttribute(TOTAL_ITEMS, debtorDto.totalElements)
-            model.addAttribute(TOTAL_PAGES, debtorDto.totalPages)
-            model.addAttribute(PAGE_SIZE, size)
-            model.addAttribute(KEYWORD, keyword)
-        } catch (e: Exception) {
-            model.addAttribute(MESSAGE, e.message)
-        }
-        return CREDITORS
-    }
-
-    @GetMapping("/new")
-    fun add(model: Model): String = run {
-        model.addAttribute(CREDITOR,  CreditorDto())
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-creditor", arrayOf(), Locale.getDefault()))
-        "creditor_form"
-    }
-
-    @PostMapping("/save")
-    fun save(creditor: CreditorDto, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            if (creditor.id != null) creditorStorageService.update(creditor)
-            else creditorStorageService.create(creditor)
-            redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault()))
+            creditorStorageService.delete(creditorId)
+            infoMessageDeleteRecord(redirectAttributes, creditorId)
         } catch (e: Exception) {
             redirectAttributes.addAttribute(MESSAGE, e.message)
         }
-        "redirect:/creditor/all"
+        "redirect:/debtor/${id}"
     }
 
-    @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String =
-        try {
-            val creditor: CreditorDto = creditorStorageService.getById(id)
-            model.addAttribute(CREDITOR, creditor)
-            model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-creditor", arrayOf(id), Locale.getDefault()))
-            "creditor_form"
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-            "redirect:/creditor/all"
-        }
+    @GetMapping("/new")
+    fun add(
+        @PathVariable(ID) id: Long,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = try {
+        val debtor: DebtorDto = debtorStorageService.getById(id)
+        model.addAttribute(CREDITOR,  CreditorDto(debtorId = id))
+        model.addAttribute(CLIENT_TYPES, clientTypes)
+        model.addAttribute(DEBTOR, debtor)
+        model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.creditor.creation", arrayOf(), Locale.getDefault()))
+        "creditor/form"
+    } catch (e: Exception) {
+        redirectAttributes.addAttribute(MESSAGE, e.message)
+        "redirect:/debtor/{id}"
+    }
 
-    @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Int, model: Model, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            creditorStorageService.delete(id)
-            redirectAttributes.addFlashAttribute(MESSAGE,  messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault()))
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-        }
-        "redirect:/creditor/all"
+    @PostMapping("/save")
+    fun save(request: CreditorDto, model: Model, redirectAttributes: RedirectAttributes, result: BindingResult): String = try {
+        val isUpdate = request.id != null
+        if (isUpdate) creditorStorageService.update(request)
+        else creditorStorageService.create(request)
+        infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+        "redirect:/debtor/${request.debtorId}"
+    } catch (e: Exception) {
+        redirectAttributes.addFlashAttribute(ERROR_MESSAGE, e.message)
+        "redirect:/debtor/${request.debtorId}"
+    }
+
+    @GetMapping("/{creditorId}")
+    fun edit(
+        @PathVariable(ID) id: Long,
+        @PathVariable(CREDITOR_ID) creditorId: Long,
+        model: Model,
+        redirectAttributes: RedirectAttributes): String = try {
+        val creditorDto: CreditorDto = creditorStorageService.getById(creditorId)
+        val debtor: DebtorDto = debtorStorageService.getById(id)
+        val queues = queueStorageService.getByCreditorId(creditorId)
+        model.addAttribute(CREDITOR, creditorDto)
+        model.addAttribute(CLIENT_TYPES, clientTypes)
+        model.addAttribute(DEBTOR, debtor)
+        model.addAttribute(QUEUE, QueueDto(creditorId = id))
+        model.addAttribute(QUEUES, queues)
+        model.addAttribute(QUEUE_TYPES, queueTypes)
+        model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-creditor", arrayOf(creditorId), Locale.getDefault()))
+        "creditor/form"
+    } catch (e: Exception) {
+        redirectAttributes.addAttribute(MESSAGE, e.message)
+        "redirect:/debtor/${id}"
     }
 }

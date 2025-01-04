@@ -1,5 +1,8 @@
 package com.example.newsletters.entity.enum
 
+import com.example.newsletters.annotation.ValueList
+
+@ValueList("clientType")
 enum class ClientType {
     INDIVIDUAL,
     LEGAL;

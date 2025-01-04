@@ -24,7 +24,6 @@
 
     <div class="my-3">
       <form th:action="@{/arbitration-manager/save}" method="post" enctype="multipart/form-data" th:object="${data}">
-        <input type="hidden" th:field="*{id}" />
         <div class="p-3">
           <input type="hidden" th:field="*{id}"/>
           <div class="form-row">

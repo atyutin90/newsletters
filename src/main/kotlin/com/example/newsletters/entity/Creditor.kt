@@ -20,6 +20,16 @@ class Creditor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    override var createdAt: ZonedDateTime? = null,
+
+    @UpdateTimestamp
+    override var updatedAt: ZonedDateTime? = null,
+
+    @Column(name = "debtor_id", nullable = false)
+    var debtorId : Long? = null,
+
     @Column(name = "client_type", length = 50)
     var clientType: ClientType? = null,
 
@@ -32,11 +42,11 @@ class Creditor(
     @Column(name = "primary_state_registration_number", length = 50)
     var primaryStateRegistrationNumber: String? = null,
 
-    @Column(name = "full_name", length = 256)
-    var fullName: String? = null,
+    @Column(name = "passport_serial", length = 10)
+    var passportSerial: Int? = null,
 
-    @Column(name = "passport_data", length = 100)
-    var passportData: String? = null,
+    @Column(name = "passport_number", length = 10)
+    var passportNumber: Int? = null,
 
     @Column(name = "address", length = 500)
     var address: String? = null,
@@ -47,17 +57,9 @@ class Creditor(
     @Column(name = "state_duty_amount")
     var stateDutyAmount : BigDecimal? = null,
 
-    @Column(name = "execution_writ")
-    var executionWrit : BigDecimal? = null,
+    @Column(name = "execution_writ", length = 100)
+    var executionWrit : String? = null,
 
     @Column(name = "execution_date")
-    var executionDate : LocalDate? = null,
-
-    @Column(updatable = false)
-    @CreationTimestamp
-    override var createdAt: ZonedDateTime? = null,
-
-    @UpdateTimestamp
-    override var updatedAt: ZonedDateTime? = null,
-
-    ) : BaseEntity
+    var executionDate : LocalDate? = null
+) : BaseEntity
