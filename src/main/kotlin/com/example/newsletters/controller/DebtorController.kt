@@ -9,6 +9,7 @@ import com.example.newsletters.dto.RequestDestinationDto
 import com.example.newsletters.dto.RequestDto
 import com.example.newsletters.dto.WorkerMeetingDto
 import com.example.newsletters.entity.enum.ClientType
+import com.example.newsletters.service.ArbitrationManagerService
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService
 import com.example.newsletters.service.DebtorStorageService
@@ -40,6 +41,7 @@ class DebtorController(
     val debtorMeetingService: DebtorMeetingStorageService,
     val workerMeetingService: WorkerMeetingStorageService,
     val creditorStorageService: CreditorStorageService,
+    val arbitrationManagerService: ArbitrationManagerService,
     val valueListService: ValueListService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
@@ -99,6 +101,7 @@ class DebtorController(
             val creditorDtoList = creditorStorageService.getByDebtorId(debtor.id)
             val clientTypes = valueListService.getValues("clientType")
             val requestDestinations: List<RequestDestinationDto> = requestDestinationService.getAll()
+            val arbitrationManagers = arbitrationManagerService.getAll()
             model.addAttribute(DEBTOR, debtor)
             model.addAttribute(REQUEST, RequestDto(debtorId = id))
             model.addAttribute(REQUESTS, requestDtoList)
@@ -112,6 +115,7 @@ class DebtorController(
             model.addAttribute(WORKER_MEETING, WorkerMeetingDto(debtorId = id))
             model.addAttribute(WORKER_MEETINGS, workerMeetingList)
             model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
+            model.addAttribute(ARBITRATION_MANAGERS, arbitrationManagers)
             model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-debtor", arrayOf(id), Locale.getDefault()))
             "debtor/form"
         } catch (e: Exception) {

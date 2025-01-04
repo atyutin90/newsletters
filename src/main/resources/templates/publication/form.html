@@ -21,8 +21,8 @@
 
   <div class="my-3">
     <form th:action="@{/debtor/{debtorId}/publication/save(debtorId=${debtor.id})}" method="post" enctype="multipart/form-data" th:object="${publication}">
-      <input type="hidden" th:field="*{id}"/>
       <div class="p-3">
+        <input type="hidden" th:field="*{id}"/>
         <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
         <div class="form-row">
           <div class="form-group col-md-6">
@@ -37,37 +37,37 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-              <label class="col-sm-3 col-form-label" for="publicationDate" th:text="#{debtor.publication.publicationDate}"/>
+              <label class="col-form-label" for="publicationDate" th:text="#{debtor.publication.publicationDate}"/>
               <input type="date" name="publicationDate" th:value="${publication.publicationDate}" class="form-control" id="publicationDate"/>
           </div>
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="hallNumber" th:text="#{debtor.publication.hallNumber}"/>
+            <label class="col-form-label" for="hallNumber" th:text="#{debtor.publication.hallNumber}"/>
             <input type="number" name="hallNumber" th:value="${publication.hallNumber}" class="form-control" id="hallNumber"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="appointmentDate" th:text="#{debtor.publication.appointmentDate}"/>
+            <label class="col-form-label" for="appointmentDate" th:text="#{debtor.publication.appointmentDate}"/>
             <input type="date" name="appointmentDate" th:value="${publication.appointmentDate}" class="form-control" id="appointmentDate"/>
           </div>
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="appointmentTime" th:text="#{debtor.publication.appointmentTime}"/>
+            <label class="col-form-label" for="appointmentTime" th:text="#{debtor.publication.appointmentTime}"/>
             <input type="time" name="appointmentTime" th:value="${publication.appointmentTime}" class="form-control" id="appointmentTime"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="kommersantMessageNumber" th:text="#{debtor.publication.kommersantMessageNumber}"/>
+            <label class="col-form-label" for="kommersantMessageNumber" th:text="#{debtor.publication.kommersantMessageNumber}"/>
             <input type="text" name="kommersantMessageNumber" th:value="${publication.kommersantMessageNumber}" class="form-control" id="kommersantMessageNumber"/>
           </div>
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="efrsbMessageNumber" th:text="#{debtor.publication.efrsbMessageNumber}"/>
+            <label class="col-form-label" for="efrsbMessageNumber" th:text="#{debtor.publication.efrsbMessageNumber}"/>
             <input type="text" name="efrsbMessageNumber" th:value="${publication.efrsbMessageNumber}" class="form-control" id="efrsbMessageNumber"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label class="col-sm-3 col-form-label" for="kommersantIssueNumber" th:text="#{debtor.publication.kommersantIssueNumber}"/>
+            <label class="col-form-label" for="kommersantIssueNumber" th:text="#{debtor.publication.kommersantIssueNumber}"/>
               <input type="text" name="kommersantIssueNumber" th:value="${publication.kommersantIssueNumber}" class="form-control" id="kommersantIssueNumber"/>
           </div>
         </div>
@@ -92,4 +92,5 @@
 </script>
 
 </body>
+
 </html>

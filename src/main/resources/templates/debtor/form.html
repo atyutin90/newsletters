@@ -44,38 +44,52 @@
             <div class="p-3">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="arbitrationManagerId" th:text="#{debtor.arbitration-manager}"/>
+                        <select class="form-control" id="arbitrationManagerId" th:field="*{arbitrationManagerId}">
+                            <option th:if="${debtor?.arbitrationManagerId == null}" selected th:value="${null}" th:text="#{choose}"></option>
+                            <option th:each="arbitrationManager : ${arbitrationManagers}"
+                                    th:value="${arbitrationManager.id}"
+                                    th:text="${arbitrationManager.fullName}"
+                            />
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="name" th:text="#{debtor.name}"/>
+                        <label class="col-form-label" for="name" th:text="#{debtor.name}"/>
                         <input type="text" th:field="*{name}" required minlength="2" maxlength="128"
                                class="form-control" id="name"/>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="fullName" th:text="#{debtor.full-name}"/>
+                        <label class="col-form-label" for="fullName" th:text="#{debtor.full-name}"/>
                         <input type="text" th:field="*{fullName}" class="form-control" id="fullName"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-6 col-form-label" for="address" th:text="#{debtor.address}"/>
-                    <input type="text" th:field="*{address}" class="form-control" id="address"/>
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="address" th:text="#{debtor.address}"/>
+                        <input type="text" th:field="*{address}" class="form-control" id="address"/>
+                        </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="caseNumber" th:text="#{debtor.case-number}"/>
+                        <label class="col-form-label" for="caseNumber" th:text="#{debtor.case-number}"/>
                         <input type="text" th:field="*{caseNumber}" class="form-control" id="caseNumber"/>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="courtAct" th:text="#{debtor.court-act}"/>
+                        <label class="col-form-label" for="courtAct" th:text="#{debtor.court-act}"/>
                         <input type="text" th:field="*{courtAct}" class="form-control" id="courtAct"/>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="actDate" th:text="#{debtor.act-date}"/>
+                        <label class="col-form-label" for="actDate" th:text="#{debtor.act-date}"/>
                         <input type="date" name="actDate" th:value="${debtor.actDate}" class="form-control"
                                id="actDate"/>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="resolutionDate"
+                        <label class="col-form-label" for="resolutionDate"
                                th:text="#{debtor.resolution-date}"/>
                         <input type="date" name="resolutionDate" th:value="${debtor.resolutionDate}"
                                class="form-control" id="resolutionDate"/>
@@ -83,13 +97,13 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="taxRegistrationReasonCode"
+                        <label class="col-form-label" for="taxRegistrationReasonCode"
                                th:text="#{debtor.tax-registration-reason-code}"/>
                         <input type="text" th:field="*{taxRegistrationReasonCode}" class="form-control"
                                id="taxRegistrationReasonCode"/>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="taxpayerIdentificationNumber"
+                        <label class="col-form-label" for="taxpayerIdentificationNumber"
                                th:text="#{debtor.taxpayer-identification-number}"/>
                         <input type="text" th:field="*{taxpayerIdentificationNumber}" class="form-control"
                                id="taxpayerIdentificationNumber"/>
@@ -97,7 +111,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="primaryStateRegistrationNumber"
+                        <label class="col-form-label" for="primaryStateRegistrationNumber"
                                th:text="#{debtor.primary-state-registration-number}"/>
                         <input type="text" th:field="*{primaryStateRegistrationNumber}" class="form-control"
                                id="primaryStateRegistrationNumber"/>
@@ -106,13 +120,13 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="registryDate"
+                        <label class="col-form-label" for="registryDate"
                                th:text="#{debtor.registry-date}"/>
                         <input type="date" name="registryDate" th:value="${debtor.registryDate}" class="form-control"
                                id="registryDate"/>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="col-sm-6 col-form-label" for="registryClosingDate"
+                        <label class="col-form-label" for="registryClosingDate"
                                th:text="#{debtor.registry-closing-date}"/>
                         <input type="date" name="registryClosingDate" th:value="${debtor.registryClosingDate}"
                                class="form-control"
@@ -171,7 +185,7 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{requests}"/>
 
-                        <table class="table table-hover table-responsive-xl">
+                        <table class="table">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.request.id}"></th>
@@ -216,7 +230,7 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{debtor.creditors}"/>
 
-                        <table class="table table-hover table-responsive-xl">
+                        <table class="table">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.creditor.id}"></th>
@@ -257,7 +271,7 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{debtor.publications}"/>
 
-                        <table class="table table-hover table-responsive-xl">
+                        <table class="table">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.publication.id}"></th>
@@ -297,7 +311,7 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{debtor.debtor-meeting}"/>
 
-                        <table class="table table-hover table-responsive-xl">
+                        <table class="table">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.debtor-meeting.id}"></th>
@@ -334,8 +348,7 @@
                     </div>
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting}"/>
-
-                        <table class="table table-hover table-responsive-xl">
+                        <table class="table">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.worker-meeting.id}"></th>
@@ -360,7 +373,6 @@
                             </tr>
                             </tbody>
                         </table>
-
                     </fieldset>
                 </div>
             </div>
@@ -388,4 +400,5 @@
 </script>
 
 </body>
+
 </html>

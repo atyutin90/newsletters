@@ -41,10 +41,10 @@ class DebtorMeeting(
     @Column(name = "address", length = 500)
     var address: String? = null,
 
-    @Column(name = "familiarization_date_from",  nullable = false, length = 500)
+    @Column(name = "familiarization_date_from")
     var familiarizationDateFrom: LocalDate? = null,
 
-    @Column(name = "familiarization_date_to",  nullable = false, length = 500)
+    @Column(name = "familiarization_date_to")
     var familiarizationDateTo: LocalDate? = null,
 
     @Column(

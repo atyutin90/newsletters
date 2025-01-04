@@ -38,33 +38,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="type" th:text="#{debtor.creditor.queue.queueType}"/>
-                        <select class="form-control" id="type" th:field="*{type}">
-                            <option th:if="${queue?.type == null}" selected th:value="${null}"
-                                    th:text="#{choose}"></option>
-                            <option th:each="queueType : ${queueTypes}"
-                                    th:value="${queueType.getCode()}"
-                                    th:text="${queueType.getValue()}"
-                            />
-                        </select>
-                    </div>
-                </div>
                 <div th:replace="~{queue/field/field :: field}"></div>
-               <!-- <div id="queue" style="display: none">
-                    <div th:replace="~{queue/field/queue :: queue}"></div>
-                </div>
-                <div id="queueRepayment" style="display: none">
-                    <div th:replace="~{queue/field/queue_repayment :: queue_repayment}"></div>
-                </div>
-                <div id="depositQueue" style="display: none">
-                    <div th:replace="~{queue/field/deposit_queue :: deposit_queue}"></div>
-                </div>
-                <div id="thirdQueue" style="display: none">
-                    <div th:replace="~{queue/field/third_queue :: third_queue}"></div>
-                </div>-->
-
                 <div class="text-center">
                     <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
                     <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
@@ -84,36 +58,6 @@
             window.location = "[[@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}]]";
         });
     });
-
-   /* function reloadForm() {
-        const selectedValue = $("#type").val()
-        if (["FIRST", "SECOND"].includes(selectedValue)) {
-            $("#queue").show()
-            $("#queueRepayment").hide()
-            $("#depositQueue").hide()
-            $("#thirdQueue").hide()
-        } else if (["FIRST_REPAYMENT", "SECOND_REPAYMENT", "THIRD_REPAYMENT", "THIRD_REPAYMENT_DEPOSIT"].includes(selectedValue)) {
-            $("#queue").hide()
-            $("#queueRepayment").show()
-            $("#depositQueue").hide()
-            $("#thirdQueue").hide()
-        } else if (["THIRD_DEPOSIT"].includes(selectedValue)) {
-            $("#queue").hide()
-            $("#queueRepayment").hide()
-            $("#depositQueue").show()
-            $("#thirdQueue").hide()
-        } else if (["THIRD"].includes(selectedValue)) {
-            $("#queue").hide()
-            $("#queueRepayment").hide()
-            $("#depositQueue").hide()
-            $("#thirdQueue").show()
-        } else {
-            $("#queue").hide()
-            $("#queueRepayment").hide()
-            $("#depositQueue").hide()
-            $("#thirdQueue").hide()
-        }
-    }*/
 
 </script>
 

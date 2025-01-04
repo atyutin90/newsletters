@@ -60,6 +60,7 @@ val Debtor.debtorDTO get() =
         )
 val DebtorDto.debtor get() = Debtor(
     id = id,
+    arbitrationManagerId = arbitrationManagerId,
     fullName = fullName,
     name = name,
     caseNumber = caseNumber,

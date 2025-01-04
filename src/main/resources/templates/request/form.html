@@ -21,8 +21,8 @@
 
     <div class="my-3">
       <form th:action="@{/debtor/{debtorId}/request/save(debtorId=${debtor.id})}" method="post" enctype="multipart/form-data" th:object="${request}">
-        <input type="hidden" th:field="*{id}"/>
         <div class="p-3">
+          <input type="hidden" th:field="*{id}"/>
           <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -37,7 +37,7 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label class="col-sm-5 col-form-label" for="destinationId" th:text="#{debtor.request.destinationId}"/>
+              <label class="col-form-label" for="destinationId" th:text="#{debtor.request.destinationId}"/>
               <select class="form-control" id="destinationId" th:field="*{destinationId}">
                 <option th:if="${request.destinationId == null}" selected th:value="${null}" th:text="#{choose}"></option>
                 <option th:each="requestDestination : ${requestDestinations}"
@@ -47,18 +47,18 @@
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label class="col-sm-3 col-form-label" for="date" th:text="#{debtor.request.date}"/>
+              <label class="col-form-label" for="date" th:text="#{debtor.request.date}"/>
               <input type="date" name="date" th:value="${request.date}" class="form-control" id="date"/>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label class="col-sm-3 col-form-label" for="dateFrom"
+              <label class="col-form-label" for="dateFrom"
                      th:text="#{debtor.request.dateFrom}"/>
               <input type="date" name="dateFrom" th:value="${request.dateFrom}" class="form-control" id="dateFrom"/>
             </div>
             <div class="form-group col-md-6">
-              <label class="col-sm-3 col-form-label" for="dateTo" th:text="#{debtor.request.dateTo}"/>
+              <label class="col-form-label" for="dateTo" th:text="#{debtor.request.dateTo}"/>
               <input type="date" name="dateTo" th:value="${request.dateTo}" class="form-control" id="dateTo"/>
             </div>
           </div>

@@ -1,5 +1,18 @@
 <div th:fragment="field">
     <div class="form-row">
+        <div class="form-group col-md-12">
+            <label class="col-form-label" for="type" th:text="#{debtor.creditor.queue.queueType}"/>
+            <select class="form-control" id="type" th:field="*{type}">
+                <option th:if="${queue?.type == null}" selected th:value="${null}"
+                        th:text="#{choose}"></option>
+                <option th:each="queueType : ${queueTypes}"
+                        th:value="${queueType.getCode()}"
+                        th:text="${queueType.getValue()}"
+                />
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
         <div class="form-group col-md-6">
             <label class="col-form-label" for="amount" th:text="#{debtor.creditor.queue.amount}"/>
             <input type="number" step="any" name="amount" th:value="${queue.amount}" class="form-control" id="amount"/>
