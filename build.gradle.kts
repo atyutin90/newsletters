@@ -39,6 +39,7 @@ dependencies {
 	implementation("io.github.oshai:kotlin-logging:7.0.0")
 	runtimeOnly("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.flywaydb:flyway-core:9.22.3")
 	// runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
