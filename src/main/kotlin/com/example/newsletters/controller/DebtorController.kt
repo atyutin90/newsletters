@@ -72,7 +72,9 @@ class DebtorController(
 
     @GetMapping("/new")
     fun add(model: Model): String {
+        val arbitrationManagers = arbitrationManagerService.getAll()
         model.addAttribute(DEBTOR, DebtorDto())
+        model.addAttribute(ARBITRATION_MANAGERS, arbitrationManagers)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-debtor", arrayOf(), Locale.getDefault()))
         return "debtor/form"
     }
