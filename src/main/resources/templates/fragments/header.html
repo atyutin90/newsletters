@@ -6,12 +6,12 @@
     </button>
     <div class="collapse navbar-collapse" id="topNavbar">
       <ul class="navbar-nav">
-        <li class="nav-item dropdown">
+<!--        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" th:text="#{generate-data}"></a>
           <div class="dropdown-menu">
             <a class="dropdown-item" th:href="@{/newsletters/new}" th:text="#{newsletters}"></a>
           </div>
-        </li>
+        </li>-->
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" th:text="#{data}"></a>
             <div class="dropdown-menu">
@@ -21,18 +21,18 @@
               <a class="dropdown-item" th:href="@{/court/all}" th:text="#{courts  }"></a>
             </div>
         </li>
-        <li class="nav-item dropdown">
+        <!--<li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" th:text="#{templates}"></a>
           <div class="dropdown-menu">
             <a class="dropdown-item" th:href="@{/template/newsletter/all}" th:text="#{newsletter-templates}"></a>
           </div>
-        </li>
-        <li class="nav-item dropdown">
+        </li>-->
+        <!--<li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" th:text="#{reports}"></a>
           <div class="dropdown-menu">
             <a class="dropdown-item" th:href="@{/file/newsletters}" th:text="#{newsletters}"></a>
           </div>
-        </li>
+        </li>-->
       </ul>
       <ul class="nav navbar-nav ml-auto">
         <form th:action="@{/logout}" method="post">

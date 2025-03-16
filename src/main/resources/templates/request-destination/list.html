@@ -58,15 +58,15 @@
           <tr>
             <th scope="col" th:text="#{id}"></th>
             <th scope="col" th:text="#{request-destination.name}"></th>
-            <th scope="col" th:text="#{request-destination.address}"></th>
+            <th scope="col" th:text="#{request-destination.enabled}"></th>
             <th scope="col" th:text="#{action}"></th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="value : ${data}">
             <th scope="row">[[${value.id}]]</th>
-            <td>[[${value.name}]]</td>
-            <td>[[${value.address}]]</td>
+            <td th:text="${value.name}"></td>
+            <td th:text="${value.enabled} ? #{yes} : #{no}"></td>
             <td>
               <a th:href="@{'/request-destination/' + ${value.id}}" th:title="#{request-destination.edit}" class="fa-regular fa-pen-to-square icon-dark"></a>
               <a th:href="@{'/request-destination/delete/' + ${value.id}}" th:deleteMessage="#{do-you-want-delete-record(${value.name})}" id="btnDelete" th:title="#{request-destination.delete}" class="fa-regular fa-trash-can icon-dark btn-delete"></a>

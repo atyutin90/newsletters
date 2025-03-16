@@ -66,6 +66,12 @@
           </div>
         </div>
         <div class="form-row">
+          <div class="form-group col-md-12">
+            <label class="col-form-label" for="address" th:text="#{addition-information}"/>
+            <textarea rows="5" cols="100" th:field="*{additionInformation}" class="form-control" id="address"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-group col-md-6">
             <label class="col-form-label" for="kommersantIssueNumber" th:text="#{debtor.publication.kommersantIssueNumber}"/>
               <input type="text" name="kommersantIssueNumber" th:value="${publication.kommersantIssueNumber}" class="form-control" id="kommersantIssueNumber"/>

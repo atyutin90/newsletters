@@ -41,7 +41,10 @@ class WorkerMeeting(
     @Column(name = "registration_time_to")
     var registrationTimeTo: LocalTime? = null,
 
-    @Column(name = "address",  nullable = false, length = 500)
+    @Column(name = "address", length = 500)
     var address: String? = null,
+
+    @Column(name = "topic", length = 500)
+    var topic: String? = null,
 
 ) : BaseEntity

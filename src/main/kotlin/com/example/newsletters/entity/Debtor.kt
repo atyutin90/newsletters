@@ -70,4 +70,8 @@ class Debtor(
 
     @Column(name = "registry_closing_date")
     var registryClosingDate: LocalDate? = null,
+
+    @Column(name = "arbitration_case", length = 300)
+    var arbitrationCase: String? = null,
+
 ) : BaseEntity

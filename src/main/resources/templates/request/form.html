@@ -52,6 +52,12 @@
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="col-form-label" for="address" th:text="#{debtor.request.address}"/>
+              <textarea rows= "3" name="address" th:field = "*{address}" class="form-control" id="address"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-md-6">
               <label class="col-form-label" for="dateFrom"
                      th:text="#{debtor.request.dateFrom}"/>

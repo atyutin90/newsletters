@@ -13,4 +13,5 @@ data class PublicationDto(
     val efrsbMessageNumber: String? = null,
     val kommersantIssueNumber: String? = null,
     val debtorId: Long,
+    val additionInformation: String? = null,
 )

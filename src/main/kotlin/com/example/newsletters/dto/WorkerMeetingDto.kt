@@ -11,4 +11,5 @@ data class WorkerMeetingDto(
     val registrationTimeFrom: LocalTime? = null,
     val registrationTimeTo: LocalTime? = null,
     val address: String? = null,
+    val topic: String? = null,
 )

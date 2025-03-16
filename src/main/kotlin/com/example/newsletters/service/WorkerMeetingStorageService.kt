@@ -1,20 +1,11 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DebtorMeetingDto
-import com.example.newsletters.dto.RequestDto
 import com.example.newsletters.dto.WorkerMeetingDto
-import com.example.newsletters.entity.DebtorMeeting
-import com.example.newsletters.entity.Request
-import com.example.newsletters.entity.RequestDestination
 import com.example.newsletters.entity.WorkerMeeting
-import com.example.newsletters.repository.DebtorMeetingRepository
-import com.example.newsletters.repository.RequestRepository
 import com.example.newsletters.repository.WorkerMeetingRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.time.LocalTime
-import java.time.ZonedDateTime
 
 @Service
 class WorkerMeetingStorageService(private val repository: WorkerMeetingRepository) {
@@ -46,6 +37,7 @@ val WorkerMeeting.workerMeetingDTO get() = WorkerMeetingDto(
     registrationTimeFrom = this.registrationTimeFrom,
     registrationTimeTo = this.registrationTimeTo,
     address = this.address,
+    topic = this.topic,
 )
 
 val WorkerMeetingDto.workerMeeting get() = WorkerMeeting(
@@ -56,4 +48,5 @@ val WorkerMeetingDto.workerMeeting get() = WorkerMeeting(
     registrationTimeFrom = this.registrationTimeFrom,
     registrationTimeTo = this.registrationTimeTo,
     address = this.address,
+    topic = this.topic,
 )

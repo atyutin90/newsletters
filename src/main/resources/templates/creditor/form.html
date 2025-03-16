@@ -138,7 +138,7 @@
     </div>
     <div th:if="${creditor?.getId() != null}">
         <div class="text-left">
-            <a th:href="@{/debtor/{debtoId}/creditor/{creditorId}/queue/new(debtoId=${debtor.getId()},creditorId=${creditor.getId()})}"
+            <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/new(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}"
                th:title="#{debtor.creditor.queue.creation}"
                class="fa-regular fa-plus fa-2xl icon-dark"></a>
         </div>
@@ -160,9 +160,9 @@
                             th:if="${queueType.getCode() == queue.type}"
                             th:text="${queueType.getValue()}"/>
                     <td>
-                        <a th:href="@{/debtor/{debtoId}/creditor/{creditorId}/queue/{queueId}(debtoId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
+                        <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/{queueId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
                            th:title="#{edit-queue}" class="fa-regular fa-pen-to-square icon-dark"></a>
-                        <a th:href="@{/debtor/{debtoId}/creditor/{creditorId}/queue/{queueId}/delete(debtoId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
+                        <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}/queue/{queueId}/delete(debtorId=${debtor.getId()},creditorId=${creditor.getId()},queueId=${queue.getId()})}"
                            th:deleteMessage="#{do-you-want-delete-record(${queue.id})}" id="btnDelete"
                            th:title="#{delete-queue}"
                            class="fa-regular fa-trash-can icon-dark btn-delete"></a>

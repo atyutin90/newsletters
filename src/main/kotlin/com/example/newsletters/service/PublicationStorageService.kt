@@ -31,7 +31,8 @@ val Publication.publicationDto: PublicationDto get() = PublicationDto(
     hallNumber = this.hallNumber,
     kommersantMessageNumber = this.kommersantMessageNumber,
     efrsbMessageNumber = this.efrsbMessageNumber,
-    kommersantIssueNumber = this.kommersantIssueNumber
+    kommersantIssueNumber = this.kommersantIssueNumber,
+    additionInformation = this.additionInformation,
 )
 
 val PublicationDto.publication: Publication get() = Publication(
@@ -43,5 +44,6 @@ val PublicationDto.publication: Publication get() = Publication(
     hallNumber = this.hallNumber,
     kommersantMessageNumber = this.kommersantMessageNumber,
     efrsbMessageNumber = this.efrsbMessageNumber,
-    kommersantIssueNumber = this.kommersantIssueNumber
+    kommersantIssueNumber = this.kommersantIssueNumber,
+    additionInformation = this.additionInformation,
 )

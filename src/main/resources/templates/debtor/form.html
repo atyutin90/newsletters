@@ -56,6 +56,18 @@
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="name" th:text="#{debtor.arbitrationCase}"/>
+                        <div class="input-group mb-12">
+                            <input type="text" th:field="*{arbitrationCase}" class="form-control" id="arbitrationCase"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" th:text="#{open}" id="btnArbitrationCaseOpen"></button>
+                                <button class="btn btn-outline-secondary" type="button" th:text="#{copy}" id="btnArbitrationCaseCopy"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-form-label" for="name" th:text="#{debtor.name}"/>
                         <input type="text" th:field="*{name}" required minlength="2" maxlength="128"
@@ -341,10 +353,12 @@
                 </div>
                 <div class="tab-pane fade" id="pills-worker-meetings" role="tabpanel"
                      aria-labelledby="pills-worker-meetings-tab">
-                    <div class="text-left">
-                        <a th:href="@{/debtor/{debtorId}/worker-meeting/new(debtorId=${debtor.getId()})}"
-                           th:title="#{debtor.worker-meeting.creation}"
-                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    <div th:if="${workerMeetings?.size() <= 0}">
+                        <div class="text-left">
+                            <a th:href="@{/debtor/{debtorId}/worker-meeting/new(debtorId=${debtor.getId()})}"
+                               th:title="#{debtor.worker-meeting.creation}"
+                               class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                        </div>
                     </div>
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting}"/>
@@ -396,7 +410,18 @@
             $("#confirmModal").modal();
         });
 
+        $("#btnArbitrationCaseCopy").on("click", function () {
+            const arbitrationCase = document.getElementById("arbitrationCase");
+            arbitrationCase.select();
+            navigator.clipboard.writeText(arbitrationCase.value);
+        });
+
+        $("#btnArbitrationCaseOpen").on("click", function () {
+            const arbitrationCase = document.getElementById("arbitrationCase");
+            window.open(arbitrationCase.value).focus()
+        });
     });
+    
 </script>
 
 </body>

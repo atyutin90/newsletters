@@ -18,5 +18,6 @@ data class DebtorDto(
     val registryDate: LocalDate? = null,
     val registryClosingDate: LocalDate? = null,
     val debtorMeeting: DebtorMeetingDto? = null,
-    val publications: List<PublicationDto> = mutableListOf()
+    val publications: List<PublicationDto> = mutableListOf(),
+    var arbitrationCase: String? = null
 )

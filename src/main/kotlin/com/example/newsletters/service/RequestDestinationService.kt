@@ -19,5 +19,5 @@ class RequestDestinationService(val repository: RequestDestinationRepository) {
     fun update(data: RequestDestinationDto) = repository.save(data.requestDestination)
 }
 
-val RequestDestination.requestDestinationDTO get() = RequestDestinationDto(id = id, name = name, address = address)
-val RequestDestinationDto.requestDestination get() = RequestDestination(id = id, name = name, address = address)
+val RequestDestination.requestDestinationDTO get() = RequestDestinationDto(id = id, name = name, enabled = enabled)
+val RequestDestinationDto.requestDestination get() = RequestDestination(id = id, name = name, enabled = enabled ?: true)

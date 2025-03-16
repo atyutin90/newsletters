@@ -27,6 +27,7 @@ private val Request.requestDTO: RequestDto get() = RequestDto(
     date = date,
     dateFrom = dateFrom,
     dateTo = dateTo,
+    address = address
 )
 
 private val RequestDto.request: Request get() = Request(
@@ -35,5 +36,6 @@ private val RequestDto.request: Request get() = Request(
     date = date,
     dateFrom = dateFrom,
     dateTo = dateTo,
-    requestDestination = destinationId?.let { RequestDestination(destinationId) }
+    requestDestination = destinationId?.let { RequestDestination(destinationId) },
+    address = address
 )

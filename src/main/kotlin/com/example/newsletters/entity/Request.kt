@@ -59,5 +59,8 @@ class Request(
     )
     var dateTo: LocalDate? = null,
 
+    @Column(name = "address", length = 500)
+    var address: String? = null,
+
     ) : BaseEntity
 

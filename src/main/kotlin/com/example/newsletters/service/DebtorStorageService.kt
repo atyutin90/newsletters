@@ -57,6 +57,7 @@ val Debtor.debtorDTO get() =
         primaryStateRegistrationNumber = primaryStateRegistrationNumber,
         registryDate = registryDate,
         registryClosingDate = registryClosingDate,
+        arbitrationCase = arbitrationCase
         )
 val DebtorDto.debtor get() = Debtor(
     id = id,
@@ -73,4 +74,5 @@ val DebtorDto.debtor get() = Debtor(
     primaryStateRegistrationNumber = primaryStateRegistrationNumber,
     registryDate = registryDate,
     registryClosingDate = registryClosingDate,
+    arbitrationCase = arbitrationCase
 )

@@ -1,8 +1,12 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.DebtorDto
+import com.example.newsletters.dto.RequestDestinationDto
 import com.example.newsletters.dto.WorkerMeetingDto
+import com.example.newsletters.dto.WorkerMeetingParticipantDto
+import com.example.newsletters.entity.WorkerMeetingParticipant
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.WorkerMeetingParticipantStorageService
 import com.example.newsletters.service.WorkerMeetingStorageService
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
@@ -19,6 +23,7 @@ import java.util.*
 class WorkerMeetingController(
     val debtorStorageService: DebtorStorageService,
     val workerMeetingService: WorkerMeetingStorageService,
+    val workerMeetingParticipantService: WorkerMeetingParticipantStorageService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
@@ -45,8 +50,10 @@ class WorkerMeetingController(
         model: Model,
         redirectAttributes: RedirectAttributes): String = try {
         val workerMeeting: WorkerMeetingDto = workerMeetingService.getById(workerMeetingId)
+        val requestDestinations: List<WorkerMeetingParticipantDto> = workerMeetingParticipantService.getByWorkerMeetingId(workerMeetingId)
         val debtor: DebtorDto = debtorStorageService.getById(id)
         model.addAttribute(WORKER_MEETING, workerMeeting)
+        model.addAttribute(WORKER_MEETING_PARTICIPANTS, requestDestinations)
         model.addAttribute(DEBTOR, debtor)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.worker-meeting.update", arrayOf(workerMeetingId), Locale.getDefault()))
         "worker-meeting/form"

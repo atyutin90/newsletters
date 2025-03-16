@@ -10,12 +10,9 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
-/**
- * Место назначения запроса.
- */
 @Entity
-@Table(name = "request_destination")
-class RequestDestination(
+@Table(name = "worker_meeting_participant")
+class WorkerMeetingParticipant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
@@ -27,10 +24,12 @@ class RequestDestination(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
-    @Column(columnDefinition = "boolean default true")
-    var enabled: Boolean = true,
+    @Column(name = "full_name", length = 256)
+    var fullName: String? = null,
 
-    @Column(name = "name")
-    var name: String? = null,
+    @Column(name = "address", length = 500)
+    var address: String? = null,
 
-) : BaseEntity
+    @Column(name = "worker_meeting_id", nullable = true,)
+    var workerMeetingId: Long,
+): BaseEntity

@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
     <title>Newsletters</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
@@ -61,6 +64,12 @@
                         <textarea rows= "3" name="address" th:field = "*{address}" class="form-control" id="address"></textarea>
                         </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="topic" th:text="#{debtor.worker-meeting.topic}"/>
+                        <textarea rows= "3" name="topic" th:field = "*{topic}" class="form-control" id="topic"></textarea>
+                    </div>
+                </div>
 
                 <div class="text-center">
                     <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
@@ -68,6 +77,41 @@
                 </div>
             </div>
         </form>
+        <div th:if="${workerMeeting?.id != null}">
+            <div class="text-left">
+                <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/new(debtorId=${debtor.getId()},workerMeetingId=${workerMeeting.getId()})}"
+                   th:title="#{debtor.worker-meeting.worker-meeting-participant.creation}"
+                   class="fa-regular fa-plus fa-2xl icon-dark"></a>
+            </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting.worker-meeting-participants}"/>
+
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.id}"></th>
+                                <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.fullName}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="workerMeetingParticipant : ${workerMeetingParticipants}">
+                                <td th:text="${workerMeetingParticipant.id}"/>
+                                <td th:text="${workerMeetingParticipant.fullName}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
+                                       th:title="#{debtor.edit-worker-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{debtor.delete-worker-meeting-participant}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+        </div>
     </div>
 </div>
 

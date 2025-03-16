@@ -9,4 +9,5 @@ data class RequestDto(
     val date: LocalDate? = null,
     val dateFrom: LocalDate? = null,
     val dateTo: LocalDate? = null,
+    val address: String? = null,
 )

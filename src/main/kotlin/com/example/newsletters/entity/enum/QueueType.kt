@@ -5,13 +5,10 @@ import com.example.newsletters.annotation.ValueList
 @ValueList("queueType")
 enum class QueueType {
     FIRST,
-    FIRST_REPAYMENT,
     SECOND,
-    SECOND_REPAYMENT,
     THIRD,
     THIRD_REPAYMENT,
-    THIRD_DEPOSIT,
-    THIRD_REPAYMENT_DEPOSIT;
+    THIRD_DEPOSIT;
 
     companion object {
         fun queueTypeOf(value: String?): QueueType? =
