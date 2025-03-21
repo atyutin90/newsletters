@@ -1,11 +1,9 @@
 package com.example.newsletters.service
 
 import com.example.newsletters.dto.CourtDto
-import com.example.newsletters.dto.RequestDestinationDto
 import com.example.newsletters.entity.Court
-import com.example.newsletters.entity.RequestDestination
 import com.example.newsletters.repository.CourtRepository
-import com.example.newsletters.repository.RequestDestinationRepository
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -18,7 +16,9 @@ class CourtService(val repository: CourtRepository) {
     fun getById(id: Long) = repository.findById(id).map { it.courtDto }.orElse(null)
     fun getByIds(ids: List<Long>) = repository.findAllById(ids).map { it.courtDto }
     fun delete(id: Long) = repository.deleteById(id)
+    @Transactional
     fun create(data: CourtDto) = repository.save(data.court)
+    @Transactional
     fun update(data: CourtDto) = repository.save(data.court)
 }
 

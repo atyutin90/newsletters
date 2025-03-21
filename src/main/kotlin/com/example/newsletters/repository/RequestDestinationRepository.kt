@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RequestDestinationRepository : JpaRepository<RequestDestination, Long> {
 
+    fun findAllByOrderByNameAsc(): List<RequestDestination>
+
     fun findByNameContainingIgnoreCase(keyword: String): List<RequestDestination>
 
     fun findByNameContainingIgnoreCase(name: String, paging: Pageable): Page<RequestDestination>

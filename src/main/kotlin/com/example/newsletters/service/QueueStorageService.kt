@@ -4,6 +4,7 @@ import com.example.newsletters.dto.QueueDto
 import com.example.newsletters.entity.Queue
 import com.example.newsletters.entity.enum.QueueType
 import com.example.newsletters.repository.QueueRepository
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -15,7 +16,9 @@ class QueueStorageService(private val repository: QueueRepository) {
     fun getById(id: Long) = repository.findById(id).map { it.queueDto }.orElse(null)
     fun getByIds(ids: List<Long>) = repository.findAllById(ids).map { it.queueDto }
     fun delete(id: Long) = repository.deleteById(id)
+    @Transactional
     fun create(creditor: QueueDto) = repository.save(creditor.queue)
+    @Transactional
     fun update(creditor: QueueDto) = repository.save(creditor.queue)
 }
 
