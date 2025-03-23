@@ -12,8 +12,6 @@ data class CreditorDto(
     val passportSerial: String? = null,
     val passportNumber: String? = null,
     val address: String? = null,
-    val principalAmount: BigDecimal? = null,
-    val stateDutyAmount : BigDecimal? = null,
     val executionWrit : String? = null,
     val executionDate : LocalDate? = null
 )

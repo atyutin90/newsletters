@@ -33,9 +33,6 @@ class Queue(
     @Column(name = "type", length = 50)
     var type: QueueType? = null,
 
-    @Column(name = "amount")
-    var amount: BigDecimal? = null,
-
     @Column(name = "entry_date")
     var entryDate: LocalDate? = null,
 
@@ -60,9 +57,6 @@ class Queue(
     @Column(name = "repayment_doc_details")
     var repaymentDocumentDetails: String? = null,
 
-    @Column(name = "repayment_amount")
-    var repaymentAmount: BigDecimal? = null,
-
     @Column(name = "outstanding_amount")
     var outstandingAmount: BigDecimal? = null,
 
@@ -85,6 +79,25 @@ class Queue(
     var fineType: String? = null,
 
     @Column(name = "fine_amount")
-    var fineAmount: BigDecimal? = null
+    var fineAmount: BigDecimal? = null,
+
+//--------------------------------------------
+    @Column(name = "principal_amount")
+    var principalAmount: BigDecimal? = null,
+
+    @Column(name = "state_duty_amount")
+    var stateDutyAmount: BigDecimal? = null,
+
+    @Column(name = "percent_amount")
+    var percentAmount: BigDecimal? = null,
+
+    @Column(name = "penalty_amount")
+    var penaltyAmount: BigDecimal? = null,
+
+    @Column(name = "fine")
+    var fine: BigDecimal? = null,
+
+    @Column(name = "percent_on_percent_amount")
+    var percentOnPercentAmount: BigDecimal? = null,
 
 ): BaseEntity

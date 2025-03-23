@@ -51,12 +51,6 @@ class Creditor(
     @Column(name = "address", length = 500)
     var address: String? = null,
 
-    @Column(name = "principal_amount")
-    var principalAmount: BigDecimal? = null,
-
-    @Column(name = "state_duty_amount")
-    var stateDutyAmount : BigDecimal? = null,
-
     @Column(name = "execution_writ", length = 100)
     var executionWrit : String? = null,
 

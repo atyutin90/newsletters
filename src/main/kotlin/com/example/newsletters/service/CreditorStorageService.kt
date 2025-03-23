@@ -32,8 +32,6 @@ val Creditor.creditorDTO get() = CreditorDto(
     address = address,
     passportSerial = passportSerial?.toString(),
     passportNumber = passportNumber?.toString(),
-    principalAmount = principalAmount,
-    stateDutyAmount = stateDutyAmount,
     executionWrit = executionWrit,
     executionDate = executionDate
 )
@@ -48,8 +46,6 @@ val CreditorDto.creditor get() = Creditor(
     address = address,
     passportSerial = passportSerial?.toIntOrNull(),
     passportNumber = passportNumber?.toIntOrNull(),
-    principalAmount = principalAmount,
-    stateDutyAmount = stateDutyAmount,
     executionWrit = executionWrit,
     executionDate = executionDate
 )

@@ -61,8 +61,6 @@ CREATE TABLE IF NOT EXISTS creditor
     passport_serial                   INTEGER,
     passport_number                   INTEGER,
     address                           VARCHAR(500),
-    principal_amount                  DECIMAL,
-    state_duty_amount                 DECIMAL,
     execution_writ                    VARCHAR(100),
     execution_date                    date,
     CONSTRAINT fk_creditor_debtor_id FOREIGN KEY (debtor_id) REFERENCES debtor (id)
@@ -129,7 +127,6 @@ CREATE TABLE IF NOT EXISTS queue
     updated_at                   TIMESTAMP WITHOUT TIME ZONE,
     creditor_id                  BIGINT,
     type                         VARCHAR(50),
-    amount                       DECIMAL,
     entry_date                   date,
     obligation_type              VARCHAR(255),
     doc_number_reason_claim      VARCHAR(255),
@@ -138,7 +135,6 @@ CREATE TABLE IF NOT EXISTS queue
     determination                VARCHAR(255),
     repayment_date               date,
     repayment_doc_details        VARCHAR(255),
-    repayment_amount             DECIMAL,
     outstanding_amount           DECIMAL,
     exclusion_from_register_date date,
     exclusion_doc                VARCHAR(255),
@@ -147,6 +143,13 @@ CREATE TABLE IF NOT EXISTS queue
     deposit_amount               DECIMAL,
     fine_type                    VARCHAR(255),
     fine_amount                  DECIMAL,
+
+    principal_amount             DECIMAL,
+    state_duty_amount            DECIMAL,
+    percent_amount               DECIMAL,
+    penalty_amount               DECIMAL,
+    fine                         DECIMAL,
+    percent_on_percent_amount    DECIMAL,
     CONSTRAINT fk_queue_creditor_id FOREIGN KEY (creditor_id) REFERENCES creditor (id)
 );
 
