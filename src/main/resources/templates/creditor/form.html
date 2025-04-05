@@ -41,7 +41,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="col-form-label" for="clientType" th:text="#{debtor.creditor.clientType}"/>
-                        <select class="form-control" id="clientType" th:field="*{clientType}">
+                        <select class="form-control" id="clientType" th:field="*{clientType}" onchange="toggleFields()">
                             <option th:if="${creditor?.clientType == null}" selected th:value="${null}"
                                     th:text="#{choose}"></option>
                             <option th:each="clientType : ${clientTypes}"
@@ -63,7 +63,7 @@
                                th:value="${creditor.taxpayerIdentificationNumber}" class="form-control"
                                id="taxpayerIdentificationNumber"/>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6" id="primaryStateRegistrationNumberInfo" style="display: none;">
                         <label class="col-form-label" for="primaryStateRegistrationNumber"
                                th:text="#{debtor.creditor.primaryStateRegistrationNumber}"/>
                         <input type="text" name="primaryStateRegistrationNumber"
@@ -72,14 +72,14 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6" id="passportSerialInfo" style="display: none;">
                         <label class="col-form-label" for="passportSerial"
                                th:text="#{debtor.creditor.passport-serial}"/>
                         <input type="text" name="passportSerial"
                                th:value="${creditor.passportSerial}" class="form-control"
                                id="passportSerial"/>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6" id="passportNumberInfo" style="display: none;">
                         <label class="col-form-label" for="passportNumber"
                                th:text="#{debtor.creditor.passport-number}"/>
                         <input type="text" name="passportNumber"
@@ -167,6 +167,13 @@
             window.location = "[[@{/debtor/{debtorId}(debtorId=${debtor.id})}]]";
         });
     });
+    function toggleFields() {
+        const type = document.getElementById("clientType").value;
+        document.getElementById("passportNumberInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("passportSerialInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("primaryStateRegistrationNumberInfo").style.display = type === "LEGAL" ? "block" : "none";
+    }
+    document.addEventListener("DOMContentLoaded", function() { toggleFields(); });
 </script>
 
 </body>

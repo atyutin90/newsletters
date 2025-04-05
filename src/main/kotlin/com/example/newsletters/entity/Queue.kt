@@ -57,11 +57,17 @@ class Queue(
     @Column(name = "repayment_doc_details")
     var repaymentDocumentDetails: String? = null,
 
+    @Column(name = "repayment_amount")
+    var repaymentAmount: BigDecimal? = null,
+
     @Column(name = "outstanding_amount")
     var outstandingAmount: BigDecimal? = null,
 
     @Column(name = "exclusion_from_register_date")
     var exclusionFromRegisterDate: LocalDate? = null,
+
+    @Column(name = "exclusion_from_register")
+    var exclusionFromRegister: Boolean = false,
 
     @Column(name = "exclusion_doc")
     var exclusionDocument: String? = null,
@@ -75,13 +81,6 @@ class Queue(
     @Column(name = "deposit_amount")
     var depositAmount: BigDecimal? = null,
 
-    @Column(name = "fine_type")
-    var fineType: String? = null,
-
-    @Column(name = "fine_amount")
-    var fineAmount: BigDecimal? = null,
-
-//--------------------------------------------
     @Column(name = "principal_amount")
     var principalAmount: BigDecimal? = null,
 

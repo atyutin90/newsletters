@@ -50,10 +50,10 @@ class WorkerMeetingController(
         model: Model,
         redirectAttributes: RedirectAttributes): String = try {
         val workerMeeting: WorkerMeetingDto = workerMeetingService.getById(workerMeetingId)
-        val requestDestinations: List<WorkerMeetingParticipantDto> = workerMeetingParticipantService.getByWorkerMeetingId(workerMeetingId)
+        val participants: List<WorkerMeetingParticipantDto> = workerMeetingParticipantService.getByWorkerMeetingId(workerMeetingId)
         val debtor: DebtorDto = debtorStorageService.getById(id)
         model.addAttribute(WORKER_MEETING, workerMeeting)
-        model.addAttribute(WORKER_MEETING_PARTICIPANTS, requestDestinations)
+        model.addAttribute(WORKER_MEETING_PARTICIPANTS, participants)
         model.addAttribute(DEBTOR, debtor)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.worker-meeting.update", arrayOf(workerMeetingId), Locale.getDefault()))
         "worker-meeting/form"

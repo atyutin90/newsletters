@@ -80,41 +80,95 @@
             </div>
         </form>
         <div th:if="${debtorMeeting?.id != null}">
-            <div class="text-left">
-                <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/new(debtorId=${debtor.getId()},debtorMeetingId=${debtorMeeting.getId()})}"
-                   th:title="#{debtor.debtor-meeting.debtor-meeting-question.creation}"
-                   class="fa-regular fa-plus fa-2xl icon-dark"></a>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-debtor-meeting-questions-tab" data-toggle="pill"
+                            data-target="#pills-debtor-meeting-questions"
+                            type="button" role="tab" aria-controls="pills-debtor-meeting-questions" aria-selected="true"
+                            th:text="#{debtor.debtor-meeting.debtor-meeting-questions}"></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-debtor-meeting-participants-tab" data-toggle="pill"
+                            data-target="#pills-debtor-meeting-participants"
+                            type="button" role="tab" aria-controls="pills-debtor-meeting-participants" aria-selected="true"
+                            th:text="#{debtor.debtor-meeting.debtor-meeting-participants}"></button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-debtor-meeting-questions" role="tabpanel"
+                     aria-labelledby="pills-debtor-meeting-questions-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/new(debtorId=${debtor.getId()},debtorMeetingId=${debtorMeeting.getId()})}"
+                           th:title="#{debtor.debtor-meeting.debtor-meeting-question.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.debtor-meeting.debtor-meeting-questions}"/>
+
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.id}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.position}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.question}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="debtorMeetingQuestion : ${debtorMeetingQuestions}">
+                                <td th:text="${debtorMeetingQuestion.id}"/>
+                                <td th:text="${debtorMeetingQuestion.position}"/>
+                                <td th:text="${debtorMeetingQuestion.question}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
+                                       th:title="#{debtor.edit-debtor-meeting-question}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{debtor.delete-debtor-meeting-question}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </div>
+                <!--debtor-meeting-participants-->
+                <div class="tab-pane fade " id="pills-debtor-meeting-participants" role="tabpanel"
+                     aria-labelledby="pills-debtor-meeting-participants-tab">
+                    <div class="text-left">
+                        <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/new(debtorId=${debtor.getId()},debtorMeetingId=${debtorMeeting.getId()})}"
+                           th:title="#{debtor.debtor-meeting.debtor-meeting-participant.creation}"
+                           class="fa-regular fa-plus fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.debtor-meeting.debtor-meeting-participants}"/>
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.id}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.fullName}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="debtorMeetingParticipant : ${debtorMeetingParticipants}">
+                                <td th:text="${debtorMeetingParticipant.id}"/>
+                                <td th:text="${debtorMeetingParticipant.fullName}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/{debtorMeetingParticipantId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingParticipantId=${debtorMeetingParticipant.id})}"
+                                       th:title="#{debtor.edit-debtor-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/{debtorMeetingParticipantId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingParticipantId=${debtorMeetingParticipant.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:title="#{debtor.delete-debtor-meeting-participant}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
             </div>
-            <fieldset class="border p-2">
-                <legend class="float-none w-auto p-2" th:text="#{debtor.debtor-meeting.debtor-meeting-participants}"/>
-
-                <table class="table">
-                    <thead class="thead-light">
-                    <tr>
-                        <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.id}"></th>
-                        <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.position}"></th>
-                        <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-question.question}"></th>
-                        <th scope="col" th:text="#{action}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="debtorMeetingQuestion : ${debtorMeetingQuestions}">
-                        <td th:text="${debtorMeetingQuestion.id}"/>
-                        <td th:text="${debtorMeetingQuestion.position}"/>
-                        <td th:text="${debtorMeetingQuestion.question}"/>
-                        <td>
-                            <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
-                               th:title="#{debtor.edit-debtor-meeting-question}" class="fa-regular fa-pen-to-square icon-dark"></a>
-                            <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
-                               th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
-                               th:title="#{debtor.delete-debtor-meeting-question}"
-                               class="fa-regular fa-trash-can icon-dark btn-delete"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </fieldset>
         </div>
     </div>
 </div>

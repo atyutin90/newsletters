@@ -83,34 +83,32 @@
                    th:title="#{debtor.worker-meeting.worker-meeting-participant.creation}"
                    class="fa-regular fa-plus fa-2xl icon-dark"></a>
             </div>
-                    <fieldset class="border p-2">
-                        <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting.worker-meeting-participants}"/>
-
-                        <table class="table">
-                            <thead class="thead-light">
-                            <tr>
-                                <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.id}"></th>
-                                <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.fullName}"></th>
-                                <th scope="col" th:text="#{action}"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="workerMeetingParticipant : ${workerMeetingParticipants}">
-                                <td th:text="${workerMeetingParticipant.id}"/>
-                                <td th:text="${workerMeetingParticipant.fullName}"/>
-                                <td>
-                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
-                                       th:title="#{debtor.edit-worker-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
-                                    <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
-                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
-                                       th:title="#{debtor.delete-worker-meeting-participant}"
-                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </fieldset>
+            <fieldset class="border p-2">
+                <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting.worker-meeting-participants}"/>
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.id}"></th>
+                        <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.fullName}"></th>
+                        <th scope="col" th:text="#{action}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="workerMeetingParticipant : ${workerMeetingParticipants}">
+                        <td th:text="${workerMeetingParticipant.id}"/>
+                        <td th:text="${workerMeetingParticipant.fullName}"/>
+                        <td>
+                            <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
+                               th:title="#{debtor.edit-worker-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
+                            <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
+                               th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                               th:title="#{debtor.delete-worker-meeting-participant}"
+                               class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
         </div>
     </div>
 </div>

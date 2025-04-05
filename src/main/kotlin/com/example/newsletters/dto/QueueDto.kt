@@ -1,6 +1,5 @@
 package com.example.newsletters.dto
 
-import jakarta.persistence.Column
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -16,14 +15,14 @@ data class QueueDto(
     val determination: String? = null,
     val repaymentDate: LocalDate? = null,
     val repaymentDocumentDetails: String? = null,
+    val repaymentAmount: BigDecimal? = null,
     val outstandingAmount: BigDecimal? = null,
     val exclusionFromRegisterDate: LocalDate? = null,
+    val exclusionFromRegister: Boolean? = null,
     val exclusionDocument: String? = null,
     val depositLocation: String? = null,
     val depositDocumentDetails: String? = null,
     val depositAmount: BigDecimal? = null,
-    val fineType: String? = null,
-    val fineAmount: BigDecimal? = null,
     val principalAmount: BigDecimal? = null,
     val stateDutyAmount: BigDecimal? = null,
     val percentAmount: BigDecimal? = null,

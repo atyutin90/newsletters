@@ -1,8 +1,7 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.DebtorMeetingDto
-import com.example.newsletters.dto.DebtorMeetingQuestionDto
+import com.example.newsletters.dto.*
+import com.example.newsletters.service.DebtorMeetingParticipantStorageService
 import com.example.newsletters.service.DebtorMeetingQuestionStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService
 import com.example.newsletters.service.DebtorStorageService
@@ -22,6 +21,7 @@ class DebtorMeetingController(
     val debtorStorageService: DebtorStorageService,
     val debtorMeetingService: DebtorMeetingStorageService,
     val debtorMeetingQuestionService: DebtorMeetingQuestionStorageService,
+    val debtorMeetingParticipantService: DebtorMeetingParticipantStorageService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
@@ -58,9 +58,11 @@ class DebtorMeetingController(
     ): String = try {
         val debtorMeeting: DebtorMeetingDto = debtorMeetingService.getById(debtorMeetingId)
         val questions: List<DebtorMeetingQuestionDto> = debtorMeetingQuestionService.getByWorkerMeetingId(debtorMeetingId)
+        val participants: List<DebtorMeetingParticipantDto> = debtorMeetingParticipantService.getByDebtorMeetingId(debtorMeetingId)
         val debtor: DebtorDto = debtorStorageService.getById(id)
         model.addAttribute(DEBTOR_MEETING, debtorMeeting)
         model.addAttribute(DEBTOR_MEETING_QUESTIONS, questions)
+        model.addAttribute(DEBTOR_MEETING_PARTICIPANTS, participants)
         model.addAttribute(DEBTOR, debtor)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-debtor-meeting", arrayOf(debtorMeetingId), Locale.getDefault()))
         "debtor-meeting/form"
