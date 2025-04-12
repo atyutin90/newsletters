@@ -33,7 +33,7 @@
                     <div class="form-group col-md-6">
                         <a th:href="@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}"
                            th:title="#{creditor}"
-                           th:text="${creditor.name}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
                            id="debtorName">
                         </a>
                     </div>
@@ -58,6 +58,40 @@
             window.location = "[[@{/debtor/{debtorId}/creditor/{creditorId}(debtorId=${debtor.getId()},creditorId=${creditor.getId()})}]]";
         });
     });
+
+   function toggleDepositFields() {
+       const type = document.getElementById("type").value;
+       document.getElementById("depositLocationInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       document.getElementById("depositAmountInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       document.getElementById("depositDocumentDetailsInfoForm").style.display = type === "THIRD_DEPOSIT" ? "block" : "none";
+       if (type !== "THIRD_DEPOSIT") {
+           document.getElementById("depositLocation").value = null;
+           document.getElementById("depositAmount").value = null;
+           document.getElementById("depositDocumentDetails").value = null;
+       }
+   }
+
+   function toggleExclusionFromRegisterFields() {
+       const exclusionFromRegister = document.getElementById("exclusionFromRegister");
+       document.getElementById("repaymentDateInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("repaymentDocumentDetailsInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("repaymentDocumentDetailsInfoForm").value = !exclusionFromRegister.checked ? null : "none";
+       document.getElementById("repaymentAmountInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("outstandingAmountInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("exclusionFromRegisterDateInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       document.getElementById("exclusionDocumentInfoForm").style.display = exclusionFromRegister.checked ? "block" : "none";
+       if (!exclusionFromRegister.checked) {
+           document.getElementById("repaymentDocumentDetails").value = null;
+           document.getElementById("repaymentDate").value = null;
+           document.getElementById("repaymentAmount").value = null;
+           document.getElementById("outstandingAmount").value = null;
+           document.getElementById("exclusionFromRegisterDate").value = null;
+           document.getElementById("exclusionDocument").value = null;
+       }
+   }
+
+   document.addEventListener("DOMContentLoaded", function() { toggleDepositFields(); });
+   document.addEventListener("DOMContentLoaded", function() { toggleExclusionFromRegisterFields(); });
 
 </script>
 

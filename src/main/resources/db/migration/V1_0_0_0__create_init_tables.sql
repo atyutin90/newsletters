@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS debtor_meeting_participant
     created_at             TIMESTAMP WITHOUT TIME ZONE,
     updated_at             TIMESTAMP WITHOUT TIME ZONE,
     debtor_meeting_id      BIGINT,
-    full_name              VARCHAR(256),
+    name                   VARCHAR(256),
     address                VARCHAR(500),
     CONSTRAINT fk_debtor_meeting_participant_debtor_meeting_id FOREIGN KEY (debtor_meeting_id) REFERENCES debtor_meeting (id)
 );
@@ -183,6 +183,7 @@ CREATE TABLE IF NOT EXISTS request
     debtor_id      BIGINT,
     address        VARCHAR(500),
     destination_id BIGINT NOT NULL,
+    destination_detail  VARCHAR(256),
     date           DATE,
     date_from      DATE,
     date_to        DATE,

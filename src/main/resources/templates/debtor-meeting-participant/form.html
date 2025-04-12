@@ -9,6 +9,9 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
@@ -28,7 +31,7 @@
                     <div class="form-group col-md-6">
                         <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtorMeeting.getDebtorId()},wdebtorMeetingId=${debtorMeeting.getId()})}"
                            th:title="#{debtor.debtor-meeting}"
-                           th:text="#{debtor.debtor-meeting}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
                            id="debtorName">
                         </a>
                     </div>
@@ -37,8 +40,8 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label class="col-form-label" for="fullName" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.fullName}"/>
-                        <input type="text" name="fullName" th:value="${debtorMeetingParticipant.fullName}" class="form-control" id="fullName"/>
+                        <label class="col-form-label" for="fullName" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.name}"/>
+                        <input type="text" name="name" th:value="${debtorMeetingParticipant.name}" class="form-control" id="fullName"/>
                     </div>
                 </div>
                 <div class="form-row">

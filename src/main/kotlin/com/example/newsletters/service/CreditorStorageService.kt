@@ -3,6 +3,7 @@ package com.example.newsletters.service
 import com.example.newsletters.dto.CreditorDto
 import com.example.newsletters.entity.Creditor
 import com.example.newsletters.entity.enum.ClientType
+import com.example.newsletters.entity.enum.ClientType.Companion.clientTypeOf
 import com.example.newsletters.repository.CreditorRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
@@ -36,16 +37,19 @@ val Creditor.creditorDTO get() = CreditorDto(
     executionDate = executionDate
 )
 
-val CreditorDto.creditor get() = Creditor(
-    id = id,
-    debtorId = debtorId,
-    clientType = ClientType.clientTypeOf(clientType),
-    name = name,
-    taxpayerIdentificationNumber = taxpayerIdentificationNumber,
-    primaryStateRegistrationNumber = primaryStateRegistrationNumber,
-    address = address,
-    passportSerial = passportSerial?.toIntOrNull(),
-    passportNumber = passportNumber?.toIntOrNull(),
-    executionWrit = executionWrit,
-    executionDate = executionDate
-)
+val CreditorDto.creditor get() = run {
+    val clientType = clientTypeOf(clientType)
+    Creditor(
+        id = id,
+        debtorId = debtorId,
+        clientType = clientType,
+        name = name,
+        taxpayerIdentificationNumber = taxpayerIdentificationNumber,
+        primaryStateRegistrationNumber = if (clientType == ClientType.LEGAL) primaryStateRegistrationNumber else null,
+        address = address,
+        passportSerial = if (clientType == ClientType.INDIVIDUAL) passportSerial?.toIntOrNull() else null,
+        passportNumber = if (clientType == ClientType.INDIVIDUAL) passportNumber?.toIntOrNull() else null,
+        executionWrit = executionWrit,
+        executionDate = executionDate
+    )
+}

@@ -34,7 +34,7 @@ val DebtorMeetingParticipant.debtorMeetingParticipantDTO
     get() = DebtorMeetingParticipantDto(
         id = this.id,
         debtorMeetingId = this.debtorMeetingId,
-        fullName = this.fullName,
+        name = this.name,
         address = this.address,
     )
 
@@ -42,6 +42,6 @@ val DebtorMeetingParticipantDto.debtorMeetingParticipant
     get() = DebtorMeetingParticipant(
         id = this.id,
         debtorMeetingId = this.debtorMeetingId,
-        fullName = this.fullName,
+        name = this.name,
         address = this.address,
     )

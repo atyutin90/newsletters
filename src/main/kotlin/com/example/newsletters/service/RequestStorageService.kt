@@ -16,28 +16,34 @@ class RequestStorageService(private val requestRepository: RequestRepository) {
     fun getById(id: Long) = requestRepository.findById(id).map { it.requestDTO }.orElse(null)
     fun getByIds(ids: List<Long>) = requestRepository.findAllById(ids).map { it.requestDTO }
     fun delete(id: Long) = requestRepository.deleteById(id)
+
     @Transactional
     fun create(request: RequestDto) = requestRepository.save(request.request)
+
     @Transactional
     fun update(request: RequestDto) = requestRepository.save(request.request)
 }
 
-private val Request.requestDTO: RequestDto get() = RequestDto(
-    id = id,
-    debtorId = debtorId,
-    destinationId = requestDestination?.id,
-    date = date,
-    dateFrom = dateFrom,
-    dateTo = dateTo,
-    address = address
-)
+private val Request.requestDTO: RequestDto
+    get() = RequestDto(
+        id = id,
+        debtorId = debtorId,
+        destinationId = destination?.id,
+        destinationDetail = destinationDetail,
+        date = date,
+        dateFrom = dateFrom,
+        dateTo = dateTo,
+        address = address
+    )
 
-private val RequestDto.request: Request get() = Request(
-    id = id,
-    debtorId = debtorId ?: 0L,
-    date = date,
-    dateFrom = dateFrom,
-    dateTo = dateTo,
-    requestDestination = destinationId?.let { RequestDestination(destinationId) },
-    address = address
-)
+private val RequestDto.request: Request
+    get() = Request(
+        id = id,
+        debtorId = debtorId,
+        destinationDetail = if (destinationId == 1L) destinationDetail else null,
+        date = date,
+        dateFrom = dateFrom,
+        dateTo = dateTo,
+        destination = destinationId?.let { RequestDestination(destinationId) },
+        address = address
+    )

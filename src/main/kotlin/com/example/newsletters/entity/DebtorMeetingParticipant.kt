@@ -24,8 +24,8 @@ class DebtorMeetingParticipant(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
-    @Column(name = "full_name", length = 256)
-    var fullName: String? = null,
+    @Column(name = "name", length = 256)
+    var name: String? = null,
 
     @Column(name = "address", length = 500)
     var address: String? = null,

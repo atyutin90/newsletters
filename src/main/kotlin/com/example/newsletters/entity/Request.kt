@@ -39,7 +39,10 @@ class Request(
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
-    val requestDestination: RequestDestination? = null,
+    val destination: RequestDestination? = null,
+
+    @Column(name = "destination_detail")
+    val destinationDetail: String? = null,
 
     @Column(
         name = "date",

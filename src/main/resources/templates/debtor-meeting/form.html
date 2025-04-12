@@ -31,7 +31,7 @@
                     <div class="form-group col-md-6">
                         <a th:href="@{/debtor/{debtorId}(debtorId=${debtor.getId()})}"
                            th:title="#{debtor}"
-                           th:text="${debtor.name}"
+                           class="fa-solid fa-reply fa-2xl icon-dark"
                            id="debtorName">
                         </a>
                     </div>
@@ -147,14 +147,14 @@
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.id}"></th>
-                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.fullName}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.name}"></th>
                                 <th scope="col" th:text="#{action}"></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="debtorMeetingParticipant : ${debtorMeetingParticipants}">
                                 <td th:text="${debtorMeetingParticipant.id}"/>
-                                <td th:text="${debtorMeetingParticipant.fullName}"/>
+                                <td th:text="${debtorMeetingParticipant.name}"/>
                                 <td>
                                     <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/{debtorMeetingParticipantId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingParticipantId=${debtorMeetingParticipant.id})}"
                                        th:title="#{debtor.edit-debtor-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>

@@ -2,7 +2,7 @@
     <div class="form-row">
         <div class="form-group col-md-12">
             <label class="col-form-label" for="type" th:text="#{debtor.creditor.queue.queueType}"/>
-            <select required class="form-control" id="type" th:field="*{type}">
+            <select required class="form-control" id="type" th:field="*{type}" onchange="toggleDepositFields()">
                 <option th:if="${queue?.type == null}" selected th:value="${null}"
                         th:text="#{choose}"></option>
                 <option th:each="queueType : ${queueTypes}"
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" id="depositLocationInfoForm" style="display: none;">
             <label class="col-form-label" for="depositLocation"
                    th:text="#{debtor.creditor.queue.depositLocation}"/>
             <input type="text" name="depositLocation" th:value="${queue.depositLocation}"
@@ -40,12 +40,12 @@
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="depositAmountInfoForm" style="display: none;">
             <label class="col-form-label" for="depositAmount" th:text="#{debtor.creditor.queue.depositAmount}"/>
             <input type="number" step="any" name="depositAmount" th:value="${queue.depositAmount}" class="form-control"
                    id="depositAmount"/>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="depositDocumentDetailsInfoForm" style="display: none;">
             <label class="col-form-label" for="depositDocumentDetails"
                    th:text="#{debtor.creditor.queue.depositDocumentDetails}"/>
             <input type="text" name="depositDocumentDetails" th:value="${queue.depositDocumentDetails}"
@@ -103,39 +103,39 @@
         </div>
     </div>
     <div class="form-group form-check">
-        <input type="checkbox" th:field="*{exclusionFromRegister}" class="form-check-input" id="exclusionFromRegister"/>
+        <input type="checkbox" th:field="*{exclusionFromRegister}" class="form-check-input" id="exclusionFromRegister" onchange="toggleExclusionFromRegisterFields()"/>
         <label class="form-check-label" for="exclusionFromRegister" th:text="#{debtor.creditor.queue.exclusionFromRegister}"/>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="repaymentDateInfoForm" style="display: none;">
             <label class="col-form-label" for="repaymentDate" th:text="#{debtor.creditor.queue.repaymentDate}"/>
             <input type="date" name="repaymentDate" th:value="${queue.repaymentDate}" class="form-control" id="repaymentDate"/>
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" id="repaymentDocumentDetailsInfoForm"  style="display: none;">
             <label class="col-form-label" for="repaymentDocumentDetails" th:text="#{debtor.creditor.queue.repaymentDocumentDetails}"/>
             <input type="text" name="repaymentDocumentDetails" th:value="${queue.repaymentDocumentDetails}" class="form-control"
                    id="repaymentDocumentDetails"/>
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="repaymentAmountInfoForm"  style="display: none;">
             <label class="col-form-label" for="repaymentAmount" th:text="#{debtor.creditor.queue.repaymentAmount}"/>
             <input type="number" step="any" name="repaymentAmount" th:value="${queue.repaymentAmount}" class="form-control" id="repaymentAmount"/>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="outstandingAmountInfoForm"  style="display: none;">
             <label class="col-form-label" for="outstandingAmount" th:text="#{debtor.creditor.queue.outstandingAmount}"/>
             <input type="number" step="any" name="outstandingAmount" th:value="${queue.outstandingAmount}" class="form-control" id="outstandingAmount"/>
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="exclusionFromRegisterDateInfoForm"  style="display: none;">
             <label class="col-form-label" for="exclusionFromRegisterDate" th:text="#{debtor.creditor.queue.exclusionFromRegisterDate}"/>
             <input type="date" name="exclusionFromRegisterDate" th:value="${queue.exclusionFromRegisterDate}" class="form-control"
                    id="exclusionFromRegisterDate"/>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" id="exclusionDocumentInfoForm"  style="display: none;">
             <label class="col-form-label" for="exclusionDocument" th:text="#{debtor.creditor.queue.exclusionDocument}"/>
             <input type="text" name="exclusionDocument" th:value="${queue.exclusionDocument}" class="form-control"
                    id="exclusionDocument"/>
