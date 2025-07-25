@@ -33,4 +33,7 @@ class RequestDestination(
     @Column(name = "name")
     var name: String? = null,
 
+    @Column(name = "document_template_id")
+    var documentTemplateId: Long? = null,
+
 ) : BaseEntity

@@ -1,13 +1,17 @@
 package com.example.newsletters.entity
+
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
+/**
+ * Шаблон документов
+ */
 @Entity
-@Table(name = "template")
-class Template(
+@Table(name = "document_template")
+class DocumentTemplate(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
@@ -19,11 +23,19 @@ class Template(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
+    @Column(name = "name", length = 255)
+    var name: String? = null,
+
+    @Column(name = "type", length = 40)
     var type: DocumentTemplateType? = null,
 
+    @Column(name = "file_name", length = 255)
+    val fileName: String? = null,
+
+    @Column(name = "content_type", length = 255)
     var contentType: String? = null,
 
     @Lob
-     var data: ByteArray? = null
+    var data: ByteArray? = null
 
 ) : BaseEntity

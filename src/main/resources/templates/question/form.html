@@ -22,7 +22,7 @@
             <div class="p-3">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label class="col-form-label" for="position" th:text="#{question.position}"/>
                         <input type="number" required name="position" th:value="${data.position}" class="form-control" id="position"/>
                     </div>
@@ -31,6 +31,17 @@
                     <div class="form-group col-md-12">
                         <label class="col-form-label" for="value" th:text="#{question.value}"/>
                         <textarea rows="5" cols="100" th:field="*{value}" class="form-control" id="value"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="documentTemplateIds" th:text="#{question.document-template}"/>
+                        <select size="10" class="form-control" id="documentTemplateIds" multiple="multiple" th:field="*{documentTemplateIds}">
+                            <option th:each="documentTemplate : ${documentTemplates}"
+                                    th:value="${documentTemplate.id}"
+                                    th:text="${documentTemplate.name}"
+                            />
+                        </select>
                     </div>
                 </div>
                 <div class="text-center">

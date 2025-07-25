@@ -185,6 +185,12 @@
                             aria-controls="pills-worker-meetings"
                             aria-selected="false" th:text="#{debtor.worker-meeting}"></button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-documents-tab" data-toggle="pill"
+                            data-target="#pills-documents" type="button" role="tab"
+                            aria-controls="pills-documents"
+                            aria-selected="false" th:text="#{debtor.documents}"></button>
+                </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-requests" role="tabpanel"
@@ -382,6 +388,44 @@
                                     <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id})}"
                                        th:deleteMessage="#{do-you-want-delete-record(${workerMeeting.id})}" id="btnDelete"
                                        th:title="#{debtor.delete-worker-meeting}"
+                                       class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+
+                <div class="tab-pane fade" id="pills-documents" role="tabpanel"
+                     aria-labelledby="pills-worker-meetings-tab">
+                    <div class="text-left">
+                            <a th:href="@{/debtor/{debtorId}/document/generate(debtorId=${debtor.getId()})}"
+                               th:title="#{debtor.generate-documents}"
+                               class="fa fa-refresh fa-spin fa-2xl icon-dark"></a>
+                    </div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto p-2" th:text="#{debtor.documents}"/>
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" th:text="#{debtor.document.id}"></th>
+                                <th scope="col" th:text="#{debtor.document.name}"></th>
+                                <th scope="col" th:text="#{action}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="document : ${documents}">
+                                <td th:text="${document.id}"/>
+                                <td
+                                    th:each="documentTemplateType : ${documentTemplateTypes}"
+                                    th:if="${documentTemplateType.getCode() == document.type}"
+                                    th:text="${documentTemplateType.getValue()}"/>
+                                <td>
+                                    <a th:href="@{/debtor/{debtorId}/document/{documentId}/download(debtorId=${debtor.id},documentId=${document.id})}"
+                                       th:title="#{debtor.download-document}" class="fa-solid fa-file-arrow-down icon-dark"></a>
+                                    <a th:href="@{/debtor/{debtorId}/document/{documentId}/delete(debtorId=${debtor.id},documentId=${document.id})}"
+                                       th:deleteMessage="#{do-you-want-delete-record(${document.name})}" id="btnDelete"
+                                       th:title="#{debtor.delete-document}"
                                        class="fa-regular fa-trash-can icon-dark btn-delete"></a>
                                 </td>
                             </tr>

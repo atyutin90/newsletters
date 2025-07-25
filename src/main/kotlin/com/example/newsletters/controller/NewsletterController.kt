@@ -1,7 +1,6 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.NewsletterParams
-import com.example.newsletters.dto.TemplateType.NEWSTELLER
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorStorageService
 import com.example.newsletters.service.LocationStorageService
@@ -27,7 +26,7 @@ class NewsletterController(
     @GetMapping("/newsletters")
     fun getAll(model: Model): String {
         try {
-            model.addAttribute("newsletters", templateStorageService.getByType(NEWSTELLER))
+            //model.addAttribute("newsletters", templateStorageService.getByType(NEWSTELLER))
         } catch (e: Exception) {
             model.addAttribute("message", e.message)
         }
@@ -36,11 +35,10 @@ class NewsletterController(
 
     @GetMapping("/newsletters/new")
     fun add(model: Model): String {
-        val newsletters = templateStorageService.getByType(NEWSTELLER)
         val creditors = creditorStorageService.getAll()
         val debtors = debtorStorageService.getAll()
         val locations = locationStorageService.getAll()
-        model.addAttribute("newsletters", newsletters)
+        // model.addAttribute("newsletters", newsletters)
         model.addAttribute("creditors", creditors)
         model.addAttribute("debtors", debtors)
         model.addAttribute("locations", locations)

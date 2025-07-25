@@ -1,6 +1,5 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.annotation.ValueList
 import com.example.newsletters.dto.CreditorDto
 import com.example.newsletters.dto.DebtorDto
 import com.example.newsletters.dto.DebtorMeetingDto
@@ -8,11 +7,11 @@ import com.example.newsletters.dto.PublicationDto
 import com.example.newsletters.dto.RequestDestinationDto
 import com.example.newsletters.dto.RequestDto
 import com.example.newsletters.dto.WorkerMeetingDto
-import com.example.newsletters.entity.enum.ClientType
 import com.example.newsletters.service.ArbitrationManagerService
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.DocumentStorageService
 import com.example.newsletters.service.PublicationStorageService
 import com.example.newsletters.service.RequestDestinationService
 import com.example.newsletters.service.RequestStorageService
@@ -41,6 +40,7 @@ class DebtorController(
     val debtorMeetingService: DebtorMeetingStorageService,
     val workerMeetingService: WorkerMeetingStorageService,
     val creditorStorageService: CreditorStorageService,
+    val documentStorageService: DocumentStorageService,
     val arbitrationManagerService: ArbitrationManagerService,
     val valueListService: ValueListService,
     override val messageSource: MessageSource
@@ -101,9 +101,11 @@ class DebtorController(
             val debtorMeetingList = debtorMeetingService.getByDebtorId(debtor.id)
             val workerMeetingList = workerMeetingService.getByDebtorId(debtor.id)
             val creditorDtoList = creditorStorageService.getByDebtorId(debtor.id)
+            val documentDtoList = documentStorageService.getByDebtorId(debtor.id)
             val clientTypes = valueListService.getValues("clientType")
             val requestDestinations: List<RequestDestinationDto> = requestDestinationService.getAll()
             val arbitrationManagers = arbitrationManagerService.getAll()
+            val documentTemplateTypes = valueListService.getValues("documentTemplateType")
             model.addAttribute(DEBTOR, debtor)
             model.addAttribute(REQUEST, RequestDto(debtorId = id))
             model.addAttribute(REQUESTS, requestDtoList)
@@ -112,12 +114,14 @@ class DebtorController(
             model.addAttribute(CREDITOR, CreditorDto(debtorId = id))
             model.addAttribute(CREDITORS, creditorDtoList)
             model.addAttribute(CLIENT_TYPES, clientTypes)
+            model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
             model.addAttribute(DEBTOR_MEETING, DebtorMeetingDto(debtorId = id))
             model.addAttribute(DEBTOR_MEETINGS, debtorMeetingList)
             model.addAttribute(WORKER_MEETING, WorkerMeetingDto(debtorId = id))
             model.addAttribute(WORKER_MEETINGS, workerMeetingList)
             model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
             model.addAttribute(ARBITRATION_MANAGERS, arbitrationManagers)
+            model.addAttribute(DOCUMENTS, documentDtoList)
             model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-debtor", arrayOf(id), Locale.getDefault()))
             "debtor/form"
         } catch (e: Exception) {

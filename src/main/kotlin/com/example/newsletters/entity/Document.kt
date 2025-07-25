@@ -1,13 +1,23 @@
 package com.example.newsletters.entity
+
 import com.example.newsletters.entity.enum.DocumentTemplateType
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Lob
+import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.ZonedDateTime
 
+/**
+ * Документ
+ */
 @Entity
-@Table(name = "template")
-class Template(
+@Table(name = "document")
+class Document(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null,
@@ -19,11 +29,19 @@ class Template(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
+    @Column(name = "debtor_id", nullable = true)
+    var debtorId: Long,
+
+    @Column(name = "type", length = 40)
     var type: DocumentTemplateType? = null,
 
+    @Column(name = "content_type", length = 255)
     var contentType: String? = null,
 
+    @Column(name = "name", length = 255)
+    var name: String? = null,
+
     @Lob
-     var data: ByteArray? = null
+    var data: ByteArray? = null
 
 ) : BaseEntity

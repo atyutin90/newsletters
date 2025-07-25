@@ -2,12 +2,12 @@ package com.example.newsletters.controller
 
 import com.example.newsletters.dto.FileDto
 import com.example.newsletters.dto.TemplateDto
-import com.example.newsletters.dto.TemplateType.NEWSTELLER
+import com.example.newsletters.entity.Template
 import com.example.newsletters.service.TemplateStorageService
 import org.springframework.context.MessageSource
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -36,9 +36,9 @@ class TemplateController(val messageSource: MessageSource, val templateStorageSe
         model: Model): String = run {
         try {
             val paging: Pageable = PageRequest.of(page - 1, size)
-            val newsletters =
-                if (keyword?.isEmpty() != false) templateStorageService.getByType(NEWSTELLER, paging)
-                else templateStorageService.getByNameAndType(NEWSTELLER, keyword, paging)
+            val newsletters: Page<Template> = Page.empty()
+               /* if (keyword?.isEmpty() != false) templateStorageService.getByType(NEWSTELLER, paging)
+                else templateStorageService.getByNameAndType(NEWSTELLER, keyword, paging)*/
             model.addAttribute(NEWSLETTERS, newsletters.content)
             model.addAttribute(CURRENT_PAGE, newsletters.number + 1)
             model.addAttribute(TOTAL_ITEMS, newsletters.totalElements)
@@ -61,7 +61,7 @@ class TemplateController(val messageSource: MessageSource, val templateStorageSe
     @PostMapping("/newsletter/save")
     fun save(@RequestParam("name") name: String, @RequestParam("file") file: MultipartFile, redirectAttributes: RedirectAttributes): String = run {
         try {
-            templateStorageService.store(name, NEWSTELLER, file)
+           /* templateStorageService.store(name, NEWSTELLER, file)*/
             redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-created", arrayOf(), Locale.getDefault()))
         } catch (e: Exception) {
             redirectAttributes.addAttribute(MESSAGE, e.message)
@@ -70,7 +70,7 @@ class TemplateController(val messageSource: MessageSource, val templateStorageSe
     }
 
     @GetMapping("/newsletter/download/{id}")
-    fun get(@PathVariable(ID) id: Int): ResponseEntity<ByteArray> = run {
+    fun get(@PathVariable(ID) id: Long): ResponseEntity<ByteArray> = run {
         val file: TemplateDto? = templateStorageService.get(id)
         val fileName: String = URLEncoder.encode(file?.name, "UTF-8")
         ResponseEntity.ok()
@@ -79,7 +79,7 @@ class TemplateController(val messageSource: MessageSource, val templateStorageSe
     }
 
     @GetMapping("/newsletter/delete/{id}")
-    fun delete(@PathVariable(ID) id: Int, redirectAttributes: RedirectAttributes): String = run {
+    fun delete(@PathVariable(ID) id: Long, redirectAttributes: RedirectAttributes): String = run {
         try {
             templateStorageService.delete(id)
             redirectAttributes.addFlashAttribute(MESSAGE,  messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault()))

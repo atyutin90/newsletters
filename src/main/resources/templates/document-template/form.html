@@ -15,35 +15,42 @@
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-
 <div class="container-fluid">
-
     <h2 class="text-center">[[${pageTitle}]]</h2>
-
     <div class="my-3">
-        <form th:action="@{/request-destination/save}" method="post" enctype="multipart/form-data" th:object="${data}">
+        <form th:action="@{/document-template/save}" method="post" enctype="multipart/form-data" th:object="${data}">
             <div class="p-3">
                 <input type="hidden" th:field="*{id}"/>
-                <div class="form-group row">
+                <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label class="col-form-label" for="name" th:text="#{request-destination.name}"/>
-                        <input type="text" th:field="*{name}" class="form-control" id="name"/>
+                        <label class="col-form-label" for="name" th:text="#{document-template.name}"/>
+                        <input type="text" required name="name" th:value="${data.name}" class="form-control" id="name"/>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="col-form-label" for="documentTemplateId" th:text="#{request-destination.document-template}"/>
-                        <select class="form-control" id="documentTemplateId" th:field="*{documentTemplateId}">
-                            <option th:if="${data.documentTemplateId == null}" selected th:value="${null}" th:text="#{choose}"></option>
-                            <option th:each="documentTemplate : ${documentTemplates}"
-                                    th:value="${documentTemplate.id}"
-                                    th:text="${documentTemplate.name}"
+                        <label class="col-form-label" for="type" th:text="#{document-template.type}"/>
+                        <select class="form-control" id="type" th:field="*{type}" onchange="toggleFields()">
+                            <option th:if="${data?.type == null}" selected th:value="${null}"
+                                    th:text="#{choose}"></option>
+                            <option th:each="type : ${documentTemplateTypes}"
+                                    th:value="${type.getCode()}"
+                                    th:text="${type.getValue()}"
                             />
                         </select>
                     </div>
+                    <div th:if="${data?.id != null}">
+                            <a th:href="@{'/document-template/download/' + ${data.id}}"
+                               th:text="${data?.fileName}"
+                               class="form-control-plaintext"
+                               id="fileName">
+                            </a>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label" for="file"></label>
+                        <input type="file" name="file" minlength="2" maxlength="256" class="form-control-file"
+                               id="file"/>
+                    </div>
                 </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" th:field="*{enabled}" class="form-check-input" id="enabled"/>
-                    <label class="form-check-label" for="enabled" th:text="#{request-destination.enabled}"/>
-                </div>
+
                 <div class="text-center">
                     <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
                     <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
@@ -52,17 +59,13 @@
         </form>
     </div>
 </div>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnCancel").on("click", function () {
-            window.location = "[[@{/request-destination/all}]]";
+            window.location = "[[@{/document-template/all}]]";
         });
     });
 </script>
-
 </body>
-
 </html>

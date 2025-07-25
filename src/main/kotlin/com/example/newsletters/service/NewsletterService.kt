@@ -7,7 +7,7 @@ import com.example.newsletters.dto.LocationDto
 import com.example.newsletters.dto.NewsletterParams
 import com.example.newsletters.dto.TemplateDto
 import com.example.newsletters.utils.FileTemplateUtils.generateTemplate
-import com.example.newsletters.utils.FileUtils.getExtensionFileByName
+import com.example.newsletters.utils.FileUtils.extensionFile
 import com.example.newsletters.utils.FileUtils.getFileByNameWithoutExtension
 
 import org.springframework.stereotype.Service
@@ -23,7 +23,7 @@ class NewsletterService(
 ) {
 
     fun create(newsletterParams: NewsletterParams) {
-        val templates = templateService.getByIds(newsletterParams.templateIds.mapNotNull { it.toIntOrNull() })
+        val templates = templateService.getByIds(newsletterParams.templateIds.mapNotNull { it.toLongOrNull() })
         val creditors = creditorService.getByIds(newsletterParams.creditorIds.mapNotNull { it.toLongOrNull() })
         val debtors = debtorService.getByIds(newsletterParams.debtorIds.mapNotNull { it.toLongOrNull() })
         val locations = locationService.getByIds(newsletterParams.locationIds.mapNotNull { it.toIntOrNull() })
@@ -34,7 +34,7 @@ class NewsletterService(
                     templates.forEach { t ->
                         val map = mapObject(c).plus(mapObject(l).plus(mapObject(d))).plus("date" to newsletterParams.date)
                         val outputStream = generateTemplate(ByteArrayInputStream(t.data), map)
-                        val extensionFile = t.name?.let { getExtensionFileByName(it) }
+                        val extensionFile = t.name?.let { it.extensionFile() }
                         val reportName = t.name?.let { "${getFileByNameWithoutExtension(it)}_${c.name}_${d.name}.${extensionFile}" }.orEmpty()
                         fileStorageService.store(
                             reportName,

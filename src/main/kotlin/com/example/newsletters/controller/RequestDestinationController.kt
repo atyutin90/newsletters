@@ -1,6 +1,8 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.entity.enum.DocumentTemplateType
+import com.example.newsletters.service.DocumentTemplateService
 import com.example.newsletters.service.RequestDestinationService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest
@@ -19,6 +21,7 @@ import java.util.Locale
 @RequestMapping("/request-destination")
 class RequestDestinationController(
     val requestDestinationService: RequestDestinationService,
+    val documentTemplateService: DocumentTemplateService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
@@ -57,8 +60,7 @@ class RequestDestinationController(
     fun save(data: RequestDestinationDto, redirectAttributes: RedirectAttributes): String = run {
         try {
             val isUpdate = data.id != null
-            if (isUpdate) requestDestinationService.update(data)
-            else requestDestinationService.create(data)
+            requestDestinationService.save(data)
            infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
         } catch (e: Exception) {
             redirectAttributes.addAttribute(MESSAGE, e.message)
@@ -70,7 +72,9 @@ class RequestDestinationController(
     fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
         try {
             val data: RequestDestinationDto = requestDestinationService.getById(id)
+            val documentTemplates = documentTemplateService.getByType(DocumentTemplateType.REQUEST)
             model.addAttribute(DATA, data)
+            model.addAttribute(DOCUMENT_TEMPLATES, documentTemplates)
             model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-request-destination", arrayOf(id), Locale.getDefault()))
             "request-destination/form"
         } catch (e: Exception) {
