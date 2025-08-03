@@ -32,6 +32,7 @@ class DocumentStorageService(
             id = id,
             type = documentTemplateTypeOf(type),
             name = name,
+            fileName = fileName,
             contentType = contentType,
             data = data,
             debtorId = debtorId
@@ -42,6 +43,7 @@ class DocumentStorageService(
             id = id,
             type = type?.name,
             name = name,
+            fileName = fileName,
             contentType = contentType,
             data = data,
             debtorId = debtorId

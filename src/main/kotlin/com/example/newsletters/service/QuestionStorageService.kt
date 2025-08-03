@@ -1,8 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DocumentTemplateDto
 import com.example.newsletters.dto.QuestionDto
-import com.example.newsletters.entity.DocumentTemplate
 import com.example.newsletters.entity.Question
 import com.example.newsletters.repository.QuestionRepository
 import jakarta.transaction.Transactional
@@ -11,8 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class QuestionStorageService(val repository: QuestionRepository) {
-    fun getAll(): List<QuestionDto> = repository.findAllByOrderByValueAsc().map { it.questionDto }
-    fun getAll(paging: Pageable) = repository.findAll(paging).map { it.questionDto }
+    fun getAll(): List<QuestionDto> = repository.findAllByOrderByPositionAsc().map { it.questionDto }
+    fun getAll(paging: Pageable) = repository.findAllByOrderByPositionAsc(paging).map { it.questionDto }
     fun getByName(name: String) = repository.findByValueContainingIgnoreCase(name).map { it.questionDto }
     fun getByName(name: String, paging: Pageable) =
         repository.findByValueContainingIgnoreCase(name, paging).map { it.questionDto }
@@ -32,7 +30,7 @@ val Question.questionDto
         id = id,
         value = value,
         position = position,
-        documentTemplateIds = documentTemplates.mapNotNull { it.id }.toSet()
+        documentTemplateIds = documentTemplateIds
     )
 
 val QuestionDto.question
@@ -40,5 +38,5 @@ val QuestionDto.question
         id = id,
         value = value,
         position = position,
-        documentTemplates = documentTemplateIds.map { DocumentTemplate(id = it) }.toSet()
+        documentTemplateIds = documentTemplateIds
     )

@@ -416,10 +416,7 @@
                             <tbody>
                             <tr th:each="document : ${documents}">
                                 <td th:text="${document.id}"/>
-                                <td
-                                    th:each="documentTemplateType : ${documentTemplateTypes}"
-                                    th:if="${documentTemplateType.getCode() == document.type}"
-                                    th:text="${documentTemplateType.getValue()}"/>
+                                <td th:text="${document.getName()}"/>
                                 <td>
                                     <a th:href="@{/debtor/{debtorId}/document/{documentId}/download(debtorId=${debtor.id},documentId=${document.id})}"
                                        th:title="#{debtor.download-document}" class="fa-solid fa-file-arrow-down icon-dark"></a>

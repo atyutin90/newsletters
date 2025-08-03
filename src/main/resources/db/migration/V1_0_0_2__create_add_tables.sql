@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT
     updated_at   TIMESTAMP WITHOUT TIME ZONE,
     debtor_id    BIGINT,
     name         VARCHAR(255),
+    file_name    VARCHAR(255),
     type         VARCHAR(40),
     content_type VARCHAR(255),
     data         OID

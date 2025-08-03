@@ -7,7 +7,9 @@ import com.example.newsletters.dto.WorkerMeetingDto
 import com.example.newsletters.dto.WorkerMeetingParticipantDto
 import com.example.newsletters.entity.WorkerMeetingParticipant
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.DocumentService
 import com.example.newsletters.service.DocumentStorageService
+import com.example.newsletters.service.DocumentTemplateService
 import com.example.newsletters.service.WorkerMeetingParticipantStorageService
 import com.example.newsletters.service.WorkerMeetingStorageService
 import org.springframework.context.MessageSource
@@ -27,6 +29,7 @@ import java.util.*
 @RequestMapping("/debtor/{id}/document")
 class DocumentController(
     val documentStorageService: DocumentStorageService,
+    val documentService: DocumentService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
@@ -46,10 +49,13 @@ class DocumentController(
         "redirect:/debtor/${id}"
     }
 
-    @GetMapping("/download/{documentId}")
-    fun download(@PathVariable(ID) id: Long, @PathVariable(DOCUMENT_ID) documentId: Long): ResponseEntity<ByteArray> = run {
+    @GetMapping("/{documentId}/download")
+    fun download(
+        @PathVariable(ID) id: Long,
+        @PathVariable(DOCUMENT_ID) documentId: Long
+    ): ResponseEntity<ByteArray> = run {
         val data = documentStorageService.getById(documentId)
-        val fileName: String = URLEncoder.encode(data?.name, "UTF-8")
+        val fileName: String = URLEncoder.encode(data?.fileName, "UTF-8")
         ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$fileName")
             .body(data?.data)
@@ -57,6 +63,7 @@ class DocumentController(
 
     @GetMapping("/generate")
     fun generate(@PathVariable(ID) id: Long) = run {
+        documentService.generate(id)
         "redirect:/debtor/${id}"
     }
 }

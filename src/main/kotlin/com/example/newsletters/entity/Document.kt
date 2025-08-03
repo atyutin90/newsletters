@@ -41,6 +41,9 @@ class Document(
     @Column(name = "name", length = 255)
     var name: String? = null,
 
+    @Column(name = "file_name", length = 255)
+    val fileName: String? = null,
+
     @Lob
     var data: ByteArray? = null
 

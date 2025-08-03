@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface QuestionRepository : JpaRepository<Question, Long> {
-    fun findAllByOrderByValueAsc(): List<Question>
+    fun findAllByOrderByPositionAsc(pageable: Pageable): Page<Question>
+    fun findAllByOrderByPositionAsc(): List<Question>
     fun findByValueContainingIgnoreCase(keyword: String): List<Question>
     fun findByValueContainingIgnoreCase(name: String, paging: Pageable): Page<Question>
 }
