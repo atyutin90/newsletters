@@ -52,7 +52,7 @@ class RequestController(
         model.addAttribute(REQUEST,  RequestDto(debtorId = id))
         model.addAttribute(DEBTOR,  debtor)
         model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-debtor", arrayOf(), Locale.getDefault()))
+        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-request", arrayOf(), Locale.getDefault()))
         "request/form"
     } catch (e: Exception) {
         redirectAttributes.addAttribute(MESSAGE, e.message)

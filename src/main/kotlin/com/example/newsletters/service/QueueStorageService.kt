@@ -1,6 +1,7 @@
 package com.example.newsletters.service
 
 import com.example.newsletters.dto.QueueDto
+import com.example.newsletters.entity.Creditor
 import com.example.newsletters.entity.Queue
 import com.example.newsletters.entity.enum.QueueType.THIRD_DEPOSIT
 import com.example.newsletters.entity.enum.QueueType.Companion.queueTypeOf
@@ -60,7 +61,7 @@ val QueueDto.queue
         val exclusionFromRegister = exclusionFromRegister ?: false
         Queue(
             id = id,
-            creditorId = creditorId,
+            creditor = Creditor(id = creditorId),
             type = queueType,
             entryDate = entryDate,
             obligationType = obligationType,

@@ -8,9 +8,11 @@ import org.springframework.web.servlet.LocaleResolver
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 import java.util.*
 
+val RUSSIA = Locale("ru", "RU")
 
 @Configuration
 class I18NConfig {
+
     @Bean
     fun messageSource(): MessageSource {
         val messageSource = ReloadableResourceBundleMessageSource()
@@ -22,6 +24,6 @@ class I18NConfig {
 
     @Bean
     fun localeResolver(): LocaleResolver = run {
-        SessionLocaleResolver().apply { setDefaultLocale(Locale("ru", "RU"))}
+        SessionLocaleResolver().apply { setDefaultLocale(RUSSIA)}
     }
 }

@@ -6,6 +6,9 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinColumns
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -27,7 +30,7 @@ class Queue(
     @UpdateTimestamp
     override var updatedAt: ZonedDateTime? = null,
 
-    @Column(name = "creditor_id", nullable = true,)
+    @Column(name = "creditor_id", nullable = true, insertable = false, updatable = false)
     var creditorId: Long? = null,
 
     @Column(name = "type", length = 50)
@@ -98,5 +101,9 @@ class Queue(
 
     @Column(name = "percent_on_percent_amount")
     var percentOnPercentAmount: BigDecimal? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "creditor_id")
+    var creditor: Creditor? = null,
 
 ): BaseEntity

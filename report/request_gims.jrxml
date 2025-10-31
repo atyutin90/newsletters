@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="request_gims" pageWidth="595" pageHeight="842" columnWidth="495" leftMargin="60" rightMargin="40" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="ce10ff5c-ec10-41c5-98be-757724372bec">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="debtor" class="com.example.newsletters.entity.Debtor"/>
+	<parameter name="request" class="com.example.newsletters.entity.Request"/>
+	<parameter name="arbitrationManager" class="com.example.newsletters.entity.ArbitrationManager"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<detail>
+		<band height="790">
+			<property name="com.jaspersoft.studio.layout"/>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="495" height="20" uuid="56fd2fdd-48c6-41a8-9189-22ad4bdb4225">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[ВРЕМЕННЫЙ УПРАВЛЯЮЩИЙ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="20" width="495" height="20" uuid="19cc8b4e-d2b3-4446-8e0f-e8f23b62da15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{debtor} != null ? $P{debtor}.getFullName() : ""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="50" width="495" height="20" uuid="85a39cd3-d5a1-4823-8638-cf0d0b309921"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arbitrationManager} != null ? ($P{arbitrationManager}.getPostalAddress() != null ? $P{arbitrationManager}.getPostalAddress() + " " : "") + ($P{arbitrationManager}.getEmail() != null ? $P{arbitrationManager}.getEmail() + " " : "") + ($P{arbitrationManager}.getPhone() != null ? $P{arbitrationManager}.getPhone() : "") : ""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="90" width="220" height="20" uuid="6cf58d8f-30eb-4a67-b0cf-4ce4bc4998a1"/>
+				<box>
+					<topPen lineStyle="Solid"/>
+					<leftPen lineStyle="Solid"/>
+					<bottomPen lineStyle="Solid"/>
+					<rightPen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Исх. № " + ($P{debtor}.getDocumentNumber() != null ? $P{debtor}.getDocumentNumber() : "") + " от " + ($P{request}.getDate() != null ? $P{request}.getDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="220" y="90" width="275" height="20" uuid="c13433d4-2e0c-47fa-a486-621d0c8037fb"/>
+				<box>
+					<topPen lineStyle="Solid"/>
+					<leftPen lineStyle="Solid"/>
+					<bottomPen lineStyle="Solid"/>
+					<rightPen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{request}.getDestination().getName() + "\n" + $P{request}.getAddress()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="130" width="495" height="20" uuid="db06af2a-01ea-460e-9907-52e3a3ac7bc8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Запрос]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="150" width="495" height="120" uuid="38c68692-45cc-423a-92a9-f6791be11d68"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Определением " + $P{debtor}.getCourtAct() + " от " + ($P{debtor}.getActDate() != null ? $P{debtor}.getActDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "") + "(" + ($P{debtor}.getResolutionDate() != null ? $P{debtor}.getResolutionDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "") +") по делу " + $P{debtor}.getCaseNumber() + " в отношении должника " + $P{debtor}.getName() + " ("+ $P{debtor}.getTaxpayerIdentificationNumber() + ", " + $P{debtor}.getPrimaryStateRegistrationNumber() + ", " + $P{debtor}.getAddress() + "), введена процедура наблюдения. Временным управляющим назначена " + $P{arbitrationManager}.getFullName() + " (" +$P{arbitrationManager}.getTaxpayerIdentificationNumber() + " " +$P{arbitrationManager}.getPersonalInsurancePolicyNumber() + ", член " + $P{arbitrationManager}.getSroData() + ").\t\n\t\n" +
+"	В целях проведения анализа финансового состояния " + ($P{debtor} != null ? $P{debtor}.getFullName() : "") + " и в соответствии со ст. 20.3 Федерального Закона «О несостоятельности (банкротстве)» №127 ФЗ от 27.09.2002. прошу предоставить сведения о наличии (возможной регистрации) маломерных судов и иных объектов, находящихся в собственности " + ($P{debtor} != null ? $P{debtor}.getFullName() : "") + "\t\n" +
+"	В соответствии с п.1 ст.20.3 ФЗ «О несостоятельности (банкротстве)» №127 ФЗ от 27.09.2002г. юридические лица, государственные органы, органы управления государственными внебюджетными фондами Российской Федерации и органы местного самоуправления представляют запрошенные арбитражным управляющим сведения в течение семи дней со дня получения запроса без взимания платы."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="270" width="495" height="20" uuid="f17de2d6-018f-4ab9-ab3f-a8888f443d79"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Прошу предоставить информацию по учетам ГИМС МЧС России о наличии маломерных судов, зарегистрированных за должником, а также указать действия, которые осуществлялись по распоряжению принадлежащим должнику имуществом за период с " + ($P{request}.getDateFrom() != null ? $P{request}.getDateFrom().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "") + " - " + ($P{request}.getDateTo() != null ? $P{request}.getDateTo().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "") + "."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="300" width="495" height="20" uuid="798be35b-d5c4-4640-98ed-cf604c1c2986"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Запрашиваемую информацию прошу направить на имя временного управляющего "  + $P{arbitrationManager}.getFullName()  + " по адресу: " + $P{arbitrationManager}.getPostalAddress()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="330" width="495" height="20" uuid="dc8a7240-88c6-4e9f-8fa2-4351b27b079a"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Приложение:\n" +
+"- копия определения Арбитражного суда от " + ($P{debtor}.getActDate() != null ? $P{debtor}.getActDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "")+ " (резолютивная часть объявлена "+ ($P{debtor}.getResolutionDate() != null ? $P{debtor}.getResolutionDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "") +") по делу " + $P{debtor}.getCaseNumber()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="390" width="270" height="40" uuid="c6c07a3b-c3dd-4676-9a05-ba6c95cd7928"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Временный управляющий \n" + ($P{debtor} != null ? $P{debtor}.getName() : "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="270" y="390" width="225" height="40" uuid="910a86f6-cd88-4ba0-93b6-c5e035ad4aa5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arbitrationManager} != null ? $P{arbitrationManager}.getFullName() : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

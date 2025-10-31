@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="meeting_participants_registration_journal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59f3e54c-30aa-4534-9815-8507bdb6fe72">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="debtor" class="com.example.newsletters.entity.Debtor"/>
+	<parameter name="debtorMeeting" class="com.example.newsletters.entity.DebtorMeeting"/>
+	<parameter name="arbitrationManager" class="com.example.newsletters.entity.ArbitrationManager"/>
+	<parameter name="FIRST_QUEUE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="FIRST_QUEUE_EXIGENCE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="FIRST_QUEUE_REPAYMENT_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_first_queue_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="creditors_first_queue_exigence_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="creditors_first_queue_repayment_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="creditors_second_queue_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SECOND_QUEUE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_second_queue_exigence_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SECOND_QUEUE_EXIGENCE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_second_queue_repayment_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SECOND_QUEUE_REPAYMENT_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="THIRD_DEPOSIT_QUEUE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_third_deposit_queue_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="THIRD_DEPOSIT_QUEUE_EXIGENCE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_third_deposit_queue_exigence_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="THIRD_DEPOSIT_QUEUE_OBLIGATION_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="creditors_third_deposit_queue_obligation_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="creditors_third_deposit_queue_repayment_info.jasper" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="THIRD_DEPOSIT_QUEUE_REPAYMENT_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="a2b380a8-f511-4871-a690-c2c8abed91c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["РЕЕСТР\n требований кредиторов " + ($P{debtor} != null ? $P{debtor}.getName() + ($P{debtor}.getRegistryDate() != null ? " на " +$P{debtor}.getRegistryDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : ""): "")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="50" uuid="559458ea-46ca-406a-aefd-7b5f2d9b6f00"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[
+Раздел 1. Требования кредиторов первой очереди.
+Требования граждан, перед которыми должник несет ответственность за причинение вреда жизни или здоровью,
+а также требования по компенсации морального вреда]]></text>
+			</staticText>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="a19f249d-36cd-491b-9773-0745bf9b6df5">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_first_queue_info"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{FIRST_QUEUE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_first_queue_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="6abbe07e-9a1a-477e-82bb-14308298c5f1">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_first_queue_exigence_info"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{FIRST_QUEUE_EXIGENCE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_first_queue_exigence_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="de501ba0-5a64-48de-a768-dbcb1d71ec89">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_first_queue_repayment_info"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{FIRST_QUEUE_REPAYMENT_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_first_queue_repayment_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<break>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="1" uuid="9f37c80f-7424-4e80-99c6-045aebb99965">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+		<band height="50">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="50" uuid="bde13d0e-4e7a-47c9-b8f0-8afba37ce156"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Раздел 2. Требования кредиторов второй очереди.
+Требования по выплате выходных пособий и оплате труда лиц, работающих или работавших по трудовому договору,
+и по выплате вознаграждений по авторским договорам]]></text>
+			</staticText>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="91269938-5abc-440d-b9d5-dc75ac553c70">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_second_queue_info"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{SECOND_QUEUE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_second_queue_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="d33dcbdb-967c-4d14-8049-cba87f837a35">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_second_queue_exigence_info"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{SECOND_QUEUE_EXIGENCE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_second_queue_exigence_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="a33259a5-fe2e-4c68-b950-75f877c0230d">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_second_queue_repayment_info"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{SECOND_QUEUE_REPAYMENT_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_second_queue_repayment_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<break>
+				<reportElement x="0" y="0" width="802" height="1" uuid="841a540b-91ab-444a-b260-ff423528ebe7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+		<band height="50">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="50" uuid="cab3f596-0fa0-4989-a593-46ad6103a63e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Раздел 3. Требования кредиторов третьей очереди.
+Часть 1. Требования кредиторов по обязательствам, обеспеченным залогом имущества должника]]></text>
+			</staticText>
+		</band>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="44a716be-ffd2-4bbd-9dd5-a4b7e95e5387">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_first_queue_info"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{THIRD_DEPOSIT_QUEUE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_third_deposit_queue_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="61090bf1-f72c-4e67-b662-844b57e46c4d">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_third_deposit_queue_exigence_info"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{THIRD_DEPOSIT_QUEUE_EXIGENCE_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_third_deposit_queue_exigence_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="ce6114c3-679a-4479-b65d-6d7eb15ffe89">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_third_deposit_queue_obligation_info"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{THIRD_DEPOSIT_QUEUE_OBLIGATION_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_third_deposit_queue_obligation_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="448ade8a-0d4a-4170-9250-50b12f6cc996">
+					<property name="com.jaspersoft.studio.element.name" value="creditors_third_deposit_queue_repayment_info"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$P{THIRD_DEPOSIT_QUEUE_REPAYMENT_DS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{creditors_third_deposit_queue_repayment_info.jasper}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="37">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="580" height="20" uuid="df8b2e6f-0eb1-4e22-bc38-5b7924d1d6c8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Временный управляющий"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="580" y="0" width="200" height="20" uuid="39f5ad41-e4d7-4e86-a921-6085ec1c82c4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arbitrationManager} != null ? $P{arbitrationManager}.getFullName() : ""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="780" y="0" width="22" height="20" uuid="2d4271a8-c1a1-4a77-90c4-3242aa003585"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
