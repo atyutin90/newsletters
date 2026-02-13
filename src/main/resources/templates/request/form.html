@@ -59,6 +59,12 @@
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group col-md-12" id="accountsForm" style="display: none;">
+              <label class="col-form-label" for="accounts" th:text="#{debtor.request.accounts}"/>
+              <textarea rows= "3" name="accounts" th:field = "*{accounts}" class="form-control" id="accounts"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-md-12">
               <label class="col-form-label" for="address" th:text="#{debtor.request.address}"/>
               <textarea rows= "3" name="address" th:field = "*{address}" class="form-control" id="address"></textarea>
@@ -98,6 +104,7 @@
     function toggleFields() {
       const destinationId = document.getElementById("destinationId").value;
       document.getElementById("destinationDetailForm").style.display = destinationId === "1" ? "block" : "none";
+      document.getElementById("accountsForm").style.display = destinationId === "1" ? "block" : "none";
       if (destinationId !== 1) { document.getElementById("destinationDetail").value = null; }
     }
     document.addEventListener("DOMContentLoaded", function() { toggleFields(); });

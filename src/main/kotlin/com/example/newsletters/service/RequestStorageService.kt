@@ -33,7 +33,8 @@ private val Request.requestDTO: RequestDto
         date = date,
         dateFrom = dateFrom,
         dateTo = dateTo,
-        address = address
+        address = address,
+        accounts = accounts.joinToString(separator = "; ")
     )
 
 private val RequestDto.request: Request
@@ -45,5 +46,9 @@ private val RequestDto.request: Request
         dateFrom = dateFrom,
         dateTo = dateTo,
         destination = destinationId?.let { RequestDestination(destinationId) },
-        address = address
+        address = address,
+        accounts = accounts?.split(";", ",")
+            ?.map { it.trim() }
+            ?.filterNot { it.isEmpty() }
+            ?.toSet() ?: emptySet()
     )

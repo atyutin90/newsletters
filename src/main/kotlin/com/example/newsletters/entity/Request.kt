@@ -1,6 +1,8 @@
 package com.example.newsletters.entity
 
+import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -65,5 +67,8 @@ class Request(
     @Column(name = "address", length = 500)
     var address: String? = null,
 
-    ) : BaseEntity
-
+    @ElementCollection
+    @CollectionTable(name = "request_account", joinColumns = [JoinColumn(name = "request_id")])
+    @Column(name = "account")
+    var accounts: Set<String>,
+) : BaseEntity

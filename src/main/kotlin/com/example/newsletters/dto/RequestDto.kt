@@ -11,4 +11,6 @@ data class RequestDto(
     val dateFrom: LocalDate? = null,
     val dateTo: LocalDate? = null,
     val address: String? = null,
+    //Банковские счета перечисленные через запятную или точку с запятой
+    val accounts: String? = null,
 )
