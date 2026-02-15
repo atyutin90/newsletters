@@ -121,7 +121,7 @@
                                     <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
                                        th:title="#{debtor.edit-debtor-meeting-question}" class="fa-regular fa-pen-to-square icon-dark"></a>
                                     <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question/{debtorMeetingQuestionId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingQuestionId=${debtorMeetingQuestion.id})}"
-                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:deleteMessage="#{do-you-want-delete-record_with_id(${debtorMeetingQuestion.id})}" id="btnDelete1"
                                        th:title="#{debtor.delete-debtor-meeting-question}"
                                        class="fa-regular fa-trash-can icon-dark btn-delete"></a>
                                 </td>
@@ -145,19 +145,27 @@
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.id}"></th>
-                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.name}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.type}"></th>
+                                <th scope="col" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.withoutRight}"></th>
                                 <th scope="col" th:text="#{action}"></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="debtorMeetingParticipant : ${debtorMeetingParticipants}">
                                 <td th:text="${debtorMeetingParticipant.id}"/>
-                                <td th:text="${debtorMeetingParticipant.name}"/>
+                                <td th:each="type : ${meetingParticipantTypes}"
+                                    th:if="${type.getCode() == debtorMeetingParticipant.type}"
+                                    th:text="${type.getValue()}"/>
+                                <td>
+                                    <div th:if="${debtorMeetingParticipant.withoutRight}" th:text="#{yes}"/>
+                                    <div th:if="${!debtorMeetingParticipant.withoutRight}" th:text="#{no}"/>
+                                </td>
                                 <td>
                                     <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/{debtorMeetingParticipantId}(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingParticipantId=${debtorMeetingParticipant.id})}"
                                        th:title="#{debtor.edit-debtor-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
+
                                     <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/{debtorMeetingParticipantId}/delete(debtorId=${debtor.id},debtorMeetingId=${debtorMeeting.id},debtorMeetingParticipantId=${debtorMeetingParticipant.id})}"
-                                       th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
+                                       th:deleteMessage="#{do-you-want-delete-record_with_id(${debtorMeetingParticipant.id})}" id="btnDelete2"
                                        th:title="#{debtor.delete-debtor-meeting-participant}"
                                        class="fa-regular fa-trash-can icon-dark btn-delete"></a>
                                 </td>
@@ -171,12 +179,44 @@
     </div>
 </div>
 
+<div class="modal fade text-center" id="confirmModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{notice-of-removal}"/>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <span id="confirmText"></span>
+            </div>
+
+            <div class="modal-footer">
+                <a type="button" id="yesBtn" th:text="#{yes}" class="btn btn-danger"/>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{no}"/>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnCancel").on("click", function () {
             window.location = "[[@{/debtor/{debtorId}(debtorId=${debtor.id})}]]";
+        });
+
+        $(".btn-delete").on("click", function (e) {
+            e.preventDefault();
+            link = $(this);
+
+            deleteMessage = link.attr("deleteMessage")
+            $("#yesBtn").attr("href", link.attr("href"));
+            $("#confirmText").html(deleteMessage);
+            $("#confirmModal").modal();
         });
     });
 </script>

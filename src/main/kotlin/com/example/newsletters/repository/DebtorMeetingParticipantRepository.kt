@@ -1,6 +1,7 @@
 package com.example.newsletters.repository
 
 import com.example.newsletters.entity.DebtorMeetingParticipant
+import com.example.newsletters.entity.enum.MeetingParticipantType
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -9,4 +10,5 @@ import org.springframework.stereotype.Repository
 @Transactional
 interface DebtorMeetingParticipantRepository : JpaRepository<DebtorMeetingParticipant, Long> {
     fun findByDebtorMeetingId(debtorMeetingId: Long): List<DebtorMeetingParticipant>
+    fun findByType(type:MeetingParticipantType): List<DebtorMeetingParticipant>
 }

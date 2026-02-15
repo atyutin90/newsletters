@@ -5,6 +5,7 @@ import com.example.newsletters.service.DebtorMeetingParticipantStorageService
 import com.example.newsletters.service.DebtorMeetingQuestionStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService
 import com.example.newsletters.service.DebtorStorageService
+import com.example.newsletters.service.ValueListService
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -22,8 +23,11 @@ class DebtorMeetingController(
     val debtorMeetingService: DebtorMeetingStorageService,
     val debtorMeetingQuestionService: DebtorMeetingQuestionStorageService,
     val debtorMeetingParticipantService: DebtorMeetingParticipantStorageService,
+    valueListService: ValueListService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
+
+    val meetingParticipantTypes = valueListService.getValues("meetingParticipantType")
 
     @GetMapping("/new")
     fun add(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = try {
@@ -60,6 +64,7 @@ class DebtorMeetingController(
         val questions: List<DebtorMeetingQuestionDto> = debtorMeetingQuestionService.getByWorkerMeetingId(debtorMeetingId)
         val participants: List<DebtorMeetingParticipantDto> = debtorMeetingParticipantService.getByDebtorMeetingId(debtorMeetingId)
         val debtor: DebtorDto = debtorStorageService.getById(id)
+        model.addAttribute(MEETING_PARTICIPANT_TYPE, meetingParticipantTypes)
         model.addAttribute(DEBTOR_MEETING, debtorMeeting)
         model.addAttribute(DEBTOR_MEETING_QUESTIONS, questions)
         model.addAttribute(DEBTOR_MEETING_PARTICIPANTS, participants)
