@@ -1,7 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.CourtDto
-import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.dto.model.CourtDto
 import com.example.newsletters.service.CourtService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest

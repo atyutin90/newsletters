@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DocumentTemplateDto
+import com.example.newsletters.dto.model.DocumentTemplateDto
 import com.example.newsletters.entity.DocumentTemplate
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import com.example.newsletters.entity.enum.DocumentTemplateType.Companion.documentTemplateTypeOf

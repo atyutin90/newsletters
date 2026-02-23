@@ -1,7 +1,7 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.PublicationDto
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.PublicationDto
 import com.example.newsletters.service.DebtorStorageService
 import com.example.newsletters.service.PublicationStorageService
 import org.springframework.context.MessageSource

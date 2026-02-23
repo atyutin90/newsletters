@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.dto.model.RequestDestinationDto
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import com.example.newsletters.service.DocumentTemplateStorageService
 import com.example.newsletters.service.RequestDestinationService

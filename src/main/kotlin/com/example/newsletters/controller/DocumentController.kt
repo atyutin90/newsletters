@@ -1,8 +1,8 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.service.DocumentService
 import com.example.newsletters.service.DocumentStorageService
-import com.example.newsletters.service.logic.DocumentGeneratorService
+import com.example.newsletters.service.report.DocumentDownloadService
+import com.example.newsletters.service.report.DocumentGeneratorService
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
 import org.springframework.http.ResponseEntity
@@ -17,8 +17,9 @@ import java.net.URLEncoder
 @Controller
 @RequestMapping("/debtor/{id}/document")
 class DocumentController(
-    val documentStorageService: DocumentStorageService,
     val documentGeneratorService: DocumentGeneratorService,
+    val documentStorageService: DocumentStorageService,
+    val documentDownloadService: DocumentDownloadService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
@@ -45,7 +46,7 @@ class DocumentController(
     ): ResponseEntity<ByteArray> = run {
         val data = documentStorageService.getById(documentId)
         //TODO: добавить проверки
-        val documentData = documentGeneratorService.downloadDocument(documentId)
+        val documentData = documentDownloadService.download(documentId)
         val fileName: String = URLEncoder.encode(data?.name, "UTF-8")
         ResponseEntity.ok()
             .header(CONTENT_DISPOSITION, "attachment; filename=${fileName}.docx")
@@ -54,7 +55,7 @@ class DocumentController(
 
     @GetMapping("/generate")
     fun generate(@PathVariable(ID) id: Long) = run {
-        documentGeneratorService.generateDocument(id)
+        documentGeneratorService.generate(id)
         "redirect:/debtor/${id}"
     }
 }

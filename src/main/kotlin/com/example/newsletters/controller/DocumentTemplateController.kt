@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.DocumentTemplateDto
+import com.example.newsletters.dto.model.DocumentTemplateDto
 import com.example.newsletters.service.DocumentTemplateStorageService
 import com.example.newsletters.service.ValueListService
 import org.springframework.context.MessageSource

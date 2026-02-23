@@ -1,12 +1,12 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DebtorMeetingDto
+import com.example.newsletters.dto.model.DebtorMeetingDto
 import com.example.newsletters.entity.DebtorMeeting
 import com.example.newsletters.entity.DebtorMeetingQuestion
 import com.example.newsletters.repository.DebtorMeetingQuestionRepository
 import com.example.newsletters.repository.DebtorMeetingRepository
 import com.example.newsletters.repository.QuestionRepository
-import com.example.newsletters.service.logic.DocumentGeneratorService
+import com.example.newsletters.service.report.DocumentGeneratorService
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -45,14 +45,14 @@ class DebtorMeetingStorageService(
                 )
             }.forEach { debtorMeetingQuestionRepository.save(it) }
         //Процесс генерации документов
-        documentGeneratorService.generateDocument(request.debtorId)
+        documentGeneratorService.generate(request.debtorId)
     }
 
     @Transactional
     fun update(request: DebtorMeetingDto) {
         debtorMeetingRepository.save(request.debtorMeeting)
         //Процесс генерации документов
-        documentGeneratorService.generateDocument(request.debtorId)
+        documentGeneratorService.generate(request.debtorId)
     }
 }
 

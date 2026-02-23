@@ -1,13 +1,11 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.FileDto
+import com.example.newsletters.dto.model.FileDto
 import com.example.newsletters.entity.FileDB
 import com.example.newsletters.repository.FileDBRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import org.springframework.util.StringUtils
-import org.springframework.web.multipart.MultipartFile
 
 
 @Service

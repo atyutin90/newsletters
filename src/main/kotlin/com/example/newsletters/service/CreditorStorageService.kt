@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.CreditorDto
+import com.example.newsletters.dto.model.CreditorDto
 import com.example.newsletters.entity.Creditor
 import com.example.newsletters.entity.enum.ClientType
 import com.example.newsletters.entity.enum.ClientType.Companion.clientTypeOf

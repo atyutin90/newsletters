@@ -1,6 +1,5 @@
 package com.example.newsletters.entity
 
-import com.example.newsletters.dto.DocumentInfo
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

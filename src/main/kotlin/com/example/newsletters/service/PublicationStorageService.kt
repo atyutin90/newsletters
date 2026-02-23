@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.PublicationDto
+import com.example.newsletters.dto.model.PublicationDto
 import com.example.newsletters.entity.Publication
 import com.example.newsletters.repository.PublicationRepository
 import jakarta.transaction.Transactional

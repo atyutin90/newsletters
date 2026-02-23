@@ -38,9 +38,9 @@
 			<rightPen lineWidth="1.0" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="debtor" class="com.example.newsletters.entity.Debtor"/>
-	<parameter name="debtorMeeting" class="com.example.newsletters.entity.DebtorMeeting"/>
-	<parameter name="arbitrationManager" class="com.example.newsletters.entity.ArbitrationManager"/>
+	<parameter name="debtor" class="com.example.newsletters.dto.report.Debtor"/>
+	<parameter name="debtorMeeting" class="com.example.newsletters.dto.report.DebtorMeeting"/>
+	<parameter name="arbitrationManager" class="com.example.newsletters.dto.report.ArbitrationManager"/>
 	<parameter name="FIRST_QUEUE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="FIRST_QUEUE_EXIGENCE_DS" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="FIRST_QUEUE_REPAYMENT_DS" class="net.sf.jasperreports.engine.JRDataSource"/>

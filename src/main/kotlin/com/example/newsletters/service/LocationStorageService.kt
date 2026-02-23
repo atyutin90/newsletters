@@ -1,10 +1,7 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.LocationDto
-import com.example.newsletters.entity.Debtor
+import com.example.newsletters.dto.model.LocationDto
 import com.example.newsletters.entity.Location
-import com.example.newsletters.repository.DebtorRepository
 import com.example.newsletters.repository.LocationRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

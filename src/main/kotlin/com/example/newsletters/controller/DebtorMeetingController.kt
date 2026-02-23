@@ -1,6 +1,9 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.*
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.DebtorMeetingDto
+import com.example.newsletters.dto.model.DebtorMeetingParticipantDto
+import com.example.newsletters.dto.model.DebtorMeetingQuestionDto
 import com.example.newsletters.service.DebtorMeetingParticipantStorageService
 import com.example.newsletters.service.DebtorMeetingQuestionStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService
@@ -32,7 +35,7 @@ class DebtorMeetingController(
     @GetMapping("/new")
     fun add(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = try {
         val debtor: DebtorDto = debtorStorageService.getById(id)
-        model.addAttribute(DEBTOR_MEETING,  DebtorMeetingDto(debtorId = id))
+        model.addAttribute(DEBTOR_MEETING, DebtorMeetingDto(debtorId = id))
         model.addAttribute(DEBTOR,  debtor)
         model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.debtor-meeting.creation", arrayOf(), Locale.getDefault()))
         "debtor-meeting/form"

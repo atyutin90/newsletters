@@ -2,7 +2,7 @@ package com.example.newsletters.validator
 
 import com.example.newsletters.controller.CREDITOR_ID
 import com.example.newsletters.controller.TYPE
-import com.example.newsletters.dto.DebtorMeetingParticipantDto
+import com.example.newsletters.dto.model.DebtorMeetingParticipantDto
 import com.example.newsletters.entity.enum.MeetingParticipantType.CREDITOR
 import com.example.newsletters.entity.enum.MeetingParticipantType.Companion.meetingParticipantTypeOf
 import com.example.newsletters.entity.enum.MeetingParticipantType.DEBTOR

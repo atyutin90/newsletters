@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="creditors_third_deposit_queue_info" pageWidth="800" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" uuid="7d063981-932d-460c-8362-39c02f9ea8ba">
 	<field name="entryDate" class="java.time.LocalDate"/>
-	<field name="creditor" class="com.example.newsletters.entity.Creditor"/>
+	<field name="creditor" class="com.example.newsletters.dto.report.Creditor"/>
 	<field name="depositLocation" class="java.lang.String"/>
 	<title>
 		<band height="40">

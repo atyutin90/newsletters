@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.QueueDto
+import com.example.newsletters.dto.model.QueueDto
 import com.example.newsletters.entity.Creditor
 import com.example.newsletters.entity.Queue
 import com.example.newsletters.entity.enum.QueueType.THIRD_DEPOSIT

@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.ArbitrationManagerDto
+import com.example.newsletters.dto.model.ArbitrationManagerDto
 import com.example.newsletters.entity.ArbitrationManager
 import com.example.newsletters.repository.ArbitrationManagerRepository
 import org.springframework.data.domain.Pageable

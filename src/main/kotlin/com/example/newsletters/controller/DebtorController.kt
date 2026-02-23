@@ -1,12 +1,12 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.CreditorDto
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.DebtorMeetingDto
-import com.example.newsletters.dto.PublicationDto
-import com.example.newsletters.dto.RequestDestinationDto
-import com.example.newsletters.dto.RequestDto
-import com.example.newsletters.dto.WorkerMeetingDto
+import com.example.newsletters.dto.model.CreditorDto
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.DebtorMeetingDto
+import com.example.newsletters.dto.model.PublicationDto
+import com.example.newsletters.dto.model.RequestDestinationDto
+import com.example.newsletters.dto.model.RequestDto
+import com.example.newsletters.dto.model.WorkerMeetingDto
 import com.example.newsletters.service.ArbitrationManagerService
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorMeetingStorageService

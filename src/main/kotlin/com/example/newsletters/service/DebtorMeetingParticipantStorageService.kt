@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.DebtorMeetingParticipantDto
+import com.example.newsletters.dto.model.DebtorMeetingParticipantDto
 import com.example.newsletters.entity.Creditor
 import com.example.newsletters.entity.DebtorMeetingParticipant
 import com.example.newsletters.entity.MeetingParticipant

@@ -1,11 +1,11 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.CreditorDto
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.FileDto
-import com.example.newsletters.dto.LocationDto
-import com.example.newsletters.dto.NewsletterParams
-import com.example.newsletters.dto.TemplateDto
+import com.example.newsletters.dto.model.CreditorDto
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.FileDto
+import com.example.newsletters.dto.model.LocationDto
+import com.example.newsletters.dto.model.NewsletterParams
+import com.example.newsletters.dto.model.TemplateDto
 import com.example.newsletters.utils.FileTemplateUtils.generateTemplate
 import com.example.newsletters.utils.FileUtils.extensionFile
 import com.example.newsletters.utils.FileUtils.getFileByNameWithoutExtension

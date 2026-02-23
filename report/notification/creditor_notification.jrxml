@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="creditor_notification" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59f3e54c-30aa-4534-9815-8507bdb6fe72">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="debtor" class="com.example.newsletters.dto.report.Debtor"/>
+	<parameter name="debtorMeeting" class="com.example.newsletters.dto.report.DebtorMeeting"/>
+	<parameter name="arbitrationManager" class="com.example.newsletters.dto.report.ArbitrationManager"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<detail>
+		<band height="662" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement positionType="Float" x="22" y="0" width="508" height="20" uuid="fc427325-0cda-4e45-babf-066d377aa5d1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ВРЕМЕННЫЙ УПРАВЛЯЮЩИЙ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="20" width="508" height="20" uuid="c20e8bf0-1a07-4da4-8230-38bd39c343ea"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{debtor} != null ? $P{debtor}.getFullName() : ""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="22" y="50" width="508" height="20" uuid="c5c8c138-1343-4f6e-9ca1-2d219cbe51e2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arbitrationManager} != null ? ($P{arbitrationManager}.getPostalAddress() != null ? $P{arbitrationManager}.getPostalAddress() + " " : "") + ($P{arbitrationManager}.getEmail() != null ? $P{arbitrationManager}.getEmail() + " " : "") + ($P{arbitrationManager}.getPhone() != null ? $P{arbitrationManager}.getPhone() : "") : ""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="90" width="228" height="20" uuid="b95e4818-9103-453d-a8ff-54c658b8b6b6"/>
+				<box>
+					<topPen lineStyle="Solid"/>
+					<leftPen lineStyle="Solid"/>
+					<bottomPen lineStyle="Solid"/>
+					<rightPen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left" markup="none">
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Исх. № " + ($P{debtor}.getDocumentNumber() != null ? $P{debtor}.getDocumentNumber() : "") + " от " + ($P{debtorMeeting}.getDate() != null ? $P{debtorMeeting}.getDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="250" y="90" width="281" height="20" uuid="6695ffa7-8a29-435b-a962-cc9d41ffb82f"/>
+				<box>
+					<topPen lineStyle="Solid"/>
+					<leftPen lineStyle="Solid"/>
+					<bottomPen lineStyle="Solid"/>
+					<rightPen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" markup="none">
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Конкурсным кредиторам\n Должнику " + $P{debtor}.getName() + "\n" + "Управление Росреестра\n " + "Саморегулируемая организация арбитражных управляющих\n Представителю работников должника\n"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="130" width="508" height="20" uuid="c6582658-189d-4ae6-9b1d-f73c669dd25e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>УВЕДОМЛЕНИЕ</b><br>" + "<b>о проведении первого собрания кредиторов</b><br>"  + $P{debtor}.getName()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="160" width="508" height="60" uuid="db47efef-a964-47ab-a974-e67ba112b969"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Определением " +  ($P{debtor}.getCourtAct() != null ? $P{debtor}.getCourtAct() : "")  + " от " +  ($P{debtor}.getActDate() != null ? $P{debtor}.getActDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "")+" ("+ ($P{debtor}.getResolutionDate() != null ? $P{debtor}.getResolutionDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "") + ") по делу " + ($P{debtor}.getCaseNumber() != null ? $P{debtor}.getCaseNumber() : "") + " в отношении должника " + $P{debtor}.getName() + " (" + ($P{debtor}.getTaxpayerIdentificationNumber() != null ? $P{debtor}.getTaxpayerIdentificationNumber() : "") + ", " + ($P{debtor}.getPrimaryStateRegistrationNumber() != null ? $P{debtor}.getPrimaryStateRegistrationNumber() : "") +", адрес " + $P{debtor}.getAddress() + "), введена процедура наблюдения. Временным управляющим назначена " + $P{arbitrationManager}.getFullName() + " (" + ($P{arbitrationManager}.getTaxpayerIdentificationNumber() != null ? $P{arbitrationManager}.getTaxpayerIdentificationNumber() : "") + " " + ($P{arbitrationManager}.getPersonalInsurancePolicyNumber() != null ? $P{arbitrationManager}.getPersonalInsurancePolicyNumber() : "") + ", член " + $P{arbitrationManager}.getSroData()+ ").\n" +
+"	В соответствии со ст. 72 ФЗ «О несостоятельности (банкротстве)» сообщаю Вам, что первое собрание кредиторов " + $P{debtor}.getName() + " состоится " + ($P{debtorMeeting}.getDate() != null ? $P{debtorMeeting}.getDate().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "") + " по адресу: " + $P{debtorMeeting}.getAddress() + ".  Начало в " + $P{debtorMeeting}.getTime() +".\n" +
+"	В соответствии со ст. 73 ФЗ «О несостоятельности (банкротстве)» на повестку дня первого собрания кредиторов " +$P{debtor}.getName() + " выносятся следующие вопросы:\n"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="220" width="508" height="190" uuid="4a0caef4-f502-41a6-857e-127d23208726"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	1. Отчет временного управляющего " + $P{debtor}.getName() + " " + $P{arbitrationManager}.getFullName() + " о проведении процедуры наблюдения \n"+
+"	2. Определение следующей процедуры банкротства в отношении " + $P{debtor}.getName() + " и об обращении в " + $P{debtor}.getCourtAct() +" с соответствующим ходатайством. \n" +
+"	3. Определение кандидатуры арбитражного управляющего или саморегулируемой организации, из числа членов которой должен быть утверждён арбитражный управляющий. \n" +
+"	4. Определение дополнительных требований к кандидатуре арбитражного управляющего.\n" +
+"	5. Об образовании комитета кредиторов " + $P{debtor}.getName() + ", определении количественного состава и полномочий комитета кредиторов, избрании членов комитета кредиторов. \n" +
+"	6. Выборы представителя собрания кредиторов. \n" +
+"	7. О выборе реестродержателя."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="22" y="410" width="508" height="140" uuid="04330cc5-89b6-422d-b58a-65cfcfc581c0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Начало регистрации участников собрания кредиторов: " + $P{debtorMeeting}.getRegistrationTimeFrom() + "\n" +
+"  	Окончание регистрации участников собрания кредиторов: " +  $P{debtorMeeting}.getRegistrationTimeTo() + "\n" +
+"	Для участия в собрании представитель конкурсного кредитора или уполномоченного органа  представляет: \n" +	
+"	- документ, удостоверяющий личность; \n" +
+"	- доверенность, выданную конкурсным кредитором или уполномоченным органом, предусматривающую право представлять его интересы на собрании кредиторов и голосовать  всеми принадлежащими ему голосами  по вопросам повестки дня собрания кредиторов; \n" +
+"	- в случае, если представитель конкурсного кредитора имеет право действовать без доверенности, представляются соответствующие документы, подтверждающие это право. \n" +
+"С материалами, подлежащими рассмотрению на собрании, можно ознакомиться в период с  " + ($P{debtorMeeting}.getFamiliarizationDateFrom() != null ? $P{debtorMeeting}.getFamiliarizationDateFrom().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy", $P{REPORT_LOCALE})) : "") + " по " + ($P{debtorMeeting}.getFamiliarizationDateTo() != null ? $P{debtorMeeting}.getFamiliarizationDateTo().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "") + " в рабочее время по адресу: " + $P{debtorMeeting}.getAddress() + ", позвонив предварительно по тел. " + $P{arbitrationManager}.getPhone() +"."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="20" y="590" width="289" height="40" uuid="4c3acb74-de18-40a7-9da3-27757c6b3176"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Временный управляющий \n" + ($P{debtor} != null ? $P{debtor}.getName() : "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="309" y="590" width="221" height="40" uuid="49e786e7-bc86-47f4-b08b-16476c0e8dc7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arbitrationManager} != null ? $P{arbitrationManager}.getFullName() : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

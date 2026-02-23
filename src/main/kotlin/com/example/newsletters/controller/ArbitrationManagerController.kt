@@ -1,10 +1,7 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.ArbitrationManagerDto
-import com.example.newsletters.dto.CourtDto
-import com.example.newsletters.dto.RequestDestinationDto
+import com.example.newsletters.dto.model.ArbitrationManagerDto
 import com.example.newsletters.service.ArbitrationManagerService
-import com.example.newsletters.service.CourtService
 import com.example.newsletters.service.DebtorStorageService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest

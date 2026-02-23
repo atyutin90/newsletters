@@ -1,6 +1,6 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.RequestDto
+import com.example.newsletters.dto.model.RequestDto
 import com.example.newsletters.entity.Request
 import com.example.newsletters.entity.RequestDestination
 import com.example.newsletters.repository.RequestRepository

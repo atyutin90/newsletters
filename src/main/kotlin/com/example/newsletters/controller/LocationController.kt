@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.LocationDto
+import com.example.newsletters.dto.model.LocationDto
 import com.example.newsletters.service.LocationStorageService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.PageRequest

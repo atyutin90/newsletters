@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.NewsletterParams
+import com.example.newsletters.dto.model.NewsletterParams
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorStorageService
 import com.example.newsletters.service.LocationStorageService

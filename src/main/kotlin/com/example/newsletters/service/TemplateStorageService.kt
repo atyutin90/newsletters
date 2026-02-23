@@ -1,7 +1,7 @@
 package com.example.newsletters.service
 
-import com.example.newsletters.dto.TemplateDto
-import com.example.newsletters.dto.TemplateType
+import com.example.newsletters.dto.model.TemplateDto
+import com.example.newsletters.dto.model.TemplateType
 import com.example.newsletters.entity.Template
 import com.example.newsletters.repository.TemplateRepository
 import org.springframework.data.domain.Pageable

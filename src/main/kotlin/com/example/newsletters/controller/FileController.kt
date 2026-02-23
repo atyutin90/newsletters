@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.FileDto
+import com.example.newsletters.dto.model.FileDto
 import com.example.newsletters.service.FileStorageService
 import org.springframework.context.MessageSource
 import org.springframework.data.domain.Page

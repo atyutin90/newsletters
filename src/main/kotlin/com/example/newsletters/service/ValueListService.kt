@@ -1,7 +1,7 @@
 package com.example.newsletters.service
 
 import com.example.newsletters.annotation.ValueList
-import com.example.newsletters.dto.CodeAndValue
+import com.example.newsletters.dto.model.CodeAndValue
 import org.reflections.Reflections
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Service

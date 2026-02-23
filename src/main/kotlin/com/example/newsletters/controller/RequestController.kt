@@ -1,8 +1,8 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.RequestDestinationDto
-import com.example.newsletters.dto.RequestDto
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.RequestDestinationDto
+import com.example.newsletters.dto.model.RequestDto
 import com.example.newsletters.service.DebtorStorageService
 import com.example.newsletters.service.RequestDestinationService
 import com.example.newsletters.service.RequestStorageService

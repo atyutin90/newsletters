@@ -1,6 +1,7 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.*
+import com.example.newsletters.dto.model.DebtorMeetingDto
+import com.example.newsletters.dto.model.DebtorMeetingQuestionDto
 import com.example.newsletters.service.*
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller

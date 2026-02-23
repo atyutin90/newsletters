@@ -1,6 +1,6 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.*
+import com.example.newsletters.dto.model.DebtorMeetingParticipantDto
 import com.example.newsletters.service.*
 import com.example.newsletters.validator.DebtorMeetingParticipantDtoValidator
 import jakarta.validation.Valid

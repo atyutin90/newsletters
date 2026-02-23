@@ -1,13 +1,10 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.CreditorDto
-import com.example.newsletters.dto.DebtorDto
-import com.example.newsletters.dto.PublicationDto
-import com.example.newsletters.dto.QueueDto
-import com.example.newsletters.entity.enum.ClientType
+import com.example.newsletters.dto.model.CreditorDto
+import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.QueueDto
 import com.example.newsletters.service.CreditorStorageService
 import com.example.newsletters.service.DebtorStorageService
-import com.example.newsletters.service.PublicationStorageService
 import com.example.newsletters.service.QueueStorageService
 import com.example.newsletters.service.ValueListService
 import org.springframework.context.MessageSource
