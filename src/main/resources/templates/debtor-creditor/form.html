@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0" th:text="${isEdit} ? #{update-creditor} : #{debtor.creditor.creation}">Creditor</h1>
+    </div>
+
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${creditor}"
+          th:action="@{/debtors/{debtorId}/creditors(debtorId=${debtor.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{debtorId}"/>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="clientType" th:text="#{debtor.creditor.clientType}"></label>
+                <select class="form-select" id="clientType" th:field="*{clientType}" onchange="toggleFields()">
+                    <option th:if="${creditor.clientType == null}" selected th:value="${null}"
+                            th:text="#{choose}"></option>
+                    <option th:each="clientType : ${clientTypes}"
+                            th:value="${clientType.getCode()}"
+                            th:text="${clientType.getValue()}"></option>
+                </select>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="name" th:text="#{debtor.creditor.name}"></label>
+                <input type="text" th:field="*{name}" class="form-control" id="name"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="taxpayerIdentificationNumber"
+                       th:text="#{debtor.creditor.taxpayerIdentificationNumber}"></label>
+                <input type="text" th:field="*{taxpayerIdentificationNumber}" class="form-control"
+                       id="taxpayerIdentificationNumber"/>
+            </div>
+            <div class="mb-3 col-md-6" id="primaryStateRegistrationNumberInfo" style="display: none;">
+                <label class="col-form-label" for="primaryStateRegistrationNumber"
+                       th:text="#{debtor.creditor.primaryStateRegistrationNumber}"></label>
+                <input type="text" th:field="*{primaryStateRegistrationNumber}" class="form-control"
+                       id="primaryStateRegistrationNumber"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6" id="passportSerialInfo" style="display: none;">
+                <label class="col-form-label" for="passportSerial"
+                       th:text="#{debtor.creditor.passport-serial}"></label>
+                <input type="text" th:field="*{passportSerial}" class="form-control" id="passportSerial"/>
+            </div>
+            <div class="mb-3 col-md-6" id="passportNumberInfo" style="display: none;">
+                <label class="col-form-label" for="passportNumber"
+                       th:text="#{debtor.creditor.passport-number}"></label>
+                <input type="text" th:field="*{passportNumber}" class="form-control" id="passportNumber"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12">
+                <label class="col-form-label" for="address" th:text="#{debtor.creditor.address}"></label>
+                <input type="text" th:field="*{address}" class="form-control" id="address"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="executionWrit"
+                       th:text="#{debtor.creditor.executionWrit}"></label>
+                <input type="text" th:field="*{executionWrit}" class="form-control" id="executionWrit"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="executionDate"
+                       th:text="#{debtor.creditor.executionDate}"></label>
+                <input type="date" th:field="*{executionDate}" class="form-control" id="executionDate"/>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/debtors/{id}(id=${debtor.id})}"
+               th:title="#{debtor}" th:aria-label="#{debtor}"><i class="fas fa-list"></i></a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}"><i class="fas fa-save"></i></button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}"><i class="fas fa-trash"></i></button>
+        </div>
+    </form>
+
+    <div th:if="${isEdit}" class="mt-4">
+        <div class="text-start">
+            <a class="btn btn-outline-success btn-sm"
+               th:href="@{/debtors/{debtorId}/creditors/{creditorId}/queues/new(debtorId=${debtor.id},creditorId=${creditor.id})}"
+               th:title="#{debtor.creditor.queue.creation}">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+        <fieldset class="border p-2">
+            <legend class="float-none w-auto p-2" th:text="#{creditor.queues}"></legend>
+            <table class="table">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col" th:text="#{id}"></th>
+                    <th scope="col" th:text="#{debtor.creditor.queue.queueType}"></th>
+                    <th scope="col" th:text="#{action}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="queue : ${queues}">
+                    <td th:text="${queue.id}"></td>
+                    <td th:each="queueType : ${queueTypes}"
+                        th:if="${queueType.getCode() == queue.type}"
+                        th:text="${queueType.getValue()}"></td>
+                    <td>
+                        <div class="btn-group flex-nowrap" role="group">
+                            <a class="btn btn-outline-primary btn-sm"
+                               th:href="@{/debtors/{debtorId}/creditors/{creditorId}/queues/{queueId}(debtorId=${debtor.id},creditorId=${creditor.id},queueId=${queue.id})}"
+                               th:title="#{edit}" th:aria-label="#{edit-queue}">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtor.id} + '/creditors/' + ${creditor.id}, #{creditor.delete-title}, #{creditor.delete-confirm})}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    function toggleFields() {
+        const type = document.getElementById("clientType").value;
+        document.getElementById("passportNumberInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("passportSerialInfo").style.display = type === "INDIVIDUAL" ? "block" : "none";
+        document.getElementById("primaryStateRegistrationNumberInfo").style.display = type === "LEGAL" ? "block" : "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", toggleFields);
+</script>
+</body>
+</html>

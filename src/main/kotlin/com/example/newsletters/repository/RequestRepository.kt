@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository
 @Repository
 @Transactional
 interface RequestRepository : JpaRepository<Request, Long> {
+
     fun findByDebtorId(debtorId: Long): List<Request>
 }

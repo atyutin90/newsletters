@@ -1,64 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
-    <title>Newsletters</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-</head>
+<div th:replace="~{fragments/head :: head}"></div>
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div class="container-fluid">
-    <h2 class="text-center">[[${pageTitle}]]</h2>
-    <div class="my-3">
-        <form th:action="@{/question/save}" method="post" enctype="multipart/form-data" th:object="${data}">
-            <div class="p-3">
-                <input type="hidden" th:field="*{id}"/>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="position" th:text="#{question.position}"/>
-                        <input type="number" required name="position" th:value="${data.position}" class="form-control" id="position"/>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="value" th:text="#{question.value}"/>
-                        <textarea rows="5" cols="100" th:field="*{value}" class="form-control" id="value"></textarea>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="documentTemplateIds" th:text="#{question.document-template}"/>
-                        <select size="10" class="form-control" id="documentTemplateIds" multiple="multiple" th:field="*{documentTemplateIds}">
-                            <option th:each="documentTemplate : ${documentTemplates}"
-                                    th:value="${documentTemplate.id}"
-                                    th:text="${documentTemplate.name}"
-                            />
-                        </select>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2"/>
-                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm"/>
-                </div>
-            </div>
-        </form>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0" th:text="${isEdit} ? #{update-question} : #{create-question}">Question</h1>
     </div>
-</div>
+
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${data}" th:action="@{/questions}">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="row">
+            <div class="mb-3 col-md-12">
+                <label class="col-form-label" for="position" th:text="#{question.position}"></label>
+                <input type="number" required th:field="*{position}" class="form-control" id="position"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12">
+                <label class="col-form-label" for="value" th:text="#{question.value}"></label>
+                <textarea rows="5" th:field="*{value}" class="form-control" id="value"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12">
+                <label class="col-form-label" for="documentTemplateIds" th:text="#{question.document-template}"></label>
+                <select size="10" class="form-select" id="documentTemplateIds" multiple
+                        th:field="*{documentTemplateIds}">
+                    <option th:each="documentTemplate : ${documentTemplates}"
+                            th:value="${documentTemplate.id}"
+                            th:text="${documentTemplate.name}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/questions}" th:title="#{list}"
+               th:aria-label="#{list}">
+                <i class="fas fa-list"></i>
+            </a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}">
+                <i class="fas fa-save"></i>
+            </button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/questions/' + ${data.id}, #{question.delete-title}, #{question.delete-confirm})}"></div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnCancel").on("click", function () {
-            window.location = "[[@{/question/all}]]";
-        });
-    });
-</script>
 </body>
 </html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0" th:text="${isEdit} ? #{update-request} : #{create-request}">Request</h1>
+    </div>
+
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${request}"
+          th:action="@{/debtors/{debtorId}/requests(debtorId=${debtor.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{debtorId}"/>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="destinationId" th:text="#{debtor.request.destinationId}"></label>
+                <select class="form-select" id="destinationId" th:field="*{destinationId}" onchange="toggleFields()">
+                    <option th:if="${request.destinationId == null}" selected th:value="${null}"
+                            th:text="#{choose}"></option>
+                    <option th:each="requestDestination : ${requestDestinations}"
+                            th:value="${requestDestination.id}"
+                            th:text="${requestDestination.name}"></option>
+                </select>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="date" th:text="#{debtor.request.date}"></label>
+                <input type="date" th:field="*{date}" class="form-control" id="date"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12" id="destinationDetailForm" style="display: none;">
+                <label class="col-form-label" for="destinationDetail"
+                       th:text="#{debtor.request.destinationDetail}"></label>
+                <input type="text" th:field="*{destinationDetail}" class="form-control" id="destinationDetail"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12" id="accountsForm" style="display: none;">
+                <label class="col-form-label" for="accounts" th:text="#{debtor.request.accounts}"></label>
+                <textarea rows="3" th:field="*{accounts}" class="form-control" id="accounts"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-12">
+                <label class="col-form-label" for="address" th:text="#{debtor.request.address}"></label>
+                <textarea rows="3" th:field="*{address}" class="form-control" id="address"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="dateFrom" th:text="#{debtor.request.dateFrom}"></label>
+                <input type="date" th:field="*{dateFrom}" class="form-control" id="dateFrom"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="dateTo" th:text="#{debtor.request.dateTo}"></label>
+                <input type="date" th:field="*{dateTo}" class="form-control" id="dateTo"/>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm"
+               th:href="@{/debtors/{id}(id=${debtor.id})}"
+               th:title="#{debtor}"
+               th:aria-label="#{debtor}">
+                <i class="fas fa-list"></i>
+            </a>
+            <button type="submit"
+                    class="btn btn-outline-success btn-sm"
+                    th:title="#{save}"
+                    th:aria-label="#{save}">
+                <i class="fas fa-save"></i>
+            </button>
+            <button th:if="${isEdit}"
+                    type="button"
+                    class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#delete-modal"
+                    th:title="#{delete}"
+                    th:aria-label="#{delete}">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtor.id} + '/requests/' + ${request.id}, #{request.delete-title}, #{request.delete-confirm})}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    function toggleFields() {
+        const destinationId = document.getElementById("destinationId").value;
+        const showDetails = destinationId === "1";
+        document.getElementById("destinationDetailForm").style.display = showDetails ? "block" : "none";
+        document.getElementById("accountsForm").style.display = showDetails ? "block" : "none";
+        if (!showDetails) {
+            document.getElementById("destinationDetail").value = "";
+        }
+    }
+    document.addEventListener("DOMContentLoaded", toggleFields);
+</script>
+</body>
+</html>

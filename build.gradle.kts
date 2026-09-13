@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	id("org.springframework.boot") version "3.2.3"
-	id("io.spring.dependency-management") version "1.1.4"
-	kotlin("jvm") version "1.9.22"
-	kotlin("plugin.spring") version "1.9.22"
-	kotlin("plugin.jpa") version "1.9.22"
+	id("org.springframework.boot") version "4.1.1"
+	id("io.spring.dependency-management") version "1.1.7"
+	kotlin("jvm") version "2.4.20"
+	kotlin("plugin.spring") version "2.4.20"
+	kotlin("plugin.jpa") version "2.4.20"
 }
 
 group = "com.example"
@@ -31,10 +29,6 @@ dependencies {
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.webjars:bootstrap:4.6.2")
-	implementation("org.webjars:font-awesome:7.0.1")
-	implementation("org.webjars:jquery:3.7.1")
-	implementation("org.webjars:webjars-locator-core")
 	implementation("de.phip1611:docx4j-search-and-replace-util:2.0.0")
 	implementation("org.freemarker:freemarker:2.3.33")
 	implementation("org.reflections:reflections:0.10.2")
@@ -44,18 +38,10 @@ dependencies {
 	runtimeOnly("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.flywaydb:flyway-core:9.22.3")
-	// runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
-	}
-}
-
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
 }

@@ -1,23 +1,26 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.model.DocumentTemplateDto
+import com.example.newsletters.dto.model.PageFilter
 import com.example.newsletters.service.DocumentTemplateStorageService
 import com.example.newsletters.service.ValueListService
+import jakarta.validation.Valid
 import org.springframework.context.MessageSource
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.Locale.getDefault
 
 @Controller
-@RequestMapping("/document-template")
 class DocumentTemplateController(
     val documentTemplateStorageService: DocumentTemplateStorageService,
     valueListService: ValueListService,
@@ -26,72 +29,66 @@ class DocumentTemplateController(
 
     val documentTemplateTypes = valueListService.getValues("documentTemplateType")
 
-    @GetMapping("/all")
-    fun getAll(
-        @RequestParam(KEYWORD) keyword: String?,
-        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) size: Int,
+    @GetMapping("/document-templates")
+    fun list(
+        @RequestParam("search") search: String?,
+        @PageableDefault(page = 1, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
-    ): String {
-        try {
-            val paging: Pageable = PageRequest.of(page - 1, size)
-            val dto =
-                if (keyword?.isEmpty() != false) documentTemplateStorageService.getAll(paging)
-                else documentTemplateStorageService.getByName(keyword, paging)
-            model.addAttribute(DATA, dto.content)
-            model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
-            model.addAttribute(CURRENT_PAGE, dto.number + 1)
-            model.addAttribute(TOTAL_ITEMS, dto.totalElements)
-            model.addAttribute(TOTAL_PAGES, dto.totalPages)
-            model.addAttribute(PAGE_SIZE, size)
-            model.addAttribute(KEYWORD, keyword)
-        } catch (e: Exception) {
-            model.addAttribute(MESSAGE, e.message)
-        }
-        return "document-template/list"
+    ): String = run {
+        val filter = PageFilter(search)
+        val documentTemplates = documentTemplateStorageService.getAll(filter, pageableOf(pageable))
+        pageAttribute(model, pageable, documentTemplates, filter)
+        model.addAttribute(DATA, documentTemplates)
+        model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
+        model.addAttribute(FILTER, filter)
+        "document-template/list"
     }
 
-    @GetMapping("/new")
-    fun add(model: Model): String = run {
-        model.addAttribute(DATA,  DocumentTemplateDto())
-        model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-document-template", arrayOf(), getDefault()))
+    @GetMapping("/document-templates/new")
+    fun create(model: Model): String = run {
+        formAttributes(model, DocumentTemplateDto(), false)
         "document-template/form"
     }
 
-    @PostMapping("/save")
-    fun save(data: DocumentTemplateDto, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            val isUpdate = data.id != null
-            documentTemplateStorageService.save(data)
-           infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
-        } catch (e: Exception) {
-            redirectAttributes.addAttribute(MESSAGE, e.message)
-        }
-        "redirect:/document-template/all"
+    @GetMapping("/document-templates/{id}")
+    fun edit(@PathVariable(ID) id: Long, model: Model): String = run {
+        formAttributes(model, documentTemplateStorageService.getById(id), true)
+        "document-template/form"
     }
 
-    @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
-        try {
-            val data: DocumentTemplateDto = documentTemplateStorageService.getById(id)
-            model.addAttribute(DATA, data)
-            model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
-            model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-document-template", arrayOf(id), getDefault()))
-            "document-template/form"
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-            "redirect:/document-template/all"
+    @PostMapping("/document-templates")
+    fun save(
+        @Valid @ModelAttribute(DATA) request: DocumentTemplateDto,
+        bindingResult: BindingResult,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = run {
+        val isUpdate = request.id != null
+        if (bindingResult.hasErrors()) {
+            formAttributes(model, request, isUpdate)
+            return "document-template/form"
         }
 
-    @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Long, redirectAttributes: RedirectAttributes): String = run {
         try {
-            documentTemplateStorageService.delete(id)
-            infoMessageDeleteRecord(redirectAttributes, id)
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
+            val data = documentTemplateStorageService.save(request)
+            messageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+            "redirect:/document-templates/${data.id}"
+        } catch (ex: Exception) {
+            redirectAttributes.addFlashAttribute(ERROR, ex.message)
+            if (isUpdate) "redirect:/document-templates/${request.id}" else "redirect:/document-templates/new"
         }
-        "redirect:/document-template/all"
+    }
+
+    @DeleteMapping("/document-templates/{id}")
+    fun delete(@PathVariable(ID) id: Long, redirectAttributes: RedirectAttributes): String = run {
+        documentTemplateStorageService.delete(id)
+        messageDeleteRecord(redirectAttributes, id)
+        "redirect:/document-templates"
+    }
+
+    private fun formAttributes(model: Model, data: DocumentTemplateDto, isEdit: Boolean) {
+        model.addAttribute(DATA, data)
+        model.addAttribute(DOCUMENT_TEMPLATE_TYPES, documentTemplateTypes)
+        model.addAttribute(IS_EDIT, isEdit)
     }
 }

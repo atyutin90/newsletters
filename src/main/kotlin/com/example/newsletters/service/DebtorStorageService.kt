@@ -1,55 +1,61 @@
 package com.example.newsletters.service
 
+import com.example.newsletters.dto.filter.specification.DebtorSpecification.Companion.debtorFilterSpecification
 import com.example.newsletters.dto.model.DebtorDto
+import com.example.newsletters.dto.model.PageFilter
 import com.example.newsletters.entity.Debtor
 import com.example.newsletters.repository.DebtorRepository
-import jakarta.transaction.Transactional
+import org.springframework.context.MessageSource
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class DebtorStorageService(private val debtorRepository: DebtorRepository) {
-    fun getAll(): List<DebtorDto> = debtorRepository.findAll().map { it.debtorDTO }
-    fun getAll(paging: Pageable) = debtorRepository.findAll(paging).map { it.debtorDTO }
+class DebtorStorageService(
+    private val debtorRepository: DebtorRepository,
+    messageSource: MessageSource
+) : AbstractRepositoryService(messageSource) {
+
+    fun getAll(): List<DebtorDto> =
+        debtorRepository.findAll()
+            .map { it.debtorDTO }
+
+    fun getAll(paging: Pageable) =
+        debtorRepository.findAll(paging)
+            .map { it.debtorDTO }
+
+    fun getAll(filter: PageFilter, paging: Pageable) =
+        debtorRepository.findAll(debtorFilterSpecification(filter), paging)
+            .map { it.debtorDTO }
+
     fun getByArbitrationManagerId(arbitrationManagerId: Long): List<DebtorDto> =
-        debtorRepository.findByArbitrationManagerId(arbitrationManagerId).map { it.debtorDTO }
+        debtorRepository.findByArbitrationManagerId(arbitrationManagerId)
+            .map { it.debtorDTO }
 
-    fun getByName(name: String) = debtorRepository.findByNameContainingIgnoreCase(name).map { it.debtorDTO }
-    fun getByName(name: String, paging: Pageable) =
-        debtorRepository.findByNameContainingIgnoreCase(name, paging).map { it.debtorDTO }
+    fun getById(id: Long): DebtorDto =
+        debtorRepository.findById(id)
+            .map { it.debtorDTO }
+            .orElseThrow { notExist(id) }
 
-    fun getById(id: Long) = debtorRepository.findById(id).map { it.debtorDTO }.orElse(null)
-    fun getByIds(ids: List<Long>) = debtorRepository.findAllById(ids).map { it.debtorDTO }
-    fun delete(id: Long) = debtorRepository.deleteById(id)
+    fun getByIds(ids: List<Long>) =
+        debtorRepository.findAllById(ids)
+            .map { it.debtorDTO }
 
     @Transactional
-    fun create(debtor: DebtorDto) = debtorRepository.save(debtor.debtor)
+    fun delete(id: Long) = run {
+        val result = debtorRepository.existsById(id)
+        if (!result) notExist(id)
+        debtorRepository.deleteById(id)
+    }
 
     @Transactional
-    fun update(debtor: DebtorDto) = run {
-        if (debtor.id != null) {
-            debtorRepository.findById(debtor.id)
-                .map {
-                    it.apply {
-                        id = debtor.id
-                        arbitrationManagerId = debtor.arbitrationManagerId
-                        fullName = debtor.fullName
-                        name = debtor.name
-                        caseNumber = debtor.caseNumber
-                        address = debtor.address
-                        courtAct = debtor.courtAct
-                        actDate = debtor.actDate
-                        resolutionDate = debtor.resolutionDate
-                        taxRegistrationReasonCode = debtor.taxRegistrationReasonCode
-                        taxpayerIdentificationNumber = debtor.taxpayerIdentificationNumber
-                        primaryStateRegistrationNumber = debtor.primaryStateRegistrationNumber
-                        registryDate = debtor.registryDate
-                        registryClosingDate = debtor.registryClosingDate
-                        documentNumber = debtor.documentNumber
-                    }
-                }
-                .map { debtorRepository.save(it) }
-        }
+    fun create(debtor: DebtorDto) = debtorRepository.save(debtor.debtor).debtorDTO
+
+    @Transactional
+    fun update(data: DebtorDto): DebtorDto = run {
+        val result = data.id?.let { debtorRepository.existsById(data.id) } ?: false
+        if (!result) notExist(data.id)
+        debtorRepository.save(data.debtor).debtorDTO
     }
 }
 

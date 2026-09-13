@@ -4,18 +4,31 @@ import com.example.newsletters.dto.model.DocumentDto
 import com.example.newsletters.entity.Document
 import com.example.newsletters.entity.enum.DocumentTemplateType.Companion.documentTemplateTypeOf
 import com.example.newsletters.repository.DocumentRepository
-import jakarta.transaction.Transactional
+import org.springframework.context.MessageSource
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DocumentStorageService(
     val repository: DocumentRepository,
-) {
-    fun getById(id: Long): DocumentDto? = repository.findById(id).map { it.documentDto }.orElse(null)
+    messageSource: MessageSource
+) : AbstractRepositoryService(messageSource) {
 
-    fun getByDebtorId(debtorId: Long): List<DocumentDto> = repository.findByDebtorIdOrderByName(debtorId).map { it.documentDto }
+    fun getById(id: Long): DocumentDto =
+        repository.findById(id)
+            .map { it.documentDto }
+            .orElseThrow { notExist(id) }
 
-    fun delete(id: Long) = repository.deleteById(id)
+    fun getByDebtorId(debtorId: Long): List<DocumentDto> =
+        repository.findByDebtorIdOrderByName(debtorId)
+            .map { it.documentDto }
+
+    @Transactional
+    fun delete(id: Long) = run {
+        val result = repository.existsById(id)
+        if (!result) notExist(id)
+        repository.deleteById(id)
+    }
 
     @Transactional
     fun save(dto: DocumentDto) {
@@ -33,7 +46,7 @@ class DocumentStorageService(
             debtorId = debtorId,
             templateResourcePath = templateResourcePath,
 
-        )
+            )
 
     val Document.documentDto
         get() = DocumentDto(

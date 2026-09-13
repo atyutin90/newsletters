@@ -1,91 +1,84 @@
 package com.example.newsletters.controller
 
 import com.example.newsletters.dto.model.CourtDto
+import com.example.newsletters.dto.model.PageFilter
 import com.example.newsletters.service.CourtService
+import jakarta.validation.Valid
 import org.springframework.context.MessageSource
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.Locale
 
 @Controller
-@RequestMapping("/court")
 class CourtController(
     val courtService: CourtService,
     override val messageSource: MessageSource
-): AbstractController(messageSource) {
+) : AbstractController(messageSource) {
 
-    @GetMapping("/all")
-    fun getAll(
-        @RequestParam(KEYWORD) keyword: String?,
-        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) size: Int,
+    @GetMapping("/courts")
+    fun list(
+        @RequestParam("search") search: String?,
+        @PageableDefault(page = 1, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
-    ): String {
-        try {
-            val paging: Pageable = PageRequest.of(page - 1, size)
-            val dto =
-                if (keyword?.isEmpty() != false) courtService.getAll(paging)
-                else courtService.getByName(keyword, paging)
-            model.addAttribute(DATA, dto.content)
-            model.addAttribute(CURRENT_PAGE, dto.number + 1)
-            model.addAttribute(TOTAL_ITEMS, dto.totalElements)
-            model.addAttribute(TOTAL_PAGES, dto.totalPages)
-            model.addAttribute(PAGE_SIZE, size)
-            model.addAttribute(KEYWORD, keyword)
-        } catch (e: Exception) {
-            model.addAttribute(MESSAGE, e.message)
-        }
-        return "court/list"
+    ): String = run {
+        val filter = PageFilter(search)
+        val courts = courtService.getAll(filter, pageableOf(pageable))
+        pageAttribute(model, pageable, courts, filter)
+        model.addAttribute(DATA, courts)
+        model.addAttribute(FILTER, filter)
+        "court/list"
     }
 
-    @GetMapping("/new")
-    fun add(model: Model): String = run {
-        model.addAttribute(DATA,  CourtDto())
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("create-court", arrayOf(), Locale.getDefault()))
+    @GetMapping("/courts/new")
+    fun create(model: Model): String = run {
+        model.addAttribute(DATA, CourtDto())
+        model.addAttribute(IS_EDIT, false)
         "court/form"
     }
 
-    @PostMapping("/save")
-    fun save(request: CourtDto, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            val isUpdate = request.id != null
-            if (isUpdate) courtService.update(request)
-            else courtService.create(request)
-            infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, e.message)
-        }
-        "redirect:/court/all"
+    @GetMapping("/courts/{id}")
+    fun edit(@PathVariable(ID) id: Long, model: Model): String = run {
+        model.addAttribute(DATA, courtService.getById(id))
+        model.addAttribute(IS_EDIT, true)
+        "court/form"
     }
 
-    @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
-        try {
-            val data: CourtDto = courtService.getById(id)
-            model.addAttribute(DATA, data)
-            model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-court", arrayOf(id), Locale.getDefault()))
-            "court/form"
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-            "redirect:/court/all"
+    @PostMapping("/courts")
+    fun save(
+        @Valid @ModelAttribute(DATA) request: CourtDto,
+        bindingResult: BindingResult,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = run {
+        var data = request
+        val isUpdate = request.id != null
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(IS_EDIT, isUpdate)
+            return "court/form"
         }
+        try {
+            data = if (isUpdate) courtService.update(request) else courtService.create(request)
+            messageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+        } catch (ex: Exception) {
+            redirectAttributes.addFlashAttribute(ERROR, ex.message)
+        }
+        "redirect:/courts/${data.id}"
+    }
 
-    @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            courtService.delete(id)
-            infoMessageDeleteRecord(redirectAttributes, id)
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-        }
-        "redirect:/court/all"
+    @DeleteMapping("/courts/{id}")
+    fun delete(@PathVariable(ID) id: Long, redirectAttributes: RedirectAttributes): String = run {
+        courtService.delete(id)
+        messageDeleteRecord(redirectAttributes, id)
+        "redirect:/courts"
     }
 }

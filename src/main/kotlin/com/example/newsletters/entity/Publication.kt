@@ -8,8 +8,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.springframework.data.util.TypeInformation
-import org.thymeleaf.standard.expression.AdditionExpression
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
@@ -56,6 +54,6 @@ class Publication(
     var debtorId: Long,
 
     @Column(name = "add_info", length = 1000)
-    var additionInformation: String? = null,
+    var additionInformation: String? = null
 
-    ) : BaseEntity
+) : BaseEntity

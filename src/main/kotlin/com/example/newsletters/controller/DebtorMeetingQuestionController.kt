@@ -1,110 +1,100 @@
 package com.example.newsletters.controller
 
-import com.example.newsletters.dto.model.DebtorMeetingDto
 import com.example.newsletters.dto.model.DebtorMeetingQuestionDto
-import com.example.newsletters.service.*
+import com.example.newsletters.service.DebtorMeetingQuestionStorageService
+import com.example.newsletters.service.DebtorMeetingStorageService
+import jakarta.validation.Valid
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.*
 
 @Controller
-@RequestMapping("/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-question")
 class DebtorMeetingQuestionController(
-    val debtorStorageService: DebtorStorageService,
     val debtorMeetingService: DebtorMeetingStorageService,
     val debtorMeetingQuestionService: DebtorMeetingQuestionStorageService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
-    @GetMapping("/{debtorMeetingQuestionId}/delete")
+    @GetMapping("/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}/questions/new")
+    fun create(
+        @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
+        model: Model
+    ): String = run {
+        formAttributes(model, DebtorMeetingQuestionDto(debtorMeetingId = debtorMeetingId), debtorMeetingId, false)
+        "debtor-meeting-question/form"
+    }
+
+    @GetMapping("/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}/questions/{debtorMeetingQuestionId}")
+    fun edit(
+        @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
+        @PathVariable(DEBTOR_MEETING_QUESTION_ID) debtorMeetingQuestionId: Long,
+        model: Model
+    ): String = run {
+        formAttributes(model, debtorMeetingQuestionService.getById(debtorMeetingQuestionId), debtorMeetingId, true)
+        "debtor-meeting-question/form"
+    }
+
+    @PostMapping("/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}/questions")
+    fun save(
+        @PathVariable(DEBTOR_ID) debtorId: Long,
+        @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
+        @Valid @ModelAttribute(DEBTOR_MEETING_QUESTION) question: DebtorMeetingQuestionDto,
+        bindingResult: BindingResult,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = run {
+        val data = question.copy(debtorMeetingId = debtorMeetingId)
+        val isUpdate = data.id != null
+        if (bindingResult.hasErrors()) {
+            formAttributes(model, data, debtorMeetingId, isUpdate)
+            return "debtor-meeting-question/form"
+        }
+
+        try {
+            val saved = if (isUpdate) {
+                debtorMeetingQuestionService.update(data)
+            } else {
+                debtorMeetingQuestionService.create(data)
+            }
+            messageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+            "redirect:/debtors/${debtorId}/debtor-meetings/${debtorMeetingId}/questions/${saved.id}"
+        } catch (ex: Exception) {
+            redirectAttributes.addFlashAttribute(ERROR, ex.message)
+            if (isUpdate) {
+                "redirect:/debtors/${debtorId}/debtor-meetings/${debtorMeetingId}/questions/${data.id}"
+            } else {
+                "redirect:/debtors/${debtorId}/debtor-meetings/${debtorMeetingId}/questions/new"
+            }
+        }
+    }
+
+    @DeleteMapping("/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}/questions/{debtorMeetingQuestionId}")
     fun delete(
         @PathVariable(DEBTOR_ID) debtorId: Long,
         @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
         @PathVariable(DEBTOR_MEETING_QUESTION_ID) debtorMeetingQuestionId: Long,
-        model: Model,
         redirectAttributes: RedirectAttributes
     ): String = run {
-        try {
-            debtorMeetingQuestionService.delete(debtorMeetingQuestionId)
-            infoMessageDeleteRecord(redirectAttributes, debtorMeetingQuestionId)
-        } catch (e: Exception) {
-            redirectAttributes.addAttribute(MESSAGE, e.message)
-        }
-        "redirect:/debtor/${debtorId}/debtor-meeting/$debtorMeetingId"
+        debtorMeetingQuestionService.delete(debtorMeetingQuestionId)
+        messageDeleteRecord(redirectAttributes, debtorMeetingQuestionId)
+        "redirect:/debtors/${debtorId}/debtor-meetings/${debtorMeetingId}"
     }
 
-    @GetMapping("/{debtorMeetingQuestionId}")
-    fun edit(
-        @PathVariable(DEBTOR_ID) debtorId: Long,
-        @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
-        @PathVariable(DEBTOR_MEETING_QUESTION_ID) debtorMeetingQuestionId: Long,
+    private fun formAttributes(
         model: Model,
-        redirectAttributes: RedirectAttributes
-    ): String = try {
-        val debtorMeetingQuestion = debtorMeetingQuestionService.getById(debtorMeetingQuestionId)
-        val debtorMeeting: DebtorMeetingDto? = debtorMeetingService.getById(debtorMeetingId)
-        model.addAttribute(DEBTOR_MEETING_QUESTION, debtorMeetingQuestion)
-        model.addAttribute(DEBTOR_MEETING, debtorMeeting)
-        model.addAttribute(
-            PAGE_TITLE,
-            messageSource.getMessage(
-                "debtor.debtor-meeting.debtor-meeting-question.update",
-                arrayOf(debtorMeetingQuestion.id),
-                Locale.getDefault()
-            )
-        )
-        "debtor-meeting-question/form"
-    } catch (e: Exception) {
-        redirectAttributes.addAttribute(MESSAGE, e.message)
-        "redirect:/debtor/${debtorId}/debtor-meeting/$debtorMeetingId"
-    }
-
-    @GetMapping("/new")
-    fun add(
-        @PathVariable(DEBTOR_ID) debtorId: Long,
-        @PathVariable(DEBTOR_MEETING_ID) debtorMeetingId: Long,
-        model: Model,
-        redirectAttributes: RedirectAttributes
-    ): String = try {
-        val debtorMeeting = debtorMeetingService.getById(debtorMeetingId)
-        model.addAttribute(DEBTOR_MEETING_QUESTION, DebtorMeetingQuestionDto(debtorMeetingId = debtorMeetingId))
-        model.addAttribute(DEBTOR_MEETING, debtorMeeting)
-        model.addAttribute(
-            PAGE_TITLE,
-            messageSource.getMessage(
-                "debtor.debtor-meeting.debtor-meeting-question.creation",
-                arrayOf(),
-                Locale.getDefault()
-            )
-        )
-        "debtor-meeting-question/form"
-    } catch (e: Exception) {
-        redirectAttributes.addAttribute(MESSAGE, e.message)
-        "redirect:/debtor/${debtorId}/debtor-meeting/${debtorMeetingId}"
-    }
-
-    @PostMapping("/save")
-    fun save(
-        request: DebtorMeetingQuestionDto,
-        model: Model,
-        redirectAttributes: RedirectAttributes
-    ): String = run {
-        val debtorMeeting = request.debtorMeetingId.let { debtorMeetingService.getById(it) }
-        try {
-            val isUpdate = request.id != null
-            if (isUpdate) debtorMeetingQuestionService.update(request)
-            else debtorMeetingQuestionService.create(request)
-            infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
-            "redirect:/debtor/${debtorMeeting.debtorId}/debtor-meeting/${debtorMeeting.id}"
-        } catch (e: Exception) {
-            redirectAttributes.addAttribute(MESSAGE, e.message)
-            "redirect:/debtor/${debtorMeeting.debtorId}/debtor-meeting/${debtorMeeting.id}"
-        }
+        question: DebtorMeetingQuestionDto,
+        debtorMeetingId: Long,
+        isEdit: Boolean
+    ) {
+        model.addAttribute(DEBTOR_MEETING_QUESTION, question)
+        model.addAttribute(DEBTOR_MEETING, debtorMeetingService.getById(debtorMeetingId))
+        model.addAttribute(IS_EDIT, isEdit)
     }
 }

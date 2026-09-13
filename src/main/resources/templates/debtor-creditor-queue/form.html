@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"
+            th:text="${isEdit} ? #{update-queue} : #{debtor.creditor.queue.creation}">Queue</h1>
+    </div>
+
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${queue}"
+          th:action="@{/debtors/{debtorId}/creditors/{creditorId}/queues(debtorId=${debtor.id},creditorId=${creditor.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{creditorId}"/>
+
+        <div th:replace="~{queue/field/field :: field}"></div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm"
+               th:href="@{/debtors/{debtorId}/creditors/{creditorId}(debtorId=${debtor.id},creditorId=${creditor.id})}"
+               th:title="#{creditor}" th:aria-label="#{creditor}">
+                <i class="fas fa-list"></i>
+            </a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}">
+                <i class="fas fa-save"></i>
+            </button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtor.id} + '/creditors/' + ${creditor.id} + '/queues/' + ${queue.id}, #{queue.delete-title}, #{queue.delete-confirm})}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script type="text/javascript">
+    function toggleDepositFields() {
+        const type = document.getElementById("type").value;
+        const showDeposit = type === "THIRD_DEPOSIT";
+        document.getElementById("depositLocationInfoForm").style.display = showDeposit ? "block" : "none";
+        document.getElementById("depositAmountInfoForm").style.display = showDeposit ? "block" : "none";
+        document.getElementById("depositDocumentDetailsInfoForm").style.display = showDeposit ? "block" : "none";
+        if (!showDeposit) {
+            document.getElementById("depositLocation").value = "";
+            document.getElementById("depositAmount").value = "";
+            document.getElementById("depositDocumentDetails").value = "";
+        }
+    }
+
+    function toggleExclusionFromRegisterFields() {
+        const exclusionFromRegister = document.getElementById("exclusionFromRegister");
+        const display = exclusionFromRegister.checked ? "block" : "none";
+        document.getElementById("repaymentDateInfoForm").style.display = display;
+        document.getElementById("repaymentDocumentDetailsInfoForm").style.display = display;
+        document.getElementById("repaymentAmountInfoForm").style.display = display;
+        document.getElementById("outstandingAmountInfoForm").style.display = display;
+        document.getElementById("exclusionFromRegisterDateInfoForm").style.display = display;
+        document.getElementById("exclusionDocumentInfoForm").style.display = display;
+        if (!exclusionFromRegister.checked) {
+            document.getElementById("repaymentDocumentDetails").value = "";
+            document.getElementById("repaymentDate").value = "";
+            document.getElementById("repaymentAmount").value = "";
+            document.getElementById("outstandingAmount").value = "";
+            document.getElementById("exclusionFromRegisterDate").value = "";
+            document.getElementById("exclusionDocument").value = "";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", toggleDepositFields);
+    document.addEventListener("DOMContentLoaded", toggleExclusionFromRegisterFields);
+</script>
+</body>
+</html>

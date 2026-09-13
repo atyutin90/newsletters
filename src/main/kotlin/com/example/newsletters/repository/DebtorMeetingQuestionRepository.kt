@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository
 @Repository
 @Transactional
 interface DebtorMeetingQuestionRepository : JpaRepository<DebtorMeetingQuestion, Long> {
+
     fun findByDebtorMeetingId(debtorMeetingId: Long): List<DebtorMeetingQuestion>
+
     fun findByDebtorMeetingIdOrderByPositionAsc(debtorMeetingId: Long): List<DebtorMeetingQuestion>
 }

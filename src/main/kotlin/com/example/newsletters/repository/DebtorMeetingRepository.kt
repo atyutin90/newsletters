@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository
 @Repository
 @Transactional
 interface DebtorMeetingRepository : JpaRepository<DebtorMeeting, Long> {
+
     fun findByDebtorId(debtorId: Long): List<DebtorMeeting>
 }

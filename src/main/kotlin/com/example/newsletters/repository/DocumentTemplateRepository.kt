@@ -5,17 +5,19 @@ import com.example.newsletters.entity.DocumentTemplate
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @Repository
-interface DocumentTemplateRepository : JpaRepository<DocumentTemplate, Long> {
+interface DocumentTemplateRepository : JpaRepository<DocumentTemplate, Long>,
+    JpaSpecificationExecutor<DocumentTemplate> {
 
-    fun findByNameContainingIgnoreCase(type: String, pageable: Pageable): Page<DocumentTemplate>
+    override fun findAll(spec: Specification<DocumentTemplate>, pageable: Pageable): Page<DocumentTemplate>
 
     fun findByType(type: DocumentTemplateType): List<DocumentTemplate>
 
-    fun findByType(type: DocumentTemplateType, paging: Pageable): Page<DocumentTemplate>
 }

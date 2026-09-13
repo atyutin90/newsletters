@@ -19,7 +19,5 @@ interface DocumentRepository : JpaRepository<Document, Long> {
 
     fun findByDebtorIdAndType(debtorId: Long, type: DocumentTemplateType): List<Document>
 
-    fun findByType(type: DocumentTemplateType, paging: Pageable): Page<Document>
-
     fun deleteByDebtorId(debtorId: Long)
 }

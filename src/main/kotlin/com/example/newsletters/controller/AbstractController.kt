@@ -1,11 +1,15 @@
 package com.example.newsletters.controller
 
+import com.example.newsletters.dto.model.PageFilter
 import org.springframework.context.MessageSource
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.ui.Model
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
+import java.util.Locale.getDefault
 
-
-const val KEYWORD = "keyword"
 const val CREDITOR = "creditor"
 const val CREDITORS = "creditors"
 const val QUEUE = "queue"
@@ -61,10 +65,35 @@ const val TOTAL_ITEMS = "totalItems"
 const val TOTAL_PAGES = "totalPages"
 const val PAGE_SIZE = "pageSize"
 const val TYPE = "type"
+const val SORT_FIELD = "sortField"
+const val SORT_DIRECTION = "sortDirection"
+const val REVERSE_SORT_DIRECTION = "reverseSortDirection"
+const val SEARCH = "search"
+const val EXTRA_QUERY = "extraQuery"
+const val FILTER = "filter"
+const val IS_EDIT = "isEdit"
+const val ERROR = "error"
+const val INFO_MESSAGE = "infoMessage"
 
 const val DEFAULT_PAGE = "1"
 const val DEFAULT_PAGE_SIZE = "10"
 abstract class AbstractController(open val messageSource: MessageSource) {
+
+    fun messageCreateOrUpdateRecord(redirectAttributes: RedirectAttributes, isUpdate: Boolean) =
+        redirectAttributes.addFlashAttribute(INFO_MESSAGE, messageSource.getMessage(
+                if (isUpdate) "record-successfully-updated" else "record-successfully-created",
+                arrayOf(),
+                getDefault()
+            )
+        )
+
+    fun messageDeleteRecord(redirectAttributes: RedirectAttributes, id: Long) =
+        redirectAttributes.addFlashAttribute(
+            INFO_MESSAGE,
+            messageSource.getMessage("record-successfully-deleted",
+                arrayOf(id),getDefault()
+            )
+        )
 
     fun infoMessageCreateOrUpdateRecord(redirectAttributes: RedirectAttributes, isUpdate: Boolean) =
         redirectAttributes.addFlashAttribute(
@@ -76,6 +105,30 @@ abstract class AbstractController(open val messageSource: MessageSource) {
         )
 
     fun infoMessageDeleteRecord(redirectAttributes: RedirectAttributes, id: Long) =
-        redirectAttributes.addFlashAttribute(MESSAGE, messageSource.getMessage("record-successfully-deleted", arrayOf(id), Locale.getDefault()))
+        redirectAttributes.addFlashAttribute(
+            MESSAGE,
+            messageSource.getMessage(
+                "record-successfully-deleted",
+                arrayOf(id),getDefault()
+            )
+        )
 
+    fun <T : Any> pageAttribute(model: Model, pageable: Pageable, page: Page<T>, filter: PageFilter) {
+        pageAttribute(model, pageable, page)
+        model.addAttribute(EXTRA_QUERY, filter.buildExtraQuery());
+    }
+
+    fun <T : Any> pageAttribute(model: Model, pageable: Pageable, page: Page<T>) {
+        val order = pageable.sort.firstOrNull() ?: Sort.Order.asc(ID)
+        model.addAttribute(SORT_FIELD, order.property)
+        model.addAttribute(SORT_DIRECTION, order.direction.name.lowercase())
+        model.addAttribute(REVERSE_SORT_DIRECTION, if (order.isAscending) Sort.Direction.DESC.name else Sort.Direction.ASC.name)
+        model.addAttribute(CURRENT_PAGE, page.number + 1)
+        model.addAttribute(TOTAL_PAGES, page.totalPages)
+        model.addAttribute(PAGE_SIZE, page.size)
+    }
+
+    fun pageableOf(pageable: Pageable): Pageable {
+        return pageable.withPage(pageable.pageNumber - 1);
+    }
 }

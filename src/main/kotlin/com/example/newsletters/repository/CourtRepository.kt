@@ -1,18 +1,17 @@
 package com.example.newsletters.repository
 
 import com.example.newsletters.entity.Court
-import com.example.newsletters.entity.RequestDestination
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Repository
 
 @Transactional
 @Repository
-interface CourtRepository : JpaRepository<Court, Long> {
+interface CourtRepository : JpaRepository<Court, Long>, JpaSpecificationExecutor<Court> {
 
-    fun findByNameContainingIgnoreCase(keyword: String): List<Court >
-
-    fun findByNameContainingIgnoreCase(name: String, paging: Pageable): Page<Court>
+    override fun findAll(spec: Specification<Court>, pageable: Pageable): Page<Court>
 }

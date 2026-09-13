@@ -12,6 +12,7 @@ import com.example.newsletters.repository.CreditorRepository
 import com.example.newsletters.repository.DebtorMeetingParticipantRepository
 import com.example.newsletters.repository.MeetingParticipantRepository
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.context.MessageSource
 import org.springframework.data.domain.Page
 
 import org.springframework.data.domain.Pageable
@@ -23,33 +24,44 @@ class DebtorMeetingParticipantStorageService(
     private val debtorMeetingParticipantRepository: DebtorMeetingParticipantRepository,
     private val creditorRepository: CreditorRepository,
     private val meetingParticipantRepository: MeetingParticipantRepository,
-) {
+    messageSource: MessageSource
+) : AbstractRepositoryService(messageSource) {
 
-    fun getAll(): List<DebtorMeetingParticipantDto> = debtorMeetingParticipantRepository.findAll().map { dtoOf(it) }
+    fun getAll(): List<DebtorMeetingParticipantDto> =
+        debtorMeetingParticipantRepository.findAll()
+            .map { dtoOf(it) }
 
     fun getByDebtorMeetingId(debtorMeetingId: Long): List<DebtorMeetingParticipantDto> =
-        debtorMeetingParticipantRepository.findByDebtorMeetingId(debtorMeetingId).map { dtoOf(it) }
+        debtorMeetingParticipantRepository.findByDebtorMeetingId(debtorMeetingId)
+            .map { dtoOf(it) }
 
-    fun getAll(paging: Pageable): Page<DebtorMeetingParticipantDto?>? =
+    fun getAll(paging: Pageable): Page<DebtorMeetingParticipantDto>? =
         debtorMeetingParticipantRepository.findAll(paging).map { dtoOf(it) }
 
     fun getById(id: Long): DebtorMeetingParticipantDto? =
-        debtorMeetingParticipantRepository.findById(id).map { dtoOf(it) }.orElse(null)
+        debtorMeetingParticipantRepository.findById(id)
+            .map { dtoOf(it) }
+            .orElseThrow { notExist(id) }
 
     fun getByIds(ids: List<Long>) = debtorMeetingParticipantRepository.findAllById(ids).map { dtoOf(it) }
 
     @Transactional
     fun delete(id: Long) {
+        val result = debtorMeetingParticipantRepository.existsById(id)
+        if (!result) notExist(id)
         debtorMeetingParticipantRepository.deleteById(id)
     }
 
     @Transactional
-    fun create(request: DebtorMeetingParticipantDto): DebtorMeetingParticipant? =
-        debtorMeetingParticipantRepository.save(request.debtorMeetingParticipant())
+    fun create(data: DebtorMeetingParticipantDto): DebtorMeetingParticipantDto =
+        dtoOf(debtorMeetingParticipantRepository.save(data.debtorMeetingParticipant()))
 
     @Transactional
-    fun update(request: DebtorMeetingParticipantDto): DebtorMeetingParticipant? =
-        debtorMeetingParticipantRepository.save(request.debtorMeetingParticipant())
+    fun update(data: DebtorMeetingParticipantDto): DebtorMeetingParticipantDto = run {
+        val result =  data.id?.let { debtorMeetingParticipantRepository.existsById(data.id) } ?: false
+        if (!result) notExist(data.id)
+        dtoOf(debtorMeetingParticipantRepository.save(data.debtorMeetingParticipant()))
+    }
 
     private fun dtoOf(data: DebtorMeetingParticipant): DebtorMeetingParticipantDto = run {
         var address: String? = null

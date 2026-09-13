@@ -6,24 +6,53 @@ import com.example.newsletters.entity.Queue
 import com.example.newsletters.entity.enum.QueueType.THIRD_DEPOSIT
 import com.example.newsletters.entity.enum.QueueType.Companion.queueTypeOf
 import com.example.newsletters.repository.QueueRepository
-import jakarta.transaction.Transactional
+import org.springframework.context.MessageSource
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class QueueStorageService(private val repository: QueueRepository) {
-    fun getAll(): List<QueueDto> = repository.findAll().map { it.queueDto }
-    fun getAll(paging: Pageable) = repository.findAll(paging).map { it.queueDto }
-    fun getByCreditorId(creditorId: Long): List<QueueDto> = repository.findByCreditorId(creditorId).map { it.queueDto }
-    fun getById(id: Long) = repository.findById(id).map { it.queueDto }.orElse(null)
-    fun getByIds(ids: List<Long>) = repository.findAllById(ids).map { it.queueDto }
-    fun delete(id: Long) = repository.deleteById(id)
+class QueueStorageService(
+    private val repository: QueueRepository,
+    messageSource: MessageSource
+) : AbstractRepositoryService(messageSource) {
+
+    fun getAll(): List<QueueDto> =
+        repository.findAll()
+            .map { it.queueDto }
+
+    fun getAll(paging: Pageable) =
+        repository.findAll(paging)
+            .map { it.queueDto }
+
+    fun getByCreditorId(creditorId: Long): List<QueueDto> =
+        repository.findByCreditorId(creditorId)
+            .map { it.queueDto }
+
+    fun getById(id: Long): QueueDto =
+        repository.findById(id).map { it.queueDto }
+            .orElseThrow { notExist(id) }
+
+    fun getByIds(ids: List<Long>) =
+        repository.findAllById(ids)
+            .map { it.queueDto }
 
     @Transactional
-    fun create(creditor: QueueDto) = repository.save(creditor.queue)
+    fun delete(id: Long) = run {
+        val result = repository.existsById(id)
+        if (!result) notExist(id)
+        repository.deleteById(id)
+    }
 
     @Transactional
-    fun update(creditor: QueueDto) = repository.save(creditor.queue)
+    fun create(data: QueueDto) = repository.save(data.queue).queueDto
+
+    @Transactional
+    fun update(data: QueueDto) = run {
+        val result = data.id?.let { repository.existsById(data.id) } ?: false
+        if (!result) notExist(data.id)
+        repository.save(data.queue).queueDto
+    }
 }
 
 val Queue.queueDto

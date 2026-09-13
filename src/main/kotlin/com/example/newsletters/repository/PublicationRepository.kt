@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository
 @Repository
 @Transactional
 interface PublicationRepository : JpaRepository<Publication, Long> {
+
     fun findByDebtorId(debtorId: Long): List<Publication>
 }

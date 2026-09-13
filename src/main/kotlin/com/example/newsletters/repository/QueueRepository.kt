@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository
 @Repository
 @Transactional
 interface QueueRepository : JpaRepository<Queue, Long> {
+
     fun findByCreditorId(creditorId: Long): List<Queue>
+
     @Query("SELECT p FROM Queue p WHERE p.creditorId in (:creditorIds)")
     fun findByCreditorIds(creditorIds: List<Long>): List<Queue>
 }

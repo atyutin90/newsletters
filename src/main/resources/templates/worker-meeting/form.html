@@ -1,125 +1,112 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
-    <title>Newsletters</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-</head>
+<div th:replace="~{fragments/head :: head}"></div>
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container-fluid">
-    <h2 class="text-center">[[${pageTitle}]]</h2>
-
-    <div class="my-3">
-        <form th:action="@{/debtor/{debtorId}/worker-meeting/save(debtorId=${debtor.id})}" method="post" enctype="multipart/form-data" th:object="${workerMeeting}">
-            <input type="hidden" th:field="*{id}"/>
-            <div class="p-3">
-                <input type="hidden" name="debtorId" th:value="${debtor.id}" id="debtorId"/>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <a th:href="@{/debtor/{debtorId}(debtorId=${debtor.getId()})}"
-                           th:title="#{debtor}"
-                           class="fa-solid fa-reply fa-2xl icon-dark"
-                           id="debtorName">
-                        </a>
-                    </div>
-                    <div class="form-group col-md-6">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="date" th:text="#{debtor.worker-meeting.date}"/>
-                        <input type="date" name="date" th:value="${workerMeeting.date}" class="form-control" id="date"/>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="time" th:text="#{debtor.worker-meeting.time}"/>
-                        <input type="time" name="time" th:value="${workerMeeting.time}" class="form-control" id="time"/>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="registrationTimeFrom" th:text="#{debtor.worker-meeting.registrationTimeFrom}"/>
-                        <input type="time" name="registrationTimeFrom" th:value="${workerMeeting.registrationTimeFrom}" class="form-control" id="registrationTimeFrom"/>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="registrationTimeTo" th:text="#{debtor.worker-meeting.registrationTimeTo}"/>
-                        <input type="time" name="registrationTimeTo" th:value="${workerMeeting.registrationTimeTo}" class="form-control" id="registrationTimeTo"/>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="address" th:text="#{debtor.worker-meeting.address}"/>
-                        <textarea rows= "3" name="address" th:field = "*{address}" class="form-control" id="address"></textarea>
-                        </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="topic" th:text="#{debtor.worker-meeting.topic}"/>
-                        <textarea rows= "3" name="topic" th:field = "*{topic}" class="form-control" id="topic"></textarea>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
-                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
-                </div>
-            </div>
-        </form>
-        <div th:if="${workerMeeting?.id != null}">
-            <div class="text-left">
-                <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/new(debtorId=${debtor.getId()},workerMeetingId=${workerMeeting.getId()})}"
-                   th:title="#{debtor.worker-meeting.worker-meeting-participant.creation}"
-                   class="fa-regular fa-plus fa-2xl icon-dark"></a>
-            </div>
-            <fieldset class="border p-2">
-                <legend class="float-none w-auto p-2" th:text="#{debtor.worker-meeting.worker-meeting-participants}"/>
-                <table class="table">
-                    <thead class="thead-light">
-                    <tr>
-                        <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.id}"></th>
-                        <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.fullName}"></th>
-                        <th scope="col" th:text="#{action}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="workerMeetingParticipant : ${workerMeetingParticipants}">
-                        <td th:text="${workerMeetingParticipant.id}"/>
-                        <td th:text="${workerMeetingParticipant.fullName}"/>
-                        <td>
-                            <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
-                               th:title="#{debtor.edit-worker-meeting-participant}" class="fa-regular fa-pen-to-square icon-dark"></a>
-                            <a th:href="@{/debtor/{debtorId}/worker-meeting/{workerMeetingId}/worker-meeting-participant/{workerMeetingParticipantId}/delete(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
-                               th:deleteMessage="#{do-you-want-delete-record(${debtor.name})}" id="btnDelete"
-                               th:title="#{debtor.delete-worker-meeting-participant}"
-                               class="fa-regular fa-trash-can icon-dark btn-delete"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </fieldset>
-        </div>
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"
+            th:text="${isEdit} ? #{debtor.worker-meeting.update} : #{debtor.worker-meeting.creation}">Worker meeting</h1>
     </div>
-</div>
 
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${workerMeeting}"
+          th:action="@{/debtors/{debtorId}/worker-meetings(debtorId=${debtor.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{debtorId}"/>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="date" th:text="#{debtor.worker-meeting.date}"></label>
+                <input type="date" th:field="*{date}" class="form-control" id="date"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="time" th:text="#{debtor.worker-meeting.time}"></label>
+                <input type="time" th:field="*{time}" class="form-control" id="time"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="registrationTimeFrom"
+                       th:text="#{debtor.worker-meeting.registrationTimeFrom}"></label>
+                <input type="time" th:field="*{registrationTimeFrom}" class="form-control"
+                       id="registrationTimeFrom"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="registrationTimeTo"
+                       th:text="#{debtor.worker-meeting.registrationTimeTo}"></label>
+                <input type="time" th:field="*{registrationTimeTo}" class="form-control"
+                       id="registrationTimeTo"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-12">
+                <label class="col-form-label" for="address" th:text="#{debtor.worker-meeting.address}"></label>
+                <textarea rows="3" th:field="*{address}" class="form-control" id="address"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-12">
+                <label class="col-form-label" for="topic" th:text="#{debtor.worker-meeting.topic}"></label>
+                <textarea rows="3" th:field="*{topic}" class="form-control" id="topic"></textarea>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/debtors/{id}(id=${debtor.id})}"
+               th:title="#{debtor}" th:aria-label="#{debtor}"><i class="fas fa-list"></i></a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}"><i class="fas fa-save"></i></button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}"><i class="fas fa-trash"></i></button>
+        </div>
+    </form>
+
+    <div th:if="${isEdit}" class="mt-4">
+        <div class="text-start">
+            <a class="btn btn-outline-success btn-sm"
+               th:href="@{/debtors/{debtorId}/worker-meetings/{workerMeetingId}/participants/new(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id})}"
+               th:title="#{debtor.worker-meeting.worker-meeting-participant.creation}">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+        <fieldset class="border p-2">
+            <legend class="float-none w-auto p-2"
+                    th:text="#{debtor.worker-meeting.worker-meeting-participants}"></legend>
+            <table class="table">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.id}"></th>
+                    <th scope="col" th:text="#{debtor.worker-meeting.worker-meeting-participant.fullName}"></th>
+                    <th scope="col" th:text="#{action}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="workerMeetingParticipant : ${workerMeetingParticipants}">
+                    <td th:text="${workerMeetingParticipant.id}"></td>
+                    <td th:text="${workerMeetingParticipant.fullName}"></td>
+                    <td>
+                        <div class="btn-group flex-nowrap" role="group">
+                            <a class="btn btn-outline-primary btn-sm"
+                               th:href="@{/debtors/{debtorId}/worker-meetings/{workerMeetingId}/participants/{workerMeetingParticipantId}(debtorId=${debtor.id},workerMeetingId=${workerMeeting.id},workerMeetingParticipantId=${workerMeetingParticipant.id})}"
+                               th:title="#{edit}" th:aria-label="#{debtor.edit-worker-meeting-participant}">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtor.id} + '/worker-meetings/' + ${workerMeeting.id}, #{worker-meeting.delete-title}, #{worker-meeting.delete-confirm})}"></div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnCancel").on("click", function () {
-            window.location = "[[@{/debtor/{debtorId}(debtorId=${debtor.id})}]]";
-        });
-    });
-</script>
-
 </body>
 </html>

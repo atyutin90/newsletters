@@ -8,6 +8,7 @@ import com.example.newsletters.repository.DebtorMeetingRepository
 import com.example.newsletters.repository.QuestionRepository
 import com.example.newsletters.service.report.DocumentGeneratorService
 import jakarta.transaction.Transactional
+import org.springframework.context.MessageSource
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -16,24 +17,38 @@ class DebtorMeetingStorageService(
     private val debtorMeetingRepository: DebtorMeetingRepository,
     private val questionRepository: QuestionRepository,
     private val debtorMeetingQuestionRepository: DebtorMeetingQuestionRepository,
-    private val documentGeneratorService: DocumentGeneratorService
-) {
+    private val documentGeneratorService: DocumentGeneratorService,
+    messageSource: MessageSource
+) : AbstractRepositoryService(messageSource) {
 
-    fun getAll(): List<DebtorMeetingDto> = debtorMeetingRepository.findAll().map { it.debtorMeetingDTO }
+    fun getAll(): List<DebtorMeetingDto> =
+        debtorMeetingRepository.findAll()
+            .map { it.debtorMeetingDTO }
 
     fun getByDebtorId(debtorId: Long): List<DebtorMeetingDto> =
-        debtorMeetingRepository.findByDebtorId(debtorId).map { it.debtorMeetingDTO }
+        debtorMeetingRepository.findByDebtorId(debtorId)
+            .map { it.debtorMeetingDTO }
 
-    fun getAll(paging: Pageable) = debtorMeetingRepository.findAll(paging).map { it.debtorMeetingDTO }
+    fun getAll(paging: Pageable) =
+        debtorMeetingRepository.findAll(paging)
+            .map { it.debtorMeetingDTO }
 
-    fun getById(id: Long) = debtorMeetingRepository.findById(id).map { it.debtorMeetingDTO }.orElse(null)
+    fun getById(id: Long): DebtorMeetingDto =
+        debtorMeetingRepository.findById(id)
+            .map { it.debtorMeetingDTO }
+            .orElseThrow { notExist(id) }
 
-    fun getByIds(ids: List<Long>) = debtorMeetingRepository.findAllById(ids).map { it.debtorMeetingDTO }
+    fun getByIds(ids: List<Long>) =
+        debtorMeetingRepository.findAllById(ids).map { it.debtorMeetingDTO }
 
-    fun delete(id: Long) = debtorMeetingRepository.deleteById(id)
+    fun delete(id: Long) = run {
+        val result = debtorMeetingRepository.existsById(id)
+        if (!result) notExist(id)
+        debtorMeetingRepository.deleteById(id)
+    }
 
     @Transactional
-    fun create(request: DebtorMeetingDto) {
+    fun create(request: DebtorMeetingDto): DebtorMeetingDto {
         val questions = questionRepository.findAll()
         val debtorMeeting = debtorMeetingRepository.save(request.debtorMeeting)
         questions
@@ -46,13 +61,17 @@ class DebtorMeetingStorageService(
             }.forEach { debtorMeetingQuestionRepository.save(it) }
         //Процесс генерации документов
         documentGeneratorService.generate(request.debtorId)
+        return debtorMeeting.debtorMeetingDTO
     }
 
     @Transactional
-    fun update(request: DebtorMeetingDto) {
-        debtorMeetingRepository.save(request.debtorMeeting)
+    fun update(data: DebtorMeetingDto): DebtorMeetingDto {
+        val result = data.id?.let { debtorMeetingRepository.existsById(data.id) } ?: false
+        if (!result) notExist(data.id)
+        val debtorMeeting = debtorMeetingRepository.save(data.debtorMeeting)
         //Процесс генерации документов
-        documentGeneratorService.generate(request.debtorId)
+        documentGeneratorService.generate(data.debtorId)
+        return debtorMeeting.debtorMeetingDTO
     }
 }
 

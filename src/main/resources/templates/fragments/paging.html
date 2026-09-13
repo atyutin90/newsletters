@@ -1,5 +1,5 @@
 <a th:fragment="paging(source, pageNum, label, tooltip)" class="page-link"
-   th:href="@{${source} + '?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${pageNum} + '&size=' + ${pageSize}}"
+   th:href="@{${source} + '?page=' + ${pageNum} + '&size=' + ${pageSize} + ${extraQuery != null ? extraQuery : (keyword != null && keyword != '' ? '&keyword=' + keyword : '')}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>
@@ -10,7 +10,7 @@
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
                 <a th:replace="~{:: paging(${source}, 1, '<<', #{first-page})}"></a>
             </li>
-            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+            <li class="page-item fw-bold" th:classappend="${currentPage == 1} ? 'disabled'">
                 <a th:replace="~{:: paging(${source}, ${currentPage - 1}, #{preview}, #{preview-page})}"></a>
             </li>
             <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
@@ -23,7 +23,7 @@
             <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
                 <a class="page-link" href="#">...</a>
             </li>
-            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <li class="page-item fw-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
                 <a th:replace="~{:: paging(${source}, ${currentPage + 1},#{next}, #{next-page})}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">

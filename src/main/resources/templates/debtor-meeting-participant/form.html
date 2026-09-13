@@ -1,120 +1,112 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
-    <title>Newsletters</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/7.0.1/css/all.min.css}" />
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-</head>
+<div th:replace="~{fragments/head :: head}"></div>
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container-fluid">
-    <h2 class="text-center">[[${pageTitle}]]</h2>
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"
+            th:text="${isEdit} ? #{debtor.debtor-meeting.debtor-meeting-participant.update} : #{debtor.debtor-meeting.debtor-meeting-participant.creation}">Participant</h1>
+    </div>
 
-    <div class="my-3">
-        <form th:action="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}/debtor-meeting-participant/save(debtorId=${debtorMeeting.getDebtorId()}, debtorMeetingId=${debtorMeeting.getId()})}" method="post" enctype="multipart/form-data" th:object="${debtorMeetingParticipant}">
-            <input type="hidden" th:field="*{id}"/>
-            <div class="p-3">
-                <input type="hidden" name="debtorId" th:value="${debtorMeeting.debtorId}" id="debtorId"/>
-               <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <a th:href="@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtorMeeting.getDebtorId()},debtorMeetingId=${debtorMeeting.getId()})}"
-                           th:title="#{debtor.debtor-meeting}"
-                           class="fa-solid fa-reply fa-2xl icon-dark"
-                           id="debtorName">
-                        </a>
-                    </div>
-                    <div class="form-group col-md-6">
-                    </div>
-                </div>
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
 
-                <!--Поля-->
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="col-form-label" for="type" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.type}"/>
-                        <select class="form-control" id="type" th:field="*{type}" th:classappend="${#fields.hasErrors('type')} ? 'is-invalid' : ''" onchange="toggleFields()" >
-                            <option th:if="${debtorMeetingParticipant?.type == null || debtorMeetingParticipant?.type == ''}" selected th:value="${null}" th:text="#{choose}"></option>
-                            <option th:each="meetingParticipantType : ${meetingParticipantTypes}"
-                                    th:value="${meetingParticipantType.getCode()}"
-                                    th:text="${meetingParticipantType.getValue()}"
-                            />
-                        </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
-                    </div>
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" th:field="*{withoutRight}" class="form-check-input" id="withoutRight"/>
-                    <label class="form-check-label" for="withoutRight" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.withoutRight}"/>
-                </div>
+    <form th:method="post" th:object="${debtorMeetingParticipant}"
+          th:action="@{/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}/participants(debtorId=${debtorMeeting.debtorId},debtorMeetingId=${debtorMeeting.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{debtorMeetingId}"/>
 
-                <!--Поля для кредитора-->
-                <div id="creditorParticipantForm" style="display: none;">
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label class="col-form-label" for="creditorId" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.creditorId}"/>
-                            <select class="form-control" id="creditorId" th:field="*{creditorId}" th:classappend="${#fields.hasErrors('creditorId')} ? 'is-invalid' : ''">
-                                <option th:if="${debtorMeetingParticipant?.creditorId == null || debtorMeetingParticipant?.creditorId == ''}" selected th:value="${null}" th:text="#{choose}"></option>
-                                <option th:each="creditor : ${creditors}"
-                                        th:value="${creditor.id}"
-                                        th:text="${creditor.name}"
-                                />
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('creditorId')}" th:errors="*{creditorId}"></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="mb-3 col-12">
+                <label class="col-form-label" for="type"
+                       th:text="#{debtor.debtor-meeting.debtor-meeting-participant.type}"></label>
+                <select class="form-select" id="type" th:field="*{type}"
+                        th:classappend="${#fields.hasErrors('type')} ? 'is-invalid' : ''"
+                        onchange="toggleFields()">
+                    <option th:if="${debtorMeetingParticipant.type == null || debtorMeetingParticipant.type == ''}"
+                            selected th:value="${null}" th:text="#{choose}"></option>
+                    <option th:each="meetingParticipantType : ${meetingParticipantTypes}"
+                            th:value="${meetingParticipantType.code}"
+                            th:text="${meetingParticipantType.value}"></option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+            </div>
+        </div>
 
-                <!--Поля для нового участника-->
-                <div id="newParticipantForm" style="display: none;">
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label class="col-form-label" for="name" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.name}"/>
-                            <input class="form-control" id="name" name="name" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"/>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label class="col-form-label" for="address" th:text="#{debtor.debtor-meeting.debtor-meeting-participant.address}"/>
-                            <textarea rows="5" cols="100" th:field="*{address}" class="form-control" id="address"></textarea>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input type="checkbox" th:field="*{withoutRight}" class="form-check-input" id="withoutRight"/>
+                <label class="form-check-label" for="withoutRight"
+                       th:text="#{debtor.debtor-meeting.debtor-meeting-participant.withoutRight}"></label>
+            </div>
+        </div>
 
-                <div class="text-center">
-                    <input type="submit" th:value="#{save}" class="btn btn-primary btn-sm mr-2" />
-                    <input type="button" th:value="#{cancel}" id="btnCancel" class="btn btn-secondary btn-sm" />
+        <div id="creditorParticipantForm" style="display: none;">
+            <div class="row">
+                <div class="mb-3 col-12">
+                    <label class="col-form-label" for="creditorId"
+                           th:text="#{debtor.debtor-meeting.debtor-meeting-participant.creditorId}"></label>
+                    <select class="form-select" id="creditorId" th:field="*{creditorId}"
+                            th:classappend="${#fields.hasErrors('creditorId')} ? 'is-invalid' : ''">
+                        <option th:if="${debtorMeetingParticipant.creditorId == null}" selected th:value="${null}"
+                                th:text="#{choose}"></option>
+                        <option th:each="creditor : ${creditors}" th:value="${creditor.id}"
+                                th:text="${creditor.name}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('creditorId')}"
+                         th:errors="*{creditorId}"></div>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
+        <div id="newParticipantForm" style="display: none;">
+            <div class="row">
+                <div class="mb-3 col-12">
+                    <label class="col-form-label" for="name"
+                           th:text="#{debtor.debtor-meeting.debtor-meeting-participant.name}"></label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-12">
+                    <label class="col-form-label" for="address"
+                           th:text="#{debtor.debtor-meeting.debtor-meeting-participant.address}"></label>
+                    <textarea rows="5" th:field="*{address}" class="form-control" id="address"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm"
+               th:href="@{/debtors/{debtorId}/debtor-meetings/{debtorMeetingId}(debtorId=${debtorMeeting.debtorId},debtorMeetingId=${debtorMeeting.id})}"
+               th:title="#{debtor.debtor-meeting}" th:aria-label="#{debtor.debtor-meeting}">
+                <i class="fas fa-list"></i>
+            </a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}"><i class="fas fa-save"></i></button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}"><i class="fas fa-trash"></i></button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtorMeeting.debtorId} + '/debtor-meetings/' + ${debtorMeeting.id} + '/participants/' + ${debtorMeetingParticipant.id}, #{debtor-meeting-participant.delete-title}, #{debtor-meeting-participant.delete-confirm})}"></div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnCancel").on("click", function () {
-            window.location = "[[@{/debtor/{debtorId}/debtor-meeting/{debtorMeetingId}(debtorId=${debtorMeeting.getDebtorId()},debtorMeetingId=${debtorMeeting.getId()})}]]";
-        });
-    });
-
     function toggleFields() {
         const type = document.getElementById("type").value;
         document.getElementById("newParticipantForm").style.display = type === "PARTICIPANT" ? "block" : "none";
         document.getElementById("creditorParticipantForm").style.display = type === "CREDITOR" ? "block" : "none";
     }
-    document.addEventListener("DOMContentLoaded", function() { toggleFields(); });
-</script>
 
+    document.addEventListener("DOMContentLoaded", toggleFields);
+</script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: newsletters
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=newsletters
+    username: postgres
+    password: example
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate.hibernate.format_sql: true
+  #DELETE -> POST
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

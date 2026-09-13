@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"
+            th:text="${isEdit} ? #{update-publication} : #{debtor.publication.creation}">Publication</h1>
+    </div>
+
+    <div th:replace="~{fragments/success-operation-message :: infoMessage(${infoMessage})}"></div>
+    <div th:replace="~{fragments/error-operation-message :: errorMessage(${error})}"></div>
+
+    <form th:method="post" th:object="${publication}"
+          th:action="@{/debtors/{debtorId}/publications(debtorId=${debtor.id})}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{debtorId}"/>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="publicationDate"
+                       th:text="#{debtor.publication.publicationDate}"></label>
+                <input type="date" th:field="*{publicationDate}" class="form-control" id="publicationDate"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="hallNumber"
+                       th:text="#{debtor.publication.hallNumber}"></label>
+                <input type="number" th:field="*{hallNumber}" class="form-control" id="hallNumber"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="appointmentDate"
+                       th:text="#{debtor.publication.appointmentDate}"></label>
+                <input type="date" th:field="*{appointmentDate}" class="form-control" id="appointmentDate"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="appointmentTime"
+                       th:text="#{debtor.publication.appointmentTime}"></label>
+                <input type="time" th:field="*{appointmentTime}" class="form-control" id="appointmentTime"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="kommersantMessageNumber"
+                       th:text="#{debtor.publication.kommersantMessageNumber}"></label>
+                <input type="text" th:field="*{kommersantMessageNumber}" class="form-control"
+                       id="kommersantMessageNumber"/>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="efrsbMessageNumber"
+                       th:text="#{debtor.publication.efrsbMessageNumber}"></label>
+                <input type="text" th:field="*{efrsbMessageNumber}" class="form-control"
+                       id="efrsbMessageNumber"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="col-form-label" for="kommersantIssueNumber"
+                       th:text="#{debtor.publication.kommersantIssueNumber}"></label>
+                <input type="text" th:field="*{kommersantIssueNumber}" class="form-control"
+                       id="kommersantIssueNumber"/>
+            </div>
+            <div class="mb-3 col-md-6"></div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-12">
+                <label class="col-form-label" for="additionInformation"
+                       th:text="#{addition-information}"></label>
+                <textarea rows="5" th:field="*{additionInformation}" class="form-control"
+                          id="additionInformation"></textarea>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/debtors/{id}(id=${debtor.id})}"
+               th:title="#{debtor}" th:aria-label="#{debtor}"><i class="fas fa-list"></i></a>
+            <button type="submit" class="btn btn-outline-success btn-sm" th:title="#{save}"
+                    th:aria-label="#{save}"><i class="fas fa-save"></i></button>
+            <button th:if="${isEdit}" type="button" class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#delete-modal" th:title="#{delete}"
+                    th:aria-label="#{delete}"><i class="fas fa-trash"></i></button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/delete-modal :: deleteModal(${isEdit}, '/debtors/' + ${debtor.id} + '/publications/' + ${publication.id}, #{publication.delete-title}, #{publication.delete-confirm})}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

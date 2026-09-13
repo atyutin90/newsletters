@@ -16,8 +16,8 @@ import com.example.newsletters.repository.DocumentTemplateRepository
 import com.example.newsletters.repository.QuestionRepository
 import com.example.newsletters.repository.RequestRepository
 import com.example.newsletters.repository.WorkerMeetingRepository
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.Long.Companion.MIN_VALUE
 
 @Service

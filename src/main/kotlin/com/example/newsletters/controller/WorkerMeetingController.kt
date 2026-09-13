@@ -2,22 +2,22 @@ package com.example.newsletters.controller
 
 import com.example.newsletters.dto.model.DebtorDto
 import com.example.newsletters.dto.model.WorkerMeetingDto
-import com.example.newsletters.dto.model.WorkerMeetingParticipantDto
 import com.example.newsletters.service.DebtorStorageService
 import com.example.newsletters.service.WorkerMeetingParticipantStorageService
 import com.example.newsletters.service.WorkerMeetingStorageService
+import jakarta.validation.Valid
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.*
 
 @Controller
-@RequestMapping("/debtor/{id}/worker-meeting")
 class WorkerMeetingController(
     val debtorStorageService: DebtorStorageService,
     val workerMeetingService: WorkerMeetingStorageService,
@@ -25,62 +25,73 @@ class WorkerMeetingController(
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
-    @GetMapping("/{workerMeetingId}/delete")
-    fun delete(
-        @PathVariable(ID) id: Long,
+    @GetMapping("/debtors/{debtorId}/worker-meetings/new")
+    fun create(@PathVariable(DEBTOR_ID) debtorId: Long, model: Model): String = run {
+        formAttributes(model, WorkerMeetingDto(debtorId = debtorId), debtorId, false)
+        "worker-meeting/form"
+    }
+
+    @GetMapping("/debtors/{debtorId}/worker-meetings/{workerMeetingId}")
+    fun edit(
+        @PathVariable(DEBTOR_ID) debtorId: Long,
         @PathVariable(WORKER_MEETING_ID) workerMeetingId: Long,
+        model: Model
+    ): String = run {
+        formAttributes(model, workerMeetingService.getById(workerMeetingId), debtorId, true)
+        "worker-meeting/form"
+    }
+
+    @PostMapping("/debtors/{debtorId}/worker-meetings")
+    fun save(
+        @PathVariable(DEBTOR_ID) debtorId: Long,
+        @Valid @ModelAttribute(WORKER_MEETING) workerMeeting: WorkerMeetingDto,
+        bindingResult: BindingResult,
         model: Model,
         redirectAttributes: RedirectAttributes
     ): String = run {
-        try {
-            workerMeetingService.delete(workerMeetingId)
-             infoMessageDeleteRecord(redirectAttributes, workerMeetingId)
-        } catch (e: Exception) {
-            redirectAttributes.addAttribute(MESSAGE, e.message)
+        val data = workerMeeting.copy(debtorId = debtorId)
+        val isUpdate = data.id != null
+        if (bindingResult.hasErrors()) {
+            formAttributes(model, data, debtorId, isUpdate)
+            return "worker-meeting/form"
         }
-        "redirect:/debtor/${id}"
+
+        try {
+            val saved = if (isUpdate) workerMeetingService.update(data) else workerMeetingService.create(data)
+            messageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+            "redirect:/debtors/${debtorId}/worker-meetings/${saved.id}"
+        } catch (ex: Exception) {
+            redirectAttributes.addFlashAttribute(ERROR, ex.message)
+            if (isUpdate) {
+                "redirect:/debtors/${debtorId}/worker-meetings/${data.id}"
+            } else {
+                "redirect:/debtors/${debtorId}/worker-meetings/new"
+            }
+        }
     }
 
-    @GetMapping("/{workerMeetingId}")
-    fun edit(
-        @PathVariable(ID) id: Long,
+    @DeleteMapping("/debtors/{debtorId}/worker-meetings/{workerMeetingId}")
+    fun delete(
+        @PathVariable(DEBTOR_ID) debtorId: Long,
         @PathVariable(WORKER_MEETING_ID) workerMeetingId: Long,
-        model: Model,
-        redirectAttributes: RedirectAttributes): String = try {
-        val workerMeeting: WorkerMeetingDto = workerMeetingService.getById(workerMeetingId)
-        val participants: List<WorkerMeetingParticipantDto> = workerMeetingParticipantService.getByWorkerMeetingId(workerMeetingId)
-        val debtor: DebtorDto = debtorStorageService.getById(id)
+        redirectAttributes: RedirectAttributes
+    ): String = run {
+        workerMeetingService.delete(workerMeetingId)
+        messageDeleteRecord(redirectAttributes, workerMeetingId)
+        "redirect:/debtors/${debtorId}"
+    }
+
+    private fun formAttributes(model: Model, workerMeeting: WorkerMeetingDto, debtorId: Long, isEdit: Boolean) {
+        val debtor: DebtorDto = debtorStorageService.getById(debtorId)
         model.addAttribute(WORKER_MEETING, workerMeeting)
-        model.addAttribute(WORKER_MEETING_PARTICIPANTS, participants)
         model.addAttribute(DEBTOR, debtor)
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.worker-meeting.update", arrayOf(workerMeetingId), Locale.getDefault()))
-        "worker-meeting/form"
-    } catch (e: Exception) {
-        redirectAttributes.addAttribute(MESSAGE, e.message)
-        "redirect:/debtor/${id}"
-    }
+        model.addAttribute(IS_EDIT, isEdit)
 
-    @GetMapping("/new")
-    fun add(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = try {
-        val debtor: DebtorDto = debtorStorageService.getById(id)
-        model.addAttribute(WORKER_MEETING,  WorkerMeetingDto(debtorId = id))
-        model.addAttribute(DEBTOR, debtor)
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("debtor.worker-meeting.creation", arrayOf(), Locale.getDefault()))
-        "worker-meeting/form"
-    } catch (e: Exception) {
-        redirectAttributes.addAttribute(MESSAGE, e.message)
-        "redirect:/debtor/{id}"
-    }
+        if (!isEdit || workerMeeting.id == null) return
 
-    @PostMapping("/save")
-    fun save(request: WorkerMeetingDto, model: Model, redirectAttributes: RedirectAttributes): String = try {
-        val isUpdate = request.id != null
-        if (isUpdate) workerMeetingService.update(request)
-        else workerMeetingService.create(request)
-        infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
-        "redirect:/debtor/${request.debtorId}"
-    } catch (e: Exception) {
-        redirectAttributes.addAttribute(MESSAGE, e.message)
-        "redirect:/debtor/${request.debtorId}"
+        model.addAttribute(
+            WORKER_MEETING_PARTICIPANTS,
+            workerMeetingParticipantService.getByWorkerMeetingId(workerMeeting.id)
+        )
     }
 }

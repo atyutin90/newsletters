@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 private const val PACKAGE = "com.example.newsletters.entity.enum"
+
 @Service
 class ValueListService(private val messageSource: MessageSource) {
     private val locale: Locale = Locale.getDefault()

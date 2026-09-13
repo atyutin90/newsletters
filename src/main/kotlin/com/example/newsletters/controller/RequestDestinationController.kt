@@ -1,95 +1,96 @@
 package com.example.newsletters.controller
 
+import com.example.newsletters.dto.model.PageFilter
 import com.example.newsletters.dto.model.RequestDestinationDto
 import com.example.newsletters.entity.enum.DocumentTemplateType
 import com.example.newsletters.service.DocumentTemplateStorageService
 import com.example.newsletters.service.RequestDestinationService
+import jakarta.validation.Valid
 import org.springframework.context.MessageSource
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.Locale
 
 @Controller
-@RequestMapping("/request-destination")
 class RequestDestinationController(
     val requestDestinationService: RequestDestinationService,
     val documentTemplateStorageService: DocumentTemplateStorageService,
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
-    @GetMapping("/all")
-    fun getAll(
-        @RequestParam(KEYWORD) keyword: String?,
-        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) size: Int,
+    @GetMapping("/request-destinations")
+    fun list(
+        @RequestParam("search") search: String?,
+        @PageableDefault(page = 1, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
-    ): String {
-        try {
-            val paging: Pageable = PageRequest.of(page - 1, size)
-            val dto =
-                if (keyword?.isEmpty() != false) requestDestinationService.getAll(paging)
-                else requestDestinationService.getByName(keyword, paging)
-            model.addAttribute(DATA, dto.content)
-            model.addAttribute(CURRENT_PAGE, dto.number + 1)
-            model.addAttribute(TOTAL_ITEMS, dto.totalElements)
-            model.addAttribute(TOTAL_PAGES, dto.totalPages)
-            model.addAttribute(PAGE_SIZE, size)
-            model.addAttribute(KEYWORD, keyword)
-        } catch (e: Exception) {
-            model.addAttribute(MESSAGE, e.message)
-        }
-        return "request-destination/list"
+    ): String = run {
+        val filter = PageFilter(search)
+        val destinations = requestDestinationService.getAll(filter, pageableOf(pageable))
+        pageAttribute(model, pageable, destinations, filter)
+        model.addAttribute(DATA, destinations)
+        model.addAttribute(FILTER, filter)
+        "request-destination/list"
     }
 
-    @GetMapping("/new")
-    fun add(model: Model): String = run {
-        model.addAttribute(DATA,  RequestDestinationDto())
-        model.addAttribute(PAGE_TITLE, messageSource.getMessage("request-destination.create", arrayOf(), Locale.getDefault()))
+    @GetMapping("/request-destinations/new")
+    fun create(model: Model): String = run {
+        formAttributes(model, RequestDestinationDto(), false)
         "request-destination/form"
     }
 
-    @PostMapping("/save")
-    fun save(data: RequestDestinationDto, redirectAttributes: RedirectAttributes): String = run {
-        try {
-            val isUpdate = data.id != null
-            requestDestinationService.save(data)
-           infoMessageCreateOrUpdateRecord(redirectAttributes, isUpdate)
-        } catch (e: Exception) {
-            redirectAttributes.addAttribute(MESSAGE, e.message)
-        }
-        "redirect:/request-destination/all"
+    @GetMapping("/request-destinations/{id}")
+    fun edit(@PathVariable(ID) id: Long, model: Model): String = run {
+        formAttributes(model, requestDestinationService.getById(id), true)
+        "request-destination/form"
     }
 
-    @GetMapping("/{id}")
-    fun edit(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String =
-        try {
-            val data: RequestDestinationDto = requestDestinationService.getById(id)
-            val documentTemplates = documentTemplateStorageService.getByType(DocumentTemplateType.REQUEST)
-            model.addAttribute(DATA, data)
-            model.addAttribute(DOCUMENT_TEMPLATES, documentTemplates)
-            model.addAttribute(PAGE_TITLE, messageSource.getMessage("update-request-destination", arrayOf(id), Locale.getDefault()))
-            "request-destination/form"
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
-            "redirect:/request-destination/all"
+    @PostMapping("/request-destinations")
+    fun save(
+        @Valid @ModelAttribute(DATA) request: RequestDestinationDto,
+        bindingResult: BindingResult,
+        model: Model,
+        redirectAttributes: RedirectAttributes
+    ): String = run {
+        val isUpdate = request.id != null
+        if (bindingResult.hasErrors()) {
+            formAttributes(model, request, isUpdate)
+            return "request-destination/form"
         }
 
-    @GetMapping("/delete/{id}")
-    fun delete(@PathVariable(ID) id: Long, model: Model, redirectAttributes: RedirectAttributes): String = run {
         try {
-            requestDestinationService.delete(id)
-            infoMessageDeleteRecord(redirectAttributes, id)
-        } catch (e: Exception) {
-            redirectAttributes.addFlashAttribute(MESSAGE, e.message)
+            val data = requestDestinationService.save(request)
+            messageCreateOrUpdateRecord(redirectAttributes, isUpdate)
+            "redirect:/request-destinations/${data.id}"
+        } catch (ex: Exception) {
+            redirectAttributes.addFlashAttribute(ERROR, ex.message)
+            if (isUpdate) "redirect:/request-destinations/${request.id}"
+            else "redirect:/request-destinations/new"
         }
-        "redirect:/request-destination/all"
+    }
+
+    @DeleteMapping("/request-destinations/{id}")
+    fun delete(@PathVariable(ID) id: Long, redirectAttributes: RedirectAttributes): String = run {
+        requestDestinationService.delete(id)
+        messageDeleteRecord(redirectAttributes, id)
+        "redirect:/request-destinations"
+    }
+
+    private fun formAttributes(model: Model, data: RequestDestinationDto, isEdit: Boolean) {
+        model.addAttribute(DATA, data)
+        model.addAttribute(
+            DOCUMENT_TEMPLATES,
+            documentTemplateStorageService.getByType(DocumentTemplateType.REQUEST)
+        )
+        model.addAttribute(IS_EDIT, isEdit)
     }
 }

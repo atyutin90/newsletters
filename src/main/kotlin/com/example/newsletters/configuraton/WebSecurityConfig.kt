@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 
-
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig {
@@ -20,7 +19,7 @@ class WebSecurityConfig {
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers( "/css/**", "/images/**", "/js/**", "/webjars/**").permitAll()
+                    .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                     .anyRequest().authenticated()
             }
             .formLogin {
@@ -29,7 +28,6 @@ class WebSecurityConfig {
                     .permitAll()
             }
             .logout { it.permitAll() }
-
         return http.build()
     }
 
@@ -39,7 +37,6 @@ class WebSecurityConfig {
                 .username("u")
                 .password("1")
                 .build()
-
         return InMemoryUserDetailsManager(user)
     }
 }
