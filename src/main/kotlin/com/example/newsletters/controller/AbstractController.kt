@@ -49,6 +49,7 @@ const val REQUEST_DESTINATION = "requestDestination"
 const val REQUEST_DESTINATIONS = "requestDestinations"
 const val ARBITRATION_MANAGERS = "arbitrationManagers"
 const val DOCUMENTS = "documents"
+const val DOCUMENT_GROUPS = "documentGroups"
 const val MESSAGE = "message"
 const val ERROR_MESSAGE = "errorMessage"
 const val PAGE_TITLE = "pageTitle"
@@ -74,9 +75,8 @@ const val FILTER = "filter"
 const val IS_EDIT = "isEdit"
 const val ERROR = "error"
 const val INFO_MESSAGE = "infoMessage"
+const val DEFAULT_PAGE = 1
 
-const val DEFAULT_PAGE = "1"
-const val DEFAULT_PAGE_SIZE = "10"
 abstract class AbstractController(open val messageSource: MessageSource) {
 
     fun messageCreateOrUpdateRecord(redirectAttributes: RedirectAttributes, isUpdate: Boolean) =

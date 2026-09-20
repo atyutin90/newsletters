@@ -31,7 +31,7 @@ class QuestionController(
     @GetMapping("/questions")
     fun list(
         @RequestParam("search") search: String?,
-        @PageableDefault(page = 1, sort = ["position"], direction = Sort.Direction.ASC) pageable: Pageable,
+        @PageableDefault(page = DEFAULT_PAGE, sort = ["position"], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
     ): String = run {
         val filter = PageFilter(search)

@@ -3,6 +3,8 @@ package com.example.newsletters.controller
 import com.example.newsletters.dto.model.CreditorDto
 import com.example.newsletters.dto.model.DebtorDto
 import com.example.newsletters.dto.model.DebtorMeetingDto
+import com.example.newsletters.dto.model.DocumentDto
+import com.example.newsletters.dto.model.DocumentGroupDto
 import com.example.newsletters.dto.model.PageFilter
 import com.example.newsletters.dto.model.PublicationDto
 import com.example.newsletters.dto.model.RequestDestinationDto
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.util.Locale.getDefault
 
 @Controller
 class DebtorController(
@@ -52,7 +55,7 @@ class DebtorController(
     @GetMapping("/debtors")
     fun list(
         @RequestParam("search") search: String?,
-        @PageableDefault(page = 1, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
+        @PageableDefault(page = DEFAULT_PAGE, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
     ): String = run {
         val filter = PageFilter(search)
@@ -120,13 +123,35 @@ class DebtorController(
         model.addAttribute(CREDITOR, CreditorDto(debtorId = id))
         model.addAttribute(CREDITORS, creditorStorageService.getByDebtorId(id))
         model.addAttribute(CLIENT_TYPES, valueListService.getValues("clientType"))
-        model.addAttribute(DOCUMENT_TEMPLATE_TYPES, valueListService.getValues("documentTemplateType"))
         model.addAttribute(DEBTOR_MEETING, DebtorMeetingDto(debtorId = id))
         model.addAttribute(DEBTOR_MEETINGS, debtorMeetingService.getByDebtorId(id))
         model.addAttribute(WORKER_MEETING, WorkerMeetingDto(debtorId = id))
         model.addAttribute(WORKER_MEETINGS, workerMeetingService.getByDebtorId(id))
         val requestDestinations: List<RequestDestinationDto> = requestDestinationService.getAll()
         model.addAttribute(REQUEST_DESTINATIONS, requestDestinations)
-        model.addAttribute(DOCUMENTS, documentStorageService.getByDebtorId(id))
+        val documents = documentStorageService.getByDebtorId(id)
+        model.addAttribute(DOCUMENTS, documents)
+        model.addAttribute(DOCUMENT_GROUPS, groupDocumentsByType(documents))
+    }
+
+    private fun groupDocumentsByType(documents: List<DocumentDto>): List<DocumentGroupDto> {
+        val documentsByType = documents.groupBy { it.type }
+        val documentTypes = valueListService.getValues("documentTemplateType")
+        val knownTypes = documentTypes.map { it.code }.toSet()
+
+        val knownGroups = documentTypes.mapNotNull { type ->
+            documentsByType[type.code]?.let { DocumentGroupDto(type.code, type.value, it) }
+        }
+        val unknownGroups = documentsByType
+            .filterKeys { it !in knownTypes }
+            .map { (type, typedDocuments) ->
+                DocumentGroupDto(
+                    type = type,
+                    name = type ?: messageSource.getMessage("debtor.document.unknown-type", null, getDefault()),
+                    documents = typedDocuments,
+                )
+            }
+
+        return knownGroups + unknownGroups
     }
 }

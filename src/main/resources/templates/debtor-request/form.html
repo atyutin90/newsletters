@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="~{fragments/head :: head}"></div>
 
 <body>
@@ -31,7 +31,7 @@
             </div>
             <div class="mb-3 col-md-6">
                 <label class="col-form-label" for="date" th:text="#{debtor.request.date}"></label>
-                <input type="date" th:field="*{date}" class="form-control" id="date"/>
+                <input type="date" name="date" th:value="${request.date}" class="form-control" id="date"/>
             </div>
         </div>
         <div class="row">
@@ -56,11 +56,11 @@
         <div class="row">
             <div class="mb-3 col-md-6">
                 <label class="col-form-label" for="dateFrom" th:text="#{debtor.request.dateFrom}"></label>
-                <input type="date" th:field="*{dateFrom}" class="form-control" id="dateFrom"/>
+                <input type="date" name="dateFrom" th:value="*{dateFrom}" class="form-control" id="dateFrom"/>
             </div>
             <div class="mb-3 col-md-6">
                 <label class="col-form-label" for="dateTo" th:text="#{debtor.request.dateTo}"></label>
-                <input type="date" th:field="*{dateTo}" class="form-control" id="dateTo"/>
+                <input type="date" name="dateTo" th:value="*{dateTo}" class="form-control" id="dateTo" />
             </div>
         </div>
 

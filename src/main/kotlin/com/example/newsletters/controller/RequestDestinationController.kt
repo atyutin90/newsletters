@@ -31,7 +31,7 @@ class RequestDestinationController(
     @GetMapping("/request-destinations")
     fun list(
         @RequestParam("search") search: String?,
-        @PageableDefault(page = 1, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
+        @PageableDefault(page = DEFAULT_PAGE, sort = [ID], direction = Sort.Direction.ASC) pageable: Pageable,
         model: Model
     ): String = run {
         val filter = PageFilter(search)
