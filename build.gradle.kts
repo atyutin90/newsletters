@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.reflections:reflections:0.10.2")
 	implementation("no.api.freemarker:freemarker-java8:3.0.0")
 	implementation("net.sf.jasperreports:jasperreports:6.20.6")
+	implementation("org.apache.poi:poi-ooxml:5.5.1")
 	implementation("io.github.oshai:kotlin-logging:7.0.0")
 	runtimeOnly("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	runtimeOnly("org.postgresql:postgresql")
@@ -44,4 +45,10 @@ dependencies {
 
 tasks.test {
 	useJUnitPlatform()
+}
+
+tasks.processResources {
+	from("report") {
+		into("report")
+	}
 }

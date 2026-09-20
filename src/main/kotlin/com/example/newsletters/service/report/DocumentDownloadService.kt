@@ -16,6 +16,12 @@ import com.example.newsletters.service.report.jasper.RegistrationCreditorJournal
 import com.example.newsletters.service.report.jasper.RegistrationWorkerJournalDataService
 import com.example.newsletters.service.report.jasper.RequestDataService
 import com.example.newsletters.service.report.jasper.WorkerNotificationDataService
+import com.example.newsletters.service.report.poi.BulletinPoiDocumentService
+import com.example.newsletters.service.report.poi.CreditorNotificationPoiService
+import com.example.newsletters.service.report.poi.MeetingParticipantsRegistrationJournalPoiService
+import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
+import com.example.newsletters.service.report.poi.RequestPoiDocumentService
+import com.example.newsletters.service.report.poi.WorkerNotificationPoiService
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
@@ -39,6 +45,12 @@ class DocumentDownloadService(
     private val registrationCreditorJournalDataService: RegistrationCreditorJournalDataService,
     private val registrationWorkerJournalDataService: RegistrationWorkerJournalDataService,
     private val reestrDataService: ReestrDataService,
+    private val bulletinPoiDocumentService: BulletinPoiDocumentService,
+    private val creditorNotificationPoiService: CreditorNotificationPoiService,
+    private val meetingParticipantsRegistrationJournalPoiService: MeetingParticipantsRegistrationJournalPoiService,
+    private val registrationWorkerJournalPoiService: RegistrationWorkerJournalPoiService,
+    private val requestPoiDocumentService: RequestPoiDocumentService,
+    private val workerNotificationPoiService: WorkerNotificationPoiService,
 ) {
     /**
      * Загружает документ по указанному идентификатору документа
@@ -49,19 +61,34 @@ class DocumentDownloadService(
     fun download(documentId: Long): ByteArray? =
         documentRepository.findById(documentId)
             .filter { document -> !document.templateResourcePath.isNullOrEmpty() }
-            .map { document ->
-                val file = ResourceUtils.getFile(document.templateResourcePath.orEmpty())
-                val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
-                var (dataSource, parameters) = getReportData(document)
-                parameters = parameters.plus(REPORT_LOCALE to getLocale())
-                val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
-                val exporter = JRDocxExporter()
-                val baos = ByteArrayOutputStream()
-                exporter.setExporterInput(SimpleExporterInput(jasperPrint))
-                exporter.setExporterOutput(SimpleOutputStreamExporterOutput(baos))
-                exporter.exportReport()
-                baos.toByteArray()
-            }.orElse(null)
+            .map { document -> generate(document) }
+            .orElse(null)
+
+    private fun generateWithJasper(document: Document): ByteArray {
+        val file = ResourceUtils.getFile(document.templateResourcePath.orEmpty())
+        val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
+        var (dataSource, parameters) = getReportData(document)
+        parameters = parameters.plus(REPORT_LOCALE to getLocale())
+        val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
+        val exporter = JRDocxExporter()
+        return ByteArrayOutputStream().use { output ->
+            exporter.setExporterInput(SimpleExporterInput(jasperPrint))
+            exporter.setExporterOutput(SimpleOutputStreamExporterOutput(output))
+            exporter.exportReport()
+            output.toByteArray()
+        }
+    }
+
+    private fun generate(document: Document): ByteArray =
+        when (document.type) {
+            BULLETIN -> bulletinPoiDocumentService.generate(document)
+            CREDITOR_NOTIFICATION -> creditorNotificationPoiService.generate(document)
+            REGISTRATION_CREDITOR_JOURNAL -> meetingParticipantsRegistrationJournalPoiService.generate(document)
+            REGISTRATION_WORKER_JOURNAL -> registrationWorkerJournalPoiService.generate(document)
+            REQUEST -> requestPoiDocumentService.generate(document)
+            WORKER_NOTIFICATION -> workerNotificationPoiService.generate(document)
+            else -> generateWithJasper(document)
+        }
 
     private fun getReportData(document: Document): Pair<JRBeanCollectionDataSource, Map<String, Any?>> =
         when (document.type) {
