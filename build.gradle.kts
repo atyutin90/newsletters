@@ -25,6 +25,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-flyway")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -38,7 +39,8 @@ dependencies {
 	implementation("io.github.oshai:kotlin-logging:7.0.0")
 	runtimeOnly("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	runtimeOnly("org.postgresql:postgresql")
-	runtimeOnly("org.flywaydb:flyway-core:9.22.3")
+	runtimeOnly("org.flywaydb:flyway-core:12.4.0")
+	runtimeOnly("org.flywaydb:flyway-database-postgresql:12.4.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
