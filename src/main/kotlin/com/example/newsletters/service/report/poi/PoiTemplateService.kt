@@ -21,6 +21,8 @@ class PoiTemplateService {
         XWPFDocument(input).use { wordDocument ->
             data.tableRows.forEach { replaceTableRows(wordDocument, it) }
             replacePlaceholders(wordDocument, data.values)
+            wordDocument.headerList.forEach { replacePlaceholders(it, data.values) }
+            wordDocument.footerList.forEach { replacePlaceholders(it, data.values) }
             ByteArrayOutputStream().use { output ->
                 wordDocument.write(output)
                 output.toByteArray()

@@ -20,6 +20,7 @@ import com.example.newsletters.service.report.poi.BulletinPoiDocumentService
 import com.example.newsletters.service.report.poi.CreditorNotificationPoiService
 import com.example.newsletters.service.report.poi.MeetingParticipantsRegistrationJournalPoiService
 import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
+import com.example.newsletters.service.report.poi.ReestrPoiDocumentService
 import com.example.newsletters.service.report.poi.RequestPoiDocumentService
 import com.example.newsletters.service.report.poi.WorkerNotificationPoiService
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
@@ -49,6 +50,7 @@ class DocumentDownloadService(
     private val creditorNotificationPoiService: CreditorNotificationPoiService,
     private val meetingParticipantsRegistrationJournalPoiService: MeetingParticipantsRegistrationJournalPoiService,
     private val registrationWorkerJournalPoiService: RegistrationWorkerJournalPoiService,
+    private val reestrPoiDocumentService: ReestrPoiDocumentService,
     private val requestPoiDocumentService: RequestPoiDocumentService,
     private val workerNotificationPoiService: WorkerNotificationPoiService,
 ) {
@@ -85,6 +87,7 @@ class DocumentDownloadService(
             CREDITOR_NOTIFICATION -> creditorNotificationPoiService.generate(document)
             REGISTRATION_CREDITOR_JOURNAL -> meetingParticipantsRegistrationJournalPoiService.generate(document)
             REGISTRATION_WORKER_JOURNAL -> registrationWorkerJournalPoiService.generate(document)
+            REESTR -> reestrPoiDocumentService.generate(document)
             REQUEST -> requestPoiDocumentService.generate(document)
             WORKER_NOTIFICATION -> workerNotificationPoiService.generate(document)
             else -> generateWithJasper(document)
