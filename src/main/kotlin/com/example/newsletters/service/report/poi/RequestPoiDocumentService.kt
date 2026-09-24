@@ -18,6 +18,7 @@ private const val REQUEST_DATE_TO = "requestDateTo"
 private const val REQUEST_DESTINATION = "requestDestination"
 private const val REQUEST_DESTINATION_DETAIL = "requestDestinationDetail"
 private const val REQUEST_ADDRESS = "requestAddress"
+private const val REQUEST_ACCOUNT = "requestAccount"
 private const val COURT_ACT = "courtAct"
 private const val ACT_DATE = "actDate"
 private const val RESOLUTION_DATE = "resolutionDate"
@@ -65,6 +66,7 @@ class RequestPoiDocumentService(
             value(REQUEST_DESTINATION) to request.destination?.name.orEmpty(),
             value(REQUEST_DESTINATION_DETAIL) to request.destinationDetail.orEmpty(),
             value(REQUEST_ADDRESS) to request.address.orEmpty(),
+            value(REQUEST_ACCOUNT) to request.accounts.joinToString(", "),
             value(COURT_ACT) to debtor.courtAct.orEmpty(),
             value(ACT_DATE) to debtor.actDate?.format(shortDatePattern()).orEmpty(),
             value(RESOLUTION_DATE) to debtor.resolutionDate?.format(shortDatePattern()).orEmpty(),
