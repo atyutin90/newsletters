@@ -10,7 +10,8 @@ enum class DocumentTemplateType(val multiple: Boolean) {
     REGISTRATION_CREDITOR_JOURNAL(false),
     REGISTRATION_WORKER_JOURNAL(false),
     REQUEST(true),
-    REESTR(false);
+    REESTR(false),
+    PROTOCOL(false);
 
     companion object {
         fun documentTemplateTypeOf(value: String?): DocumentTemplateType? =

@@ -26,8 +26,10 @@ class RegistrationWorkerJournalPoiService(
 ) : PoiService {
 
     override fun generate(document: Document): ByteArray {
-        val debtor = debtorRepository.findById(document.debtorId).orElseThrow { IllegalStateException("Не найден должник ${document.debtorId}") }
-        val meeting = workerMeetingRepository.findByDebtorId(document.debtorId).firstOrNull() ?: throw IllegalStateException("Не найдено собрание работников должника ${document.debtorId}")
+        val debtor = debtorRepository.findById(document.debtorId)
+            .orElseThrow { IllegalStateException("Не найден должник ${document.debtorId}") }
+        val meeting = workerMeetingRepository.findByDebtorId(document.debtorId).firstOrNull()
+            ?: throw IllegalStateException("Не найдено собрание работников должника ${document.debtorId}")
         val manager = debtor.arbitrationManagerId
             ?.let { arbitrationManagerRepository.findById(it).orElse(null) }
             ?: throw IllegalStateException("Не найден временный управляющий должника ${document.debtorId}")

@@ -31,12 +31,12 @@ class BulletinPoiDocumentService(
 
         val values = mapOf(
             value(DEBTOR_NAME) to debtor.name.orEmpty(),
-            value(MEETING_ADDRESS) to meeting?.address.orEmpty(),
-            value(MEETING_DATE) to meeting?.date?.format(longDatePattern()).orEmpty(),
+            value(DEBTOR_MEETING_ADDRESS) to meeting?.address.orEmpty(),
+            value(DEBTOR_MEETING_DATE) to meeting?.date?.format(longDatePattern()).orEmpty(),
             value(MANAGER_NAME) to manager?.fullName.orEmpty(),
+            value(MANAGER_SD) to manager?.sroData.orEmpty(),
             value(CREDITOR_NAME) to creditor.name.orEmpty(),
-            value(VOTE_AMOUNT) to voteAmount.toPlainString(),
-            value(SRO_DATA) to manager?.sroData.orEmpty()
+            value(VOTE_AMOUNT) to voteAmount.toPlainString()
         )
 
         poiTemplateService.generate(

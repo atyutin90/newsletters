@@ -2,7 +2,9 @@ package com.example.newsletters.service.report
 
 import com.example.newsletters.entity.Document
 import com.example.newsletters.entity.DocumentInfo
+import com.example.newsletters.entity.enum.DocumentTemplateType
 import com.example.newsletters.entity.enum.DocumentTemplateType.CREDITOR_NOTIFICATION
+import com.example.newsletters.entity.enum.DocumentTemplateType.PROTOCOL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REESTR
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_CREDITOR_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_WORKER_JOURNAL
@@ -48,6 +50,7 @@ class DocumentGeneratorService(
         if (existWorkerMeeting(debtorId)) {
             generateRegistrationWorkerJournal(debtorId)
             generateWorkerNotification(debtorId)
+            generateProtocol(debtorId)
         }
         if (existRequests(debtorId)) {
             generateRequests(debtorId)
@@ -93,6 +96,19 @@ class DocumentGeneratorService(
                     debtorId = debtorId,
                     name = dt.name,
                     type = WORKER_NOTIFICATION,
+                    templateResourcePath = dt.resourcePath
+                )
+            )
+        }
+    }
+
+    private fun generateProtocol(debtorId: Long) {
+        documentTemplateRepository.findByType(PROTOCOL).firstOrNull()?.let { dt ->
+            documentRepository.save(
+                Document(
+                    debtorId = debtorId,
+                    name = dt.name,
+                    type = PROTOCOL,
                     templateResourcePath = dt.resourcePath
                 )
             )

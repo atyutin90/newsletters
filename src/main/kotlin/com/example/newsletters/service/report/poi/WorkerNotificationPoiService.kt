@@ -7,21 +7,6 @@ import com.example.newsletters.repository.DebtorRepository
 import com.example.newsletters.repository.WorkerMeetingRepository
 import org.springframework.stereotype.Service
 
-private const val DEBTOR_FULL_NAME = "debtorFullName"
-private const val MANAGER_CONTACTS = "managerContacts"
-private const val COURT_ACT = "courtAct"
-private const val ACT_DATE = "actDate"
-private const val RESOLUTION_DATE = "resolutionDate"
-private const val CASE_NUMBER = "caseNumber"
-private const val DEBTOR_TIN = "debtorTin"
-private const val DEBTOR_OGRN = "debtorOgrn"
-private const val DEBTOR_ADDRESS = "debtorAddress"
-private const val MANAGER_TIN = "managerTin"
-private const val MANAGER_SNILS = "managerSnils"
-private const val MEETING_TIME = "meetingTime"
-private const val REGISTRATION_TIME_FROM = "registrationTimeFrom"
-private const val REGISTRATION_TIME_TO = "registrationTimeTo"
-
 @Service
 class WorkerNotificationPoiService(
     private val debtorRepository: DebtorRepository,
@@ -48,21 +33,21 @@ class WorkerNotificationPoiService(
                 manager.email,
                 manager.phone,
             ).mapNotNull { it?.takeIf(String::isNotBlank) }.joinToString(" "),
-            value(COURT_ACT) to debtor.courtAct.orEmpty(),
-            value(ACT_DATE) to debtor.actDate?.format(shortDatePattern()).orEmpty(),
-            value(RESOLUTION_DATE) to debtor.resolutionDate?.format(shortDatePattern()).orEmpty(),
-            value(CASE_NUMBER) to debtor.caseNumber.orEmpty(),
+            value(DEBTOR_COURT_ACT) to debtor.courtAct.orEmpty(),
+            value(DEBTOR_ACT_DATE) to debtor.actDate?.format(shortDatePattern()).orEmpty(),
+            value(DEBTOR_RESOLUTION_DATE) to debtor.resolutionDate?.format(shortDatePattern()).orEmpty(),
+            value(DEBTOR_CASE_NUMBER) to debtor.caseNumber.orEmpty(),
             value(DEBTOR_TIN) to debtor.taxpayerIdentificationNumber.orEmpty(),
-            value(DEBTOR_OGRN) to debtor.primaryStateRegistrationNumber.orEmpty(),
+            value(DEBTOR_PSRN) to debtor.primaryStateRegistrationNumber.orEmpty(),
             value(DEBTOR_ADDRESS) to debtor.address.orEmpty(),
             value(MANAGER_TIN) to manager.taxpayerIdentificationNumber.orEmpty(),
-            value(MANAGER_SNILS) to manager.personalInsurancePolicyNumber.orEmpty(),
-            value(SRO_DATA) to manager.sroData.orEmpty(),
-            value(MEETING_DATE) to meeting.date?.format(shortDatePattern()).orEmpty(),
-            value(MEETING_TIME) to meeting.time?.toString().orEmpty(),
-            value(MEETING_ADDRESS) to meeting.address.orEmpty(),
-            value(REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
-            value(REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
+            value(MANAGER_PIPN) to manager.personalInsurancePolicyNumber.orEmpty(),
+            value(MANAGER_SD) to manager.sroData.orEmpty(),
+            value(WORKER_MEETING_DATE) to meeting.date?.format(shortDatePattern()).orEmpty(),
+            value(WORKER_MEETING_TIME) to meeting.time?.toString().orEmpty(),
+            value(WORKER_MEETING_ADDRESS) to meeting.address.orEmpty(),
+            value(WORKER_REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
+            value(WORKER_REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
         )
 
         return poiTemplateService.generate(

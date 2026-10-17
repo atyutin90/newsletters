@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.net.URLEncoder
 
 @Controller
-@RequestMapping("/debtor/{id}/document")
 class DebtorDocumentController(
     val documentGeneratorService: DocumentGeneratorService,
     val documentStorageService: DocumentStorageService,
@@ -23,7 +22,7 @@ class DebtorDocumentController(
     override val messageSource: MessageSource
 ) : AbstractController(messageSource) {
 
-    @GetMapping("/{documentId}/delete")
+    @GetMapping("/debtor/{id}/document/{documentId}/delete")
     fun delete(
         @PathVariable(ID) id: Long,
         @PathVariable(DOCUMENT_ID) documentId: Long,
@@ -39,7 +38,7 @@ class DebtorDocumentController(
         "redirect:/debtors/${id}"
     }
 
-    @GetMapping("/{documentId}/download")
+    @GetMapping("/debtor/{id}/document/{documentId}/download")
     fun download(
         @PathVariable(ID) id: Long,
         @PathVariable(DOCUMENT_ID) documentId: Long
@@ -47,13 +46,13 @@ class DebtorDocumentController(
         val data = documentStorageService.getById(documentId)
         //TODO: добавить проверки
         val documentData = documentDownloadService.download(documentId)
-        val fileName: String = URLEncoder.encode(data?.name, "UTF-8")
+        val fileName: String = URLEncoder.encode(data.name, "UTF-8")
         ResponseEntity.ok()
             .header(CONTENT_DISPOSITION, "attachment; filename=${fileName}.docx")
             .body(documentData)
     }
 
-    @GetMapping("/generate")
+    @GetMapping("/debtor/{id}/document/generate")
     fun generate(@PathVariable(ID) id: Long) = run {
         documentGeneratorService.generate(id)
         "redirect:/debtors/${id}"

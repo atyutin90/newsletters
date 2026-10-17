@@ -3,6 +3,7 @@ package com.example.newsletters.service.report
 import com.example.newsletters.entity.Document
 import com.example.newsletters.entity.enum.DocumentTemplateType.BULLETIN
 import com.example.newsletters.entity.enum.DocumentTemplateType.CREDITOR_NOTIFICATION
+import com.example.newsletters.entity.enum.DocumentTemplateType.PROTOCOL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REESTR
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_CREDITOR_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_WORKER_JOURNAL
@@ -19,6 +20,7 @@ import com.example.newsletters.service.report.jasper.WorkerNotificationDataServi
 import com.example.newsletters.service.report.poi.BulletinPoiDocumentService
 import com.example.newsletters.service.report.poi.CreditorNotificationPoiService
 import com.example.newsletters.service.report.poi.MeetingParticipantsRegistrationJournalPoiService
+import com.example.newsletters.service.report.poi.ProtocolPoiService
 import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
 import com.example.newsletters.service.report.poi.ReestrPoiDocumentService
 import com.example.newsletters.service.report.poi.RequestPoiDocumentService
@@ -53,6 +55,7 @@ class DocumentDownloadService(
     private val reestrPoiDocumentService: ReestrPoiDocumentService,
     private val requestPoiDocumentService: RequestPoiDocumentService,
     private val workerNotificationPoiService: WorkerNotificationPoiService,
+    private val protocolPoiService: ProtocolPoiService
 ) {
     /**
      * Загружает документ по указанному идентификатору документа
@@ -90,6 +93,7 @@ class DocumentDownloadService(
             REESTR -> reestrPoiDocumentService.generate(document)
             REQUEST -> requestPoiDocumentService.generate(document)
             WORKER_NOTIFICATION -> workerNotificationPoiService.generate(document)
+            PROTOCOL -> protocolPoiService.generate(document)
             else -> generateWithJasper(document)
         }
 

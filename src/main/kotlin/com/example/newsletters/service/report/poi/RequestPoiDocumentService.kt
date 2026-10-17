@@ -7,9 +7,6 @@ import com.example.newsletters.repository.DebtorRepository
 import com.example.newsletters.repository.RequestRepository
 import org.springframework.stereotype.Service
 
-private const val DEBTOR_FULL_NAME = "debtorFullName"
-private const val MANAGER_CONTACTS = "managerContacts"
-private const val MANAGER_POSTAL_ADDRESS = "managerPostalAddress"
 private const val DOCUMENT_NUMBER = "documentNumber"
 private const val REQUEST_NUMBER = "requestNumber"
 private const val REQUEST_DATE = "requestDate"
@@ -23,12 +20,8 @@ private const val COURT_ACT = "courtAct"
 private const val ACT_DATE = "actDate"
 private const val RESOLUTION_DATE = "resolutionDate"
 private const val CASE_NUMBER = "caseNumber"
-private const val DEBTOR_TIN = "debtorTin"
 private const val DEBTOR_OGRN = "debtorOgrn"
-private const val DEBTOR_ADDRESS = "debtorAddress"
-private const val MANAGER_TIN = "managerTin"
 private const val MANAGER_SNILS = "managerSnils"
-private const val MANAGER_PHONE = "managerPhone"
 
 @Service
 class RequestPoiDocumentService(
