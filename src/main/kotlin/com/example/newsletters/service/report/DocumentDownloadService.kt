@@ -9,45 +9,21 @@ import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_CRE
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_WORKER_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REQUEST
 import com.example.newsletters.entity.enum.DocumentTemplateType.WORKER_NOTIFICATION
+import com.example.newsletters.exceptions.DocumentTypeNotFoundException
 import com.example.newsletters.repository.DocumentRepository
-import com.example.newsletters.service.report.jasper.BulletinDataService
-import com.example.newsletters.service.report.jasper.CreditorNotificationDataService
-import com.example.newsletters.service.report.jasper.ReestrDataService
-import com.example.newsletters.service.report.jasper.RegistrationCreditorJournalDataService
-import com.example.newsletters.service.report.jasper.RegistrationWorkerJournalDataService
-import com.example.newsletters.service.report.jasper.RequestDataService
-import com.example.newsletters.service.report.jasper.WorkerNotificationDataService
 import com.example.newsletters.service.report.poi.BulletinPoiDocumentService
 import com.example.newsletters.service.report.poi.CreditorNotificationPoiService
 import com.example.newsletters.service.report.poi.MeetingParticipantsRegistrationJournalPoiService
 import com.example.newsletters.service.report.poi.ProtocolPoiService
-import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
 import com.example.newsletters.service.report.poi.ReestrPoiDocumentService
+import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
 import com.example.newsletters.service.report.poi.RequestPoiDocumentService
 import com.example.newsletters.service.report.poi.WorkerNotificationPoiService
-import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
-import net.sf.jasperreports.engine.JasperCompileManager
-import net.sf.jasperreports.engine.JasperFillManager
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter
-import net.sf.jasperreports.export.SimpleExporterInput
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
-import org.springframework.context.i18n.LocaleContextHolder.getLocale
 import org.springframework.stereotype.Service
-import org.springframework.util.ResourceUtils
-import java.io.ByteArrayOutputStream
-import kotlin.collections.plus
 
 @Service
 class DocumentDownloadService(
     private val documentRepository: DocumentRepository,
-    private val bulletinDataService: BulletinDataService,
-    private val workerNotificationDataService: WorkerNotificationDataService,
-    private val creditorNotificationDataService: CreditorNotificationDataService,
-    private val requestDataService: RequestDataService,
-    private val registrationCreditorJournalDataService: RegistrationCreditorJournalDataService,
-    private val registrationWorkerJournalDataService: RegistrationWorkerJournalDataService,
-    private val reestrDataService: ReestrDataService,
     private val bulletinPoiDocumentService: BulletinPoiDocumentService,
     private val creditorNotificationPoiService: CreditorNotificationPoiService,
     private val meetingParticipantsRegistrationJournalPoiService: MeetingParticipantsRegistrationJournalPoiService,
@@ -69,21 +45,6 @@ class DocumentDownloadService(
             .map { document -> generate(document) }
             .orElse(null)
 
-    private fun generateWithJasper(document: Document): ByteArray {
-        val file = ResourceUtils.getFile(document.templateResourcePath.orEmpty())
-        val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
-        var (dataSource, parameters) = getReportData(document)
-        parameters = parameters.plus(REPORT_LOCALE to getLocale())
-        val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
-        val exporter = JRDocxExporter()
-        return ByteArrayOutputStream().use { output ->
-            exporter.setExporterInput(SimpleExporterInput(jasperPrint))
-            exporter.setExporterOutput(SimpleOutputStreamExporterOutput(output))
-            exporter.exportReport()
-            output.toByteArray()
-        }
-    }
-
     private fun generate(document: Document): ByteArray =
         when (document.type) {
             BULLETIN -> bulletinPoiDocumentService.generate(document)
@@ -94,18 +55,6 @@ class DocumentDownloadService(
             REQUEST -> requestPoiDocumentService.generate(document)
             WORKER_NOTIFICATION -> workerNotificationPoiService.generate(document)
             PROTOCOL -> protocolPoiService.generate(document)
-            else -> generateWithJasper(document)
-        }
-
-    private fun getReportData(document: Document): Pair<JRBeanCollectionDataSource, Map<String, Any?>> =
-        when (document.type) {
-            BULLETIN -> bulletinDataService.getReportData(document)
-            WORKER_NOTIFICATION -> workerNotificationDataService.getReportData(document)
-            CREDITOR_NOTIFICATION -> creditorNotificationDataService.getReportData(document)
-            REQUEST -> requestDataService.getReportData(document)
-            REGISTRATION_CREDITOR_JOURNAL -> registrationCreditorJournalDataService.getReportData(document)
-            REGISTRATION_WORKER_JOURNAL -> registrationWorkerJournalDataService.getReportData(document)
-            REESTR -> reestrDataService.getReportData(document)
-            else -> JRBeanCollectionDataSource(listOf<Any>()) to hashMapOf()
+            else -> throw DocumentTypeNotFoundException(document.type)
         }
 }
