@@ -8,6 +8,7 @@ import com.example.newsletters.entity.enum.DocumentTemplateType.REESTR
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_CREDITOR_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_WORKER_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REQUEST
+import com.example.newsletters.entity.enum.DocumentTemplateType.REPORT_1N
 import com.example.newsletters.entity.enum.DocumentTemplateType.WORKER_NOTIFICATION
 import com.example.newsletters.exceptions.DocumentTypeNotFoundException
 import com.example.newsletters.repository.DocumentRepository
@@ -17,6 +18,7 @@ import com.example.newsletters.service.report.poi.MeetingParticipantsRegistratio
 import com.example.newsletters.service.report.poi.ProtocolPoiService
 import com.example.newsletters.service.report.poi.ReestrPoiDocumentService
 import com.example.newsletters.service.report.poi.RegistrationWorkerJournalPoiService
+import com.example.newsletters.service.report.poi.Report1NPoiService
 import com.example.newsletters.service.report.poi.RequestPoiDocumentService
 import com.example.newsletters.service.report.poi.WorkerNotificationPoiService
 import org.springframework.stereotype.Service
@@ -31,7 +33,8 @@ class DocumentDownloadService(
     private val reestrPoiDocumentService: ReestrPoiDocumentService,
     private val requestPoiDocumentService: RequestPoiDocumentService,
     private val workerNotificationPoiService: WorkerNotificationPoiService,
-    private val protocolPoiService: ProtocolPoiService
+    private val protocolPoiService: ProtocolPoiService,
+    private val report1NPoiService: Report1NPoiService
 ) {
     /**
      * Загружает документ по указанному идентификатору документа
@@ -55,6 +58,7 @@ class DocumentDownloadService(
             REQUEST -> requestPoiDocumentService.generate(document)
             WORKER_NOTIFICATION -> workerNotificationPoiService.generate(document)
             PROTOCOL -> protocolPoiService.generate(document)
+            REPORT_1N -> report1NPoiService.generate(document)
             else -> throw DocumentTypeNotFoundException(document.type)
         }
 }

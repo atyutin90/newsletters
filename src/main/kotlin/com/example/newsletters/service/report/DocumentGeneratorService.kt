@@ -9,6 +9,7 @@ import com.example.newsletters.entity.enum.DocumentTemplateType.REESTR
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_CREDITOR_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REGISTRATION_WORKER_JOURNAL
 import com.example.newsletters.entity.enum.DocumentTemplateType.REQUEST
+import com.example.newsletters.entity.enum.DocumentTemplateType.REPORT_1N
 import com.example.newsletters.entity.enum.DocumentTemplateType.WORKER_NOTIFICATION
 import com.example.newsletters.repository.CreditorRepository
 import com.example.newsletters.repository.DebtorMeetingQuestionRepository
@@ -55,6 +56,7 @@ class DocumentGeneratorService(
         if (existRequests(debtorId)) {
             generateRequests(debtorId)
         }
+        generateRequest1N(debtorId)
     }
 
     private fun clear(debtorId: Long) {
@@ -109,6 +111,19 @@ class DocumentGeneratorService(
                     debtorId = debtorId,
                     name = dt.name,
                     type = PROTOCOL,
+                    templateResourcePath = dt.resourcePath
+                )
+            )
+        }
+    }
+
+    private fun generateRequest1N(debtorId: Long) {
+        documentTemplateRepository.findByType(REPORT_1N).firstOrNull()?.let { dt ->
+            documentRepository.save(
+                Document(
+                    debtorId = debtorId,
+                    name = dt.name,
+                    type = REPORT_1N,
                     templateResourcePath = dt.resourcePath
                 )
             )
