@@ -10,8 +10,6 @@ import com.example.newsletters.repository.WorkerMeetingRepository
 import org.springframework.stereotype.Service
 
 private const val MEETING_ADDRESS_DATE_AND_TIME = "meetingAddressDateAndTime"
-private const val REGISTRATION_TIME_FROM = "registrationTimeFrom"
-private const val REGISTRATION_TIME_TO = "registrationTimeTo"
 private const val PARTICIPANT_FULL_NAME = "participantFullName"
 private const val PARTICIPANT_ADDRESS = "participantAddress"
 private const val TOTAL_PARTICIPANTS = "totalParticipants"
@@ -44,8 +42,8 @@ class RegistrationWorkerJournalPoiService(
                 meeting.date?.format(longDatePattern()).orEmpty(),
                 meeting.time?.let { "в $it" }.orEmpty(),
             ).filter { it.isNotBlank() }.joinToString(" "),
-            value(REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
-            value(REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
+            value(WORKER_MEETING_REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
+            value(WORKER_MEETING_REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
             value(TOTAL_PARTICIPANTS) to participants.size.toString(),
             value(MANAGER_NAME) to manager.fullName.orEmpty(),
         )

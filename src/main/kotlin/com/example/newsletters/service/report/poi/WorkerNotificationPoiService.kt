@@ -46,8 +46,8 @@ class WorkerNotificationPoiService(
             value(WORKER_MEETING_DATE) to meeting.date?.format(shortDatePattern()).orEmpty(),
             value(WORKER_MEETING_TIME) to meeting.time?.toString().orEmpty(),
             value(WORKER_MEETING_ADDRESS) to meeting.address.orEmpty(),
-            value(WORKER_REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
-            value(WORKER_REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
+            value(WORKER_MEETING_REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
+            value(WORKER_MEETING_REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
         )
 
         return poiTemplateService.generate(

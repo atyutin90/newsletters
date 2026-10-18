@@ -14,8 +14,6 @@ import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 
 private const val MEETING_ADDRESS_AND_DATE = "meetingAddressAndDate"
-private const val REGISTRATION_TIME_FROM = "registrationTimeFrom"
-private const val REGISTRATION_TIME_TO = "registrationTimeTo"
 private const val TOTAL_QUEUE_AMOUNT = "totalQueueAmount"
 private const val TOTAL_ROUND_QUEUE_AMOUNT = "totalRoundQueueAmount"
 
@@ -30,9 +28,12 @@ class MeetingParticipantsRegistrationJournalPoiService(
 ) : PoiService {
 
     override fun generate(document: Document): ByteArray {
-        val debtor = debtorRepository.findById(document.debtorId).orElseThrow { IllegalStateException("Не найден должник ${document.debtorId}") }
-        val meeting = debtorMeetingRepository.findByDebtorId(document.debtorId).firstOrNull() ?: throw IllegalStateException("Не найдено собрание кредиторов должника ${document.debtorId}")
-        val manager = debtor.arbitrationManagerId?.let { arbitrationManagerRepository.findById(it).orElse(null) } ?: throw IllegalStateException("Не найден временный управляющий должника ${document.debtorId}")
+        val debtor = debtorRepository.findById(document.debtorId)
+            .orElseThrow { IllegalStateException("Не найден должник ${document.debtorId}") }
+        val meeting = debtorMeetingRepository.findByDebtorId(document.debtorId).firstOrNull()
+            ?: throw IllegalStateException("Не найдено собрание кредиторов должника ${document.debtorId}")
+        val manager = debtor.arbitrationManagerId?.let { arbitrationManagerRepository.findById(it).orElse(null) }
+            ?: throw IllegalStateException("Не найден временный управляющий должника ${document.debtorId}")
         val creditors = creditorRepository.findByDebtorId(document.debtorId)
         val queues = queueRepository.findByCreditorIds(creditors.mapNotNull { it.id })
         val queueAmounts = creditors.associateWith { creditor -> getThirdQueueAmountByCreditor(queues, creditor.id, false) }
@@ -44,8 +45,8 @@ class MeetingParticipantsRegistrationJournalPoiService(
                 meeting.address.orEmpty(),
                 meeting.date?.format(longDatePattern()).orEmpty(),
             ).filter { it.isNotBlank() }.joinToString(" "),
-            value(REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
-            value(REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
+            value(DEBTOR_MEETING_REGISTRATION_TIME_FROM) to meeting.registrationTimeFrom?.toString().orEmpty(),
+            value(DEBTOR_MEETING_REGISTRATION_TIME_TO) to meeting.registrationTimeTo?.toString().orEmpty(),
             value(TOTAL_QUEUE_AMOUNT) to queueAmounts.values.fold(ZERO, BigDecimal::add).toPlainString(),
             value(TOTAL_ROUND_QUEUE_AMOUNT) to roundedQueueAmounts.values.fold(ZERO, BigDecimal::add).toPlainString(),
             value(MANAGER_NAME) to manager.fullName.orEmpty(),
